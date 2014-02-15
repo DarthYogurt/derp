@@ -1,8 +1,9 @@
 package com.walintukai.derpteam;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.content.Intent;
 
 public class SplashActivity extends Activity {
 
@@ -10,13 +11,25 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		
+		new ShowLogo().execute();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.splash, menu);
-		return true;
-	}
+	private class ShowLogo extends AsyncTask<Void, Void, Void> {
 
+	    protected Void doInBackground(Void... params) {
+	    	try { Thread.sleep(2000); } 
+			catch (Exception e) { e.printStackTrace(); }
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+	    	startActivity(intent);
+			finish();
+	        return;
+	    }
+	}
+	
 }

@@ -3,5 +3,8 @@
 
     <string name="app_name">DerpTeam</string>
     <string name="action_settings">Settings</string>
+    
+    <!-- SPLASH -->
+    <string name="logo">Logo</string>
 
 </resources>

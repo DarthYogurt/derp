@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">DerpTeam</string>
+    <string name="app_id">1417999875114121</string>
     <string name="action_settings">Settings</string>
     
     <!-- SPLASH -->

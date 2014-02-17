@@ -26,6 +26,9 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,7 +89,7 @@ public class MainActivity extends Activity {
 					Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
-							username.setText(user.getName());
+							username.setText("Welcome " + user.getName() + "!");
 						}
 					});
 					request.executeAsync();
@@ -94,6 +97,22 @@ public class MainActivity extends Activity {
 				else {
 					username.setText("Not Logged In");
 				}
+			}
+		});
+		
+		ImageButton myTeamButton = (ImageButton) findViewById(R.id.btn_my_team);
+		myTeamButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
+		
+		ImageButton createMemberButton = (ImageButton) findViewById(R.id.btn_create_member);
+		createMemberButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
 			}
 		});
 		

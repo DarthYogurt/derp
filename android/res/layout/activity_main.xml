@@ -1,36 +1,52 @@
-<RelativeLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:orientation="vertical"
     android:background="#fff"
     android:padding="20dp" >
     
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="80dp"
         android:src="@drawable/derpteam_logo"
         android:contentDescription="@string/logo" />
-	
-	<com.facebook.widget.LoginButton
-        android:id="@+id/fb_login_button"
+    
+    <ImageButton
+        android:id="@+id/btn_my_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/cd_my_team"
+        android:background="@drawable/my_team_btn" />
+    
+    <ImageButton
+        android:id="@+id/btn_create_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="@string/cd_create_member"
+        android:background="@drawable/create_member_btn" />
 	
 	<TextView
 	    android:id="@+id/username"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_above="@id/fb_login_button"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="40dp"
+	    android:layout_gravity="center_horizontal"
 	    android:textSize="20sp" />
+	
+	<com.facebook.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
 
-</RelativeLayout>
+</LinearLayout>

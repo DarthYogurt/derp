@@ -34,7 +34,7 @@ public class SplashActivity extends Activity {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+	    	Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
 	    	startActivity(intent);
 			finish();
 	        return;

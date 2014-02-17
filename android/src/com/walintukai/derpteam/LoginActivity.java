@@ -32,7 +32,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 	
 	private GraphUser user;
 	private UiLifecycleHelper uiHelper;
@@ -74,14 +74,14 @@ public class MainActivity extends Activity {
 		catch (NameNotFoundException e) { } 
 		catch (NoSuchAlgorithmException e) { } 
 		
-		final TextView username = (TextView) findViewById(R.id.username);
+//		final TextView username = (TextView) findViewById(R.id.username);
 		
 		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
 		loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 			
 			@Override
 			public void onUserInfoFetched(GraphUser user) {
-				MainActivity.this.user = user;
+				LoginActivity.this.user = user;
 				Session session = Session.getActiveSession();
 				boolean validSession = session != null && session.isOpened();
 				
@@ -89,13 +89,13 @@ public class MainActivity extends Activity {
 					Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
-							username.setText("Welcome " + user.getName() + "!");
+//							username.setText("Welcome " + user.getName() + "!");
 						}
 					});
 					request.executeAsync();
 				}
 				else {
-					username.setText("Not Logged In");
+//					username.setText("Not Logged In");
 				}
 			}
 		});

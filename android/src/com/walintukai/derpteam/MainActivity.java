@@ -3,11 +3,15 @@ package com.walintukai.derpteam;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FacebookDialog.Callback;
+import com.facebook.widget.LoginButton;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,13 +29,14 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
+	private GraphUser user;
 	String message = "Hello There!";
 	private UiLifecycleHelper uiHelper;
-	ImageView facebook;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		
@@ -86,8 +91,34 @@ public class MainActivity extends Activity {
 		catch (NameNotFoundException e) { } 
 		catch (NoSuchAlgorithmException e) { } 
 		
-		facebook = (ImageView) findViewById(R.id.fbicon);
-		facebook.setOnClickListener(new OnClickListener() {
+		final TextView username = (TextView) findViewById(R.id.username);
+		
+		LoginButton login = (LoginButton) findViewById(R.id.fb_login_button);
+		login.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+			
+			@Override
+			public void onUserInfoFetched(GraphUser user) {
+				MainActivity.this.user = user;
+				Session session = Session.getActiveSession();
+				boolean validSession = session != null && session.isOpened();
+				
+				if (validSession && user != null) {
+					Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+						@Override
+						public void onCompleted(GraphUser user, Response response) {
+							username.setText(user.getName());
+						}
+					});
+					request.executeAsync();
+				}
+				else {
+					username.setText("No User Logged In");
+				}
+			}
+		});
+		
+		ImageView share = (ImageView) findViewById(R.id.fb_icon);
+		share.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				facebook();
@@ -100,30 +131,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
-	}
-	
-	@Override
-	protected void onDestroy() {
-		uiHelper.onDestroy();
-		super.onDestroy();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		uiHelper.onResume();
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		uiHelper.onPause();
 	}
 	
 	public void facebook() {
@@ -175,6 +182,30 @@ public class MainActivity extends Activity {
 			flag = false;
 		}
 		return flag;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		uiHelper.onDestroy();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		uiHelper.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		uiHelper.onPause();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		uiHelper.onSaveInstanceState(outState);
 	}
 
 }

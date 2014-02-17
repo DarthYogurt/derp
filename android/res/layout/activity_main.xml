@@ -6,10 +6,24 @@
     tools:context=".MainActivity"
     android:orientation="vertical" >
     
+    <com.facebook.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+    
 	<ImageView
-	    android:id="@+id/fbicon"
+	    android:id="@+id/fb_icon"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:src="@drawable/fb_icon" />
+	    android:layout_gravity="center_horizontal"
+	    android:layout_marginTop="30dp"
+	    android:src="@drawable/fb_share" />
+	
+	<TextView
+	    android:id="@+id/username"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" />
 
 </LinearLayout>

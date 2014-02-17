@@ -8,6 +8,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.android.Facebook;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FacebookDialog.Callback;
@@ -33,9 +34,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	
+
+	private Facebook facebook;
 	private GraphUser user;
 	private UiLifecycleHelper uiHelper;
+	private Preferences prefs;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		
@@ -76,6 +79,8 @@ public class LoginActivity extends Activity {
 		
 //		final TextView username = (TextView) findViewById(R.id.username);
 		
+		prefs = new Preferences(this);
+		
 		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
 		loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 			
@@ -86,6 +91,10 @@ public class LoginActivity extends Activity {
 				boolean validSession = session != null && session.isOpened();
 				
 				if (validSession && user != null) {
+					// Sets Facebook access token and expiration in shared preferences
+					prefs.setAccessToken(session.getAccessToken());
+					prefs.setTokenExpiration(session.getExpirationDate().getTime());
+					
 					Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {

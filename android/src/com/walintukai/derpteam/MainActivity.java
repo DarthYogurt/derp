@@ -26,16 +26,12 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
 	private GraphUser user;
-	String message = "Hello There!";
 	private UiLifecycleHelper uiHelper;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -55,22 +51,6 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data, new Callback() {
-			@Override
-			public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-				Log.e("ACTIVITY", String.format("Error: %s", error.toString()));
-			}
-			
-			@Override
-			public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-				Log.i("ACTIVITY", "SUCCESS");
-			}
-		});
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,8 +73,8 @@ public class MainActivity extends Activity {
 		
 		final TextView username = (TextView) findViewById(R.id.username);
 		
-		LoginButton login = (LoginButton) findViewById(R.id.fb_login_button);
-		login.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+		loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 			
 			@Override
 			public void onUserInfoFetched(GraphUser user) {
@@ -112,18 +92,18 @@ public class MainActivity extends Activity {
 					request.executeAsync();
 				}
 				else {
-					username.setText("No User Logged In");
+					username.setText("Not Logged In");
 				}
 			}
 		});
 		
-		ImageView share = (ImageView) findViewById(R.id.fb_icon);
-		share.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				facebook();
-			}
-		});
+//		ImageView shareButton = (ImageView) findViewById(R.id.fb_icon);
+//		shareButton.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				shareToFacebook();
+//			}
+//		});
 	}
 
 	@Override
@@ -133,7 +113,23 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void facebook() {
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		uiHelper.onActivityResult(requestCode, resultCode, data, new Callback() {
+			@Override
+			public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+				Log.e("ACTIVITY", String.format("Error: %s", error.toString()));
+			}
+			
+			@Override
+			public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+				Log.i("ACTIVITY", "SUCCESS");
+			}
+		});
+	}
+	
+	public void shareToFacebook() {
 		if (!checkNetwork()) {
 			Toast.makeText(getApplicationContext(), "No active internet connection", Toast.LENGTH_SHORT).show();
 			return;
@@ -145,7 +141,7 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
 		if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
 			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this).setName("Derp Team")
-					.setLink("http://www.google.com").setDescription(message).build();
+					.setLink("http://www.google.com").setDescription("Hello!").build();
 			uiHelper.trackPendingDialogCall(shareDialog.present());	
 		}
 		else {

@@ -1,29 +1,36 @@
-<LinearLayout 
+<RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical" >
+    android:background="#fff"
+    android:padding="20dp" >
     
-    <com.facebook.widget.LoginButton
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/derpteam_logo"
+        android:contentDescription="@string/logo" />
+	
+	<com.facebook.widget.LoginButton
         android:id="@+id/fb_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp" />
-    
-	<ImageView
-	    android:id="@+id/fb_icon"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_horizontal"
-	    android:layout_marginTop="30dp"
-	    android:src="@drawable/fb_share" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
 	
 	<TextView
 	    android:id="@+id/username"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" />
+	    android:layout_height="wrap_content"
+	    android:layout_above="@id/fb_login_button"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="40dp"
+	    android:textSize="20sp" />
 
-</LinearLayout>
+</RelativeLayout>

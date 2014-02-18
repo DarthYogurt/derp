@@ -24,3 +24,4 @@ class FriendList(models.Model):
     account = models.ForeignKey("User", null=True, blank=True)
     
     def __unicode__(self):
+        return self.id

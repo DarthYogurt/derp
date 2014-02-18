@@ -1,9 +1,12 @@
 
 
 
-from derp.views import *
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
+from derp.views import *
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',

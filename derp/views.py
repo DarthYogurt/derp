@@ -16,6 +16,11 @@ def login(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    print data
+    for d in data:
+        print d,data[d]
+        
+        
+        
+    
     return HttpResponse("Testing Field")
 

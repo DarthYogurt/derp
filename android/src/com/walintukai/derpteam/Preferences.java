@@ -3,6 +3,7 @@ package com.walintukai.derpteam;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class Preferences {
 	
@@ -20,6 +21,7 @@ public class Preferences {
 	
 	public void setAccessToken(String s) {
 		prefEditor.putString(KEY_ACCESS_TOKEN, s).commit();
+		Log.i("ACCESS TOKEN", s);
 	}
 	
 	public String getAccessToken() {
@@ -28,6 +30,7 @@ public class Preferences {
 	
 	public void setTokenExpiration(long l) {
 		prefEditor.putLong(KEY_TOKEN_EXPIRATION, l).commit();
+		Log.i("TOKEN EXPIRATION", Long.toString(l));
 	}
 	
 	public long getTokenExpiration() {

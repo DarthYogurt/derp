@@ -7,10 +7,10 @@ import android.net.NetworkInfo;
 public class GlobalMethods {
 	
 	public static boolean isNetworkAvailable(Context context) {
-		boolean wifiAvailable = false;
-		boolean mobileAvailable = false;
 		ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo[] networkInfo = conManager.getAllNetworkInfo();
+		boolean wifiAvailable = false;
+		boolean mobileAvailable = false;
 		
 		for (NetworkInfo netInfo : networkInfo) {
 			if (netInfo.getTypeName().equalsIgnoreCase("WIFI")) {

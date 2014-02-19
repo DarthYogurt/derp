@@ -15,18 +15,24 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.FrameLayout;
 
 public class MainActivity extends FragmentActivity {
+	
+	private static final int FRAGMENT_MAIN = 1;
+	private static final int FRAGMENT_TAKE_PICTURE = 2;
+	private static final int FRAGMENT_FRIEND_PICKER = 3;
+	private static final int FRAGMENT_GALLERY = 4;
 
-	private FriendPickerFragment fragment;
+	private FriendPickerFragment fragmentFriendPicker;
+	private TakePictureFragment fragmentTakePicture;
+	private FragmentManager fm;
+	private FragmentTransaction ft;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +40,25 @@ public class MainActivity extends FragmentActivity {
 //		setContentView(R.layout.activity_main);
 		getActionBar().setTitle("");
 		
-//		requestFacebookFriends(Session.getActiveSession());
+		fm = getSupportFragmentManager();
 		
-		fragment = new FriendPickerFragment();
-		FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(android.R.id.content, fragment);
-        fragmentTransaction.commit();
+		loadFriendPickerFragment();
 		
+	}
+	
+	private void loadFriendPickerFragment() {
+		fragmentFriendPicker = new FriendPickerFragment();
+		fragmentFriendPicker.setMultiSelect(false);
 		
-		
+		ft = fm.beginTransaction();
+		ft.replace(android.R.id.content, fragmentFriendPicker);
+        ft.commit();
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		fragment.loadData(false);
+		fragmentFriendPicker.loadData(false);
 	}
 
 	@Override

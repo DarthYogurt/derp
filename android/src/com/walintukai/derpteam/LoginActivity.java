@@ -2,24 +2,10 @@ package com.walintukai.derpteam;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.android.Facebook;
-import com.facebook.model.GraphMultiResult;
-import com.facebook.model.GraphObject;
-import com.facebook.model.GraphObjectList;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.FacebookDialog;
-import com.facebook.widget.FacebookDialog.Callback;
-import com.facebook.widget.LoginButton;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,26 +14,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-
-	private Facebook facebook;
-	private GraphUser user;
-	private UiLifecycleHelper uiHelper;
-	private Preferences prefs;
-	private static final List<String> PERMISSIONS = Arrays.asList("manage_pages");
 	
+	private UiLifecycleHelper uiHelper;
 	private Session.StatusCallback callback = new Session.StatusCallback() {
-		
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			onSessionStateChange(session, state, exception);
@@ -55,181 +28,219 @@ public class LoginActivity extends Activity {
 	};
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-		if (state.isOpened()) {
-			Log.i("FACEBOOK", "LOGGED IN");
-		}
-		else if (state.isClosed()) {
-			Log.i("FACEBOOK", "LOGGED OUT");
-		}
-	}
+        if (session.isOpened()) {
+        	Log.i("FACEBOOK", "LOGGED IN");
+        }
+        else if (session.isClosed()) {
+        	Log.i("FACEBOOK", "LOGGED OUT");
+        }
+    }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		uiHelper = new UiLifecycleHelper(this, callback);
-		uiHelper.onCreate(savedInstanceState);
 		getActionBar().setTitle("");
 		
-		prefs = new Preferences(this);
-		generateKeyHash();
+		getKeyHash();
 		
-		final Session session = Session.getActiveSession();
-		final boolean isValidSession = session != null && session.isOpened();
+		uiHelper = new UiLifecycleHelper(this, callback);
+		uiHelper.onCreate(savedInstanceState);
 		
-		if (isValidSession) {
-			Intent intent = new Intent(this, MainActivity.class);
-	    	startActivity(intent);
-			finish();
-		}
-		
-//		final TextView username = (TextView) findViewById(R.id.username);
-		
-		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
-		loginButton.setReadPermissions(PERMISSIONS);
-		loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
-			@Override
-			public void onUserInfoFetched(GraphUser user) {
-				LoginActivity.this.user = user;
-				
-				if (isValidSession && user != null) {
-					// Sets Facebook access token and expiration in shared preferences
-					prefs.setAccessToken(session.getAccessToken());
-					prefs.setTokenExpiration(session.getExpirationDate().getTime());
-					
-					Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
-						@Override
-						public void onCompleted(GraphUser user, Response response) {
-//							username.setText("Welcome " + user.getName() + "!");
-						}
-					});
-					request.executeAsync();
-				}
-				else { 
-					// username.setText("Not Logged In"); 
-				}
-			}
-		});
-		
-//		ImageButton myTeamButton = (ImageButton) findViewById(R.id.btn_my_team);
-//		myTeamButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				
-//			}
-//		});
-		
-//		ImageButton createMemberButton = (ImageButton) findViewById(R.id.btn_create_member);
-//		createMemberButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				
-//			}
-//		});
-		
-//		ImageView shareButton = (ImageView) findViewById(R.id.fb_icon);
-//		shareButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				shareToFacebook();
-//			}
-//		});
-	}
+		goToMainActivity();
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	}
+	
+	private void goToMainActivity() {
+		if (Session.getActiveSession().isOpened()) {
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
+	}
+	
+	private void getKeyHash() {
+		try {
+	        PackageInfo info = getPackageManager().getPackageInfo("com.walintukai.derpteam", 
+	        		PackageManager.GET_SIGNATURES);
+	        for (Signature signature : info.signatures) {
+	            MessageDigest md = MessageDigest.getInstance("SHA");
+	            md.update(signature.toByteArray());
+	            Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+	    } 
+		catch (NameNotFoundException e) { } 
+		catch (NoSuchAlgorithmException e) { }
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data, new Callback() {
-			@Override
-			public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-				Log.e("ACTIVITY", String.format("Error: %s", error.toString()));
-			}
-			
-			@Override
-			public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-				Log.i("ACTIVITY", "SUCCESS");
-			}
-		});
+	    super.onActivityResult(requestCode, resultCode, data);
+	    uiHelper.onActivityResult(requestCode, resultCode, data);
+	    goToMainActivity();
 	}
-	
-	public void shareToFacebook() {
-		if (!GlobalMethods.isNetworkAvailable(this)) {
-			Toast.makeText(getApplicationContext(), "No active internet connection", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (!isFbInstalled()) {
-			Toast.makeText(getApplicationContext(), "Facebook app not installed", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
-		if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
-			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this).setName("Derp Team")
-					.setLink("http://www.google.com").setDescription("Hello!").build();
-			uiHelper.trackPendingDialogCall(shareDialog.present());	
-		}
-		else {
-			Log.e("FB DIALOG", "FAILED");
-		}
-	}
-	
-	public boolean isFbInstalled() {
-		PackageManager pm = getPackageManager();
-		boolean flag = false;
-		
-		try {
-			pm.getPackageInfo("com.facebook.katana", PackageManager.GET_ACTIVITIES);
-			flag = true;
-		}
-		catch (PackageManager.NameNotFoundException e){
-			flag = false;
-		}
-		return flag;
-	}
-	
-	private void generateKeyHash() {
-		// Generates keyhash code
-		try {
-			PackageInfo info = getPackageManager().getPackageInfo("com.walintukai.derpteam", 
-					PackageManager.GET_SIGNATURES);
-			for (Signature signature : info.signatures) {
-				MessageDigest md = MessageDigest.getInstance("SHA");
-				md.update(signature.toByteArray());
-				System.out.println("KeyHash: "+ Base64.encodeToString(md.digest(), Base64.DEFAULT));
-			}
-		} 
-		catch (NameNotFoundException e) { } 
-		catch (NoSuchAlgorithmException e) { } 
-	}
-	
+
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
-		uiHelper.onDestroy();
+	    super.onDestroy();
+	    uiHelper.onDestroy();
 	}
-	
+
+	@Override
+	protected void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
 	@Override
 	protected void onResume() {
-		super.onResume();
-		uiHelper.onResume();
+	    super.onResume();
+	    uiHelper.onResume();
 	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		uiHelper.onPause();
-	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
 	}
+
 	
+	
+//	private static final int SPLASH = 0;
+//	private static final int SELECTION = 1;
+//	private static final int SETTINGS = 2;
+//	private static final int FRAGMENT_COUNT = SETTINGS +1;
+//	
+//	private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
+//	private MenuItem settings;
+//	private boolean isResumed = false;
+//	private UiLifecycleHelper uiHelper;
+//	private Session.StatusCallback callback = new Session.StatusCallback() {
+//		@Override
+//		public void call(Session session, SessionState state, Exception exception) {
+//			onSessionStateChange(session, state, exception);
+//	    }
+//	};
+//	
+//	@Override
+//	public void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//
+//		uiHelper = new UiLifecycleHelper(this, callback);
+//		uiHelper.onCreate(savedInstanceState);
+//		
+//		setContentView(R.layout.activity_main);
+//		
+//		FragmentManager fm = getSupportFragmentManager();
+//		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
+//		fragments[SELECTION] = fm.findFragmentById(R.id.selectionFragment);
+//		fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
+//		
+//		FragmentTransaction transaction = fm.beginTransaction();
+//		for(int i = 0; i < fragments.length; i++) {
+//		    transaction.hide(fragments[i]);
+//		}
+//		transaction.commit();
+//	}
+//	
+//	private void showFragment(int fragmentIndex, boolean addToBackStack) {
+//		FragmentManager fm = getSupportFragmentManager();
+//		FragmentTransaction transaction = fm.beginTransaction();
+//		for (int i = 0; i < fragments.length; i++) {
+//		    if (i == fragmentIndex) { transaction.show(fragments[i]); } 
+//		    else { transaction.hide(fragments[i]); }
+//		}
+//		if (addToBackStack) { transaction.addToBackStack(null); }
+//		transaction.commit();
+//	}
+//	
+//	@Override
+//	public void onResume() {
+//	    super.onResume();
+//	    uiHelper.onResume();
+//	    isResumed = true;
+//	}
+//
+//	@Override
+//	public void onPause() {
+//	    super.onPause();
+//	    uiHelper.onPause();
+//	    isResumed = false;
+//	}
+//	
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//	    super.onActivityResult(requestCode, resultCode, data);
+//	    uiHelper.onActivityResult(requestCode, resultCode, data);
+//	}
+//	
+//	@Override
+//	public void onDestroy() {
+//	    super.onDestroy();
+//	    uiHelper.onDestroy();
+//	}
+//	
+//	@Override
+//	protected void onSaveInstanceState(Bundle outState) {
+//	    super.onSaveInstanceState(outState);
+//	    uiHelper.onSaveInstanceState(outState);
+//	}
+//	
+//	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+//	    // Only make changes if the activity is visible
+//	    if (isResumed) {
+//	        FragmentManager manager = getSupportFragmentManager();
+//	        // Get the number of entries in the back stack
+//	        int backStackSize = manager.getBackStackEntryCount();
+//	        // Clear the back stack
+//	        for (int i = 0; i < backStackSize; i++) {
+//	            manager.popBackStack();
+//	        }
+//	        if (state.isOpened()) {
+//	            // If the session state is open: Show the authenticated fragment
+//	            showFragment(SELECTION, false);
+//	        } else if (state.isClosed()) {
+//	            // If the session state is closed: Show the login fragment
+//	            showFragment(SPLASH, false);
+//	        }
+//	    }
+//	}
+//	
+//	@Override
+//	protected void onResumeFragments() {
+//	    super.onResumeFragments();
+//	    Session session = Session.getActiveSession();
+//	
+//	    if (session != null && session.isOpened()) {
+//	        // if the session is already open, try to show the selection fragment
+//	        showFragment(SELECTION, false);
+//	    } else {
+//	        // otherwise present the splash screen and ask the person to login.
+//	        showFragment(SPLASH, false);
+//	    }
+//	}
+//	
+//	@Override
+//	public boolean onPrepareOptionsMenu(Menu menu) {
+//	    // only add the menu when the selection fragment is showing
+//	    if (fragments[SELECTION].isVisible()) {
+//	        if (menu.size() == 0) {
+//	            settings = menu.add(R.string.settings);
+//	        }
+//	        return true;
+//	    } else {
+//	        menu.clear();
+//	        settings = null;
+//	    }
+//	    return false;
+//	}
+//	
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//	    if (item.equals(settings)) {
+//	        showFragment(SETTINGS, true);
+//	        return true;
+//	    }
+//	    return false;
+//	}
+
 }

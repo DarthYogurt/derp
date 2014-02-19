@@ -18,8 +18,17 @@ def login(request):
     for d in data:
         print d, data[d]
     
-    print User.objects.get(fbId=data.get('fbUserId',0)).exists()
-    
+    if User.objects.filter(fbId=data.get('fbUserId',0)).exists():
+        print "Exists!"
+        
+    else:
+        # add into database with his friends
+        newUser = User(
+                       fbId = data.get('fbUserId',0),
+                       fbName = data.get("fbUserName", "")
+                       
+                       )
+        newUser.save()
     
     
     return HttpResponse("")

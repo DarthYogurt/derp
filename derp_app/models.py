@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20)
-    email = models.CharField(max_length=15)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
+    email = models.CharField(max_length=15, null=True, blank=True)
     
     fbId = models.IntegerField()
     fbName = models.CharField(max_length=40)

@@ -7,7 +7,8 @@ class User(models.Model):
     email = models.CharField(max_length=15)
     
     fbId = models.IntegerField()
-    fbName = models.CharField()
+    fbName = models.CharField(max_length=40)
     
     def __unicode__(self):
         return self.name + "-"+str(self.id)
+    

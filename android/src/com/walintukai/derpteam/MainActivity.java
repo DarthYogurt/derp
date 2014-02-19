@@ -12,22 +12,44 @@ import com.facebook.model.GraphMultiResult;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.FriendPickerFragment;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.FrameLayout;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
+	private FriendPickerFragment fragment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+//		setContentView(R.layout.activity_main);
 		getActionBar().setTitle("");
 		
-		requestFacebookFriends(Session.getActiveSession());
+//		requestFacebookFriends(Session.getActiveSession());
+		
+		fragment = new FriendPickerFragment();
+		FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.commit();
+		
+		
+		
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		fragment.loadData(false);
 	}
 
 	@Override

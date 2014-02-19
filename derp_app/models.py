@@ -12,3 +12,11 @@ class User(models.Model):
     def __unicode__(self):
         return self.name + "-"+str(self.id)
     
+class FriendList(models.Model):
+    parentFriend = models.ForeignKey("User")
+    fbId = models.IntegerField()
+    dateAdded = models.DateField(null=True, blank=True)
+    
+    
+    def __unicode__(self):
+        return self.id

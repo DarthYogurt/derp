@@ -10,6 +10,9 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -55,13 +58,38 @@ WSGI_APPLICATION = 'derp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+DATABASES = {}
+PROJECT_PATH = None
+MEDIA_ROOT = None
+if socket.gethostname() != "dev.darthyogurt.com":
+    DATABASES = {
+                  
+         'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'derp',
+                'USER': 'root',
+                'PASSWORD': 'supermanfly',
+                'HOST': '127.0.0.1',
+                'PORT': '3306',
+        }
     }
-}
-
+    
+    #image files
+   
+#     MEDIA_URL = "/media/"
+else:
+    DATABASES = {
+                  
+         'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'derp',
+                'USER': 'root',
+                'PASSWORD': 'supermanfly',
+                'HOST': 'localhost',
+                'PORT': '3306',
+        }
+    }
+    #image files
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 

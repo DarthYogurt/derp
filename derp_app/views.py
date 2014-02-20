@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.http.response import HttpResponse
 from django.shortcuts import render
@@ -82,4 +83,18 @@ def uploadPic(request):
                          )
     newPicture.save()
     return HttpResponse("")
+
+
+@csrf_exempt
+def uploadError(request):
+    f = open("error.html", "w")
+    f.write(request.FILES['error'].read())
+    f.close()
+    return HttpResponse("")
+
+def latestError(request):
+    f = open( os.getcwd() + "/error.html", "rb")
+    #f = open( "E:\\coding_workspace\\medusa_backend\\tempJson", "rb")
+    stringReturn = f.read()
+    return HttpResponse(stringReturn)
     

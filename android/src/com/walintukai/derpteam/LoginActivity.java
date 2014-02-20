@@ -24,6 +24,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -31,7 +32,8 @@ import android.util.Log;
 
 public class LoginActivity extends Activity {
 	
-	List<String[]> fbFriends;
+	private Preferences prefs;
+	public List<GraphUser> fbFriends;
 	
 	private UiLifecycleHelper uiHelper;
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -40,15 +42,6 @@ public class LoginActivity extends Activity {
 			onSessionStateChange(session, state, exception);
 		}
 	};
-	
-	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        if (session.isOpened()) {
-        	Log.i("FACEBOOK", "LOGGED IN");
-        }
-        else if (session.isClosed()) {
-        	Log.i("FACEBOOK", "LOGGED OUT");
-        }
-    }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +52,14 @@ public class LoginActivity extends Activity {
 		uiHelper = new UiLifecycleHelper(this, callback);
 		uiHelper.onCreate(savedInstanceState);
 		
+		prefs = new Preferences(this);
+		
 		getKeyHash();
-		
-		fbFriends = new ArrayList<String[]>();
-		
-		goToMainActivity();
 	}
 	
 	private void goToMainActivity() {
-		if (Session.getActiveSession().isOpened()) {
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-		}
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 	
 	private void getKeyHash() {
@@ -87,11 +76,94 @@ public class LoginActivity extends Activity {
 		catch (NoSuchAlgorithmException e) { }
 	}
 	
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        if (session.isOpened()) {
+        	Log.i("FACEBOOK", "LOGGED IN");
+        	
+        	Request.newMeRequest(session, new Request.GraphUserCallback() {
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						prefs.setFbUserId(user.getId());
+						prefs.setFbUserName(user.getName());
+					}
+				}
+			}).executeAsync();
+        	
+        	requestFacebookFriends(Session.getActiveSession());
+//        	new UpdateJsonTask().execute();
+        	goToMainActivity();
+        }
+        else if (session.isClosed()) {
+        	Log.i("FACEBOOK", "LOGGED OUT");
+        	prefs.setFbUserId("");
+			prefs.setFbUserName("");
+        }
+    }
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
 	    uiHelper.onActivityResult(requestCode, resultCode, data);
+//	    new UpdateJsonTask().execute();
 	    goToMainActivity();
+	}
+	
+	private void requestFacebookFriends(Session session) {
+		Request friendsRequest = createRequest(session);
+		friendsRequest.setCallback(new Request.Callback() {
+			@Override
+			public void onCompleted(Response response) {
+				fbFriends = getResults(response);
+				
+				JSONWriter writer = new JSONWriter(LoginActivity.this);
+				writer.updateFriendsList(fbFriends);
+			}
+		});
+		friendsRequest.executeAsync();
+	}
+	
+	private Request createRequest(Session session) {
+		Request request = Request.newGraphPathRequest(session, "me/friends", null);
+
+		Set<String> fields = new HashSet<String>();
+		String[] requiredFields = new String[] {"id", "name"};
+		fields.addAll(Arrays.asList(requiredFields));
+
+		Bundle parameters = request.getParameters();
+		parameters.putString("fields", TextUtils.join(",", fields));
+		request.setParameters(parameters);
+
+		return request;
+    }
+	
+	private List<GraphUser> getResults(Response response) {
+		GraphMultiResult multiResult = response.getGraphObjectAs(GraphMultiResult.class);
+		GraphObjectList<GraphObject> data = multiResult.getData();
+		return data.castToListOf(GraphUser.class);
+	}
+	
+	private class UpdateJsonTask extends AsyncTask<Void, Void, Void> {
+	    protected Void doInBackground(Void... params) {
+	    	runOnUiThread(new Runnable() {
+				public void run() { 
+					requestFacebookFriends(Session.getActiveSession());
+				}
+			});
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	if (fbFriends == null) {
+	    		Log.v("FRIENDS LIST", "NULL");
+	    	}
+	    	else {
+	    		Log.v("FB FRIENDS SIZE", Integer.toString(fbFriends.size()));
+	    		JSONWriter writer = new JSONWriter(LoginActivity.this);
+	    	}
+	        return;
+	    }
 	}
 
 	@Override
@@ -118,44 +190,7 @@ public class LoginActivity extends Activity {
 	    uiHelper.onSaveInstanceState(outState);
 	}
 	
-	private void requestFacebookFriends(Session session) {
-		Request friendsRequest = createRequest(session);
-		friendsRequest.setCallback(new Request.Callback() {
-			@Override
-			public void onCompleted(Response response) {
-				List<GraphUser> friends = getResults(response);
-              
-				for (int i = 0; i < friends.size(); i++) {
-					GraphUser friend = friends.get(i);
-					Log.e("FRIEND", friend.getName() + " " + friend.getId());
-					
-				}
-			}
-		});
-		friendsRequest.executeAsync();
-	}
-	
-	private Request createRequest(Session session) {
-		Request request = Request.newGraphPathRequest(session, "me/friends", null);
 
-		Set<String> fields = new HashSet<String>();
-		String[] requiredFields = new String[] {"id", "name"};
-		fields.addAll(Arrays.asList(requiredFields));
-
-		Bundle parameters = request.getParameters();
-		parameters.putString("fields", TextUtils.join(",", fields));
-		request.setParameters(parameters);
-
-		return request;
-    }
-	
-	private List<GraphUser> getResults(Response response) {
-		GraphMultiResult multiResult = response.getGraphObjectAs(GraphMultiResult.class);
-		GraphObjectList<GraphObject> data = multiResult.getData();
-		return data.castToListOf(GraphUser.class);
-	}
-
-	
 	
 //	private static final int SPLASH = 0;
 //	private static final int SELECTION = 1;

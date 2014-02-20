@@ -8,8 +8,8 @@ import android.util.Log;
 public class Preferences {
 	
 	private static final String FILENAME_PREF = "preferences";
-	private static final String KEY_ACCESS_TOKEN = "accessToken";
-	private static final String KEY_TOKEN_EXPIRATION = "accessExpires";
+	private static final String KEY_FB_USER_ID = "fbUserId";
+	private static final String KEY_FB_USER_NAME = "fbUserName";
 	
 	private SharedPreferences pref;
 	private Editor prefEditor;
@@ -19,22 +19,22 @@ public class Preferences {
 		this.prefEditor = pref.edit();
 	}
 	
-	public void setAccessToken(String s) {
-		prefEditor.putString(KEY_ACCESS_TOKEN, s).commit();
-		Log.i("ACCESS TOKEN", s);
+	public void setFbUserId(String s) {
+		prefEditor.putString(KEY_FB_USER_ID, s).commit();
+		Log.i("PREF: FB USER ID", s);
 	}
 	
-	public String getAccessToken() {
-		return pref.getString(KEY_ACCESS_TOKEN, "");
+	public String getFbUserId() {
+		return pref.getString(KEY_FB_USER_ID, "");
 	}
 	
-	public void setTokenExpiration(long l) {
-		prefEditor.putLong(KEY_TOKEN_EXPIRATION, l).commit();
-		Log.i("TOKEN EXPIRATION", Long.toString(l));
+	public void setFbUserName(String s) {
+		prefEditor.putString(KEY_FB_USER_NAME, s).commit();
+		Log.i("PREF: FB USER NAME", s);
 	}
 	
-	public long getTokenExpiration() {
-		return pref.getLong(KEY_TOKEN_EXPIRATION, -1);
+	public String getFbUserName() {
+		return pref.getString(KEY_FB_USER_NAME, "");
 	}
 	
 }

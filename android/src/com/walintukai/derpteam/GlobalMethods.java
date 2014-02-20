@@ -1,5 +1,8 @@
 package com.walintukai.derpteam;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,4 +25,5 @@ public class GlobalMethods {
 		}
 		return wifiAvailable || mobileAvailable;
 	}
+	
 }

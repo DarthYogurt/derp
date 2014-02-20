@@ -8,5 +8,7 @@
     <string name="no_friends">No Friends</string>
     <string name="title_activity_take_picture">TakePictureActivity</string>
     <string name="enter_caption">Enter caption</string>
+    <string name="starting_camera">Starting Camera</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

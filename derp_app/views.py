@@ -15,27 +15,63 @@ def login(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
+    #for d in data:  print d,data[d]
+    
     if User.objects.filter(fbId=data.get('fbUserId',0)).exists():
-        print "Exists!"
-        #need to update friends list
+        #print "User exists"
+        True
+        # need to update user info
     else:
+        #print "not exist"
         newUser = User(
                        fbId = data.get('fbUserId',0),
-                       fbName = data.get("fbUserName", "")                   
+                       fbName = data.get("fbUserName", ""),
+                       activated = True,                   
                        )
         newUser.save()
+
     
     for friend in data['fbFriends']:
-        if Friend.objects.filter(fbId=friend.get("fbId", 0)).exists():
-            updateFriend = Friend.objects.get(fbId = friend.get('fbId',0), parentFriend = User.objects.get(fbId= data.get('fbUserId',0)))
-            updateFriend.name = friend.get("fbName","")
-            updateFriend.save()
+        #print friend
+        if User.objects.filter(fbId=friend.get('fbId',0)).exists():
+            #print "already in User Database"
+            #Update this friend again
+            updateUser = User.objects.get(fbId=friend.get('fbId',0))
+            updateUser.fbName = friend.get("fbName",0)
+            updateUser.save()
+        else:
+            newUser = User(
+                           fbId=friend.get("fbId",0),
+                           fbName=friend.get("fbName",0),
+                           activated = False
+                           )
+            newUser.save()
+            
+        if Friend.objects.filter(parentFriend = User.objects.get(fbId =data.get('fbUserId',0)), 
+                                 friendId = User.objects.get(fbId = friend.get("fbId",0))
+                                 ).exists():
+            True #already friends can just do an update
         else:
             newFriend = Friend(
                                parentFriend = User.objects.get(fbId=data.get("fbUserId",0)),
-                               fbId = friend.get("fbId",0),
-                               name = friend.get("fbName","")
+                               friendId = User.objects.get(fbId=friend.get("fbId",0))
                                )
             newFriend.save()
     
     return HttpResponse("")
+
+
+
+@csrf_exempt
+def uploadPic(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    for d in data:
+        print d,data[d]
+    
+    
+    return HttpResponse("")
+    

@@ -39,3 +39,18 @@ def login(request):
             newFriend.save()
     
     return HttpResponse("")
+
+
+@csrf_exempt
+def uploadPic(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    for d in data:
+        print d,data[d]
+    
+    
+    return HttpResponse("")
+    

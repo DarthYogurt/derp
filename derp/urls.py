@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^login/', login),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^uploadPic/', uploadPic),
 )

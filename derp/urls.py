@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from derp_app.views import * 
 
+admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'derp.views.home', name='home'),

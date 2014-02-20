@@ -10,13 +10,14 @@ class User(models.Model):
     fbName = models.CharField(max_length=40)
     
     def __unicode__(self):
-        return self.name + "-"+str(self.id)
+        return str(self.name) + "-" +str(self.id)
     
-class FriendList(models.Model):
+class Friend(models.Model):
     parentFriend = models.ForeignKey("User")
+    name = models.CharField(max_length=50, null=True, blank=True)
     fbId = models.IntegerField()
     dateAdded = models.DateField(null=True, blank=True)
     
     
     def __unicode__(self):
-        return self.id
+        return str(self.id) + "-" + str(self.name)

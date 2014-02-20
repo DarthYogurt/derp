@@ -15,20 +15,27 @@ def login(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    for d in data:
-        print d, data[d]
-    
     if User.objects.filter(fbId=data.get('fbUserId',0)).exists():
         print "Exists!"
-        
+        #need to update friends list
     else:
-        # add into database with his friends
         newUser = User(
                        fbId = data.get('fbUserId',0),
-                       fbName = data.get("fbUserName", "")
-                       
+                       fbName = data.get("fbUserName", "")                   
                        )
         newUser.save()
     
+    for friend in data['fbFriends']:
+        if Friend.objects.filter(fbId=friend.get("fbId", 0)).exists():
+            updateFriend = Friend.objects.get(fbId = friend.get('fbId',0), parentFriend = User.objects.get(fbId= data.get('fbUserId',0)))
+            updateFriend.name = friend.get("fbName","")
+            updateFriend.save()
+        else:
+            newFriend = Friend(
+                               parentFriend = User.objects.get(fbId=data.get("fbUserId",0)),
+                               fbId = friend.get("fbId",0),
+                               name = friend.get("fbName","")
+                               )
+            newFriend.save()
     
     return HttpResponse("")

@@ -104,8 +104,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+DEFAULT_CHARSET = 'utf-8'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = '/derp_media/'
+MEDIA_URL = '/derp_media/'

@@ -69,9 +69,17 @@ def uploadPic(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    for d in data:
-        print d,data[d]
+    #for d in data:
+    #    print d,data[d]
+    
+    print request.FILES['image']
     
     
+    newPicture = Picture(
+                         poster = User.objects.get(fbId=data.get("fbUserId",0)),
+                         targetFbId = User.objects.get(fbId=data.get("targetFbId",0)),
+                         #image = request.FILES['image'],
+                         )
+    newPicture.save()
     return HttpResponse("")
     

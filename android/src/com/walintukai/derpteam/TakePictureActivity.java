@@ -32,7 +32,8 @@ public class TakePictureActivity extends Activity {
 	
 	private Preferences prefs;
 	private String filename;
-	ImageView takenPicture;
+	private String oldFilename;
+	private ImageView takenPicture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,16 @@ public class TakePictureActivity extends Activity {
 		
 		prefs = new Preferences(this);
 		filename = "";
+		oldFilename = "";
 		
 		takenPicture = (ImageView) findViewById(R.id.taken_picture);
 		
 		takenPicture.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (!filename.isEmpty()) {
+					oldFilename = filename;
+				}
 				new NewPictureThread().start();	
 			}
 		});
@@ -118,6 +123,8 @@ public class TakePictureActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == REQUEST_PICTURE && resultCode == Activity.RESULT_OK) {
+			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, oldFilename); }
+			
 			Log.i("PICTURE SAVED", filename);
 			compressAndRotateImage(this, filename);
 			showPicture();

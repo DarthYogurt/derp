@@ -2,10 +2,21 @@ package com.walintukai.derpteam;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphMultiResult;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphObjectList;
+import com.facebook.model.GraphUser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,10 +25,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
 public class LoginActivity extends Activity {
+	
+	List<String[]> fbFriends;
 	
 	private UiLifecycleHelper uiHelper;
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -42,13 +56,14 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		getActionBar().setTitle("");
 		
-		getKeyHash();
-		
 		uiHelper = new UiLifecycleHelper(this, callback);
 		uiHelper.onCreate(savedInstanceState);
 		
+		getKeyHash();
+		
+		fbFriends = new ArrayList<String[]>();
+		
 		goToMainActivity();
-
 	}
 	
 	private void goToMainActivity() {
@@ -101,6 +116,43 @@ public class LoginActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
 	    uiHelper.onSaveInstanceState(outState);
+	}
+	
+	private void requestFacebookFriends(Session session) {
+		Request friendsRequest = createRequest(session);
+		friendsRequest.setCallback(new Request.Callback() {
+			@Override
+			public void onCompleted(Response response) {
+				List<GraphUser> friends = getResults(response);
+              
+				for (int i = 0; i < friends.size(); i++) {
+					GraphUser friend = friends.get(i);
+					Log.e("FRIEND", friend.getName() + " " + friend.getId());
+					
+				}
+			}
+		});
+		friendsRequest.executeAsync();
+	}
+	
+	private Request createRequest(Session session) {
+		Request request = Request.newGraphPathRequest(session, "me/friends", null);
+
+		Set<String> fields = new HashSet<String>();
+		String[] requiredFields = new String[] {"id", "name"};
+		fields.addAll(Arrays.asList(requiredFields));
+
+		Bundle parameters = request.getParameters();
+		parameters.putString("fields", TextUtils.join(",", fields));
+		request.setParameters(parameters);
+
+		return request;
+    }
+	
+	private List<GraphUser> getResults(Response response) {
+		GraphMultiResult multiResult = response.getGraphObjectAs(GraphMultiResult.class);
+		GraphObjectList<GraphObject> data = multiResult.getData();
+		return data.castToListOf(GraphUser.class);
 	}
 
 	

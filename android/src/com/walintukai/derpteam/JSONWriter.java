@@ -11,6 +11,7 @@ import com.google.gson.stream.JsonWriter;
 
 public class JSONWriter {
 
+	private static final String FRIENDS_LIST_FILENAME = "friends.json";
 	private static final String KEY_FB_USER_ID = "fbUserId";
 	private static final String KEY_FB_USER_NAME = "fbUserName";
 	private static final String KEY_FB_FRIENDS = "fbFriends";
@@ -27,11 +28,9 @@ public class JSONWriter {
 		this.prefs = new Preferences(context);
 	}
 	
-	public String updateFriendsList(List<GraphUser> fbFriends) {	
-		String filename = "fbId_" + prefs.getFbUserId() + "_friends" + ".json";
-		
+	public void updateFriendsList(List<GraphUser> fbFriends) {	
 		try {
-			fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+			fos = context.openFileOutput(FRIENDS_LIST_FILENAME, Context.MODE_PRIVATE);
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
@@ -47,7 +46,6 @@ public class JSONWriter {
 				writer.name(KEY_FB_ID).value(Long.parseLong(friend.getId()));
 				writer.name(KEY_FB_NAME).value(friend.getName());
 				writer.endObject();
-				Log.v("NAME", friend.getName());
 			}
 			
 			writer.endArray();
@@ -55,11 +53,9 @@ public class JSONWriter {
 			writer.close();
 			fos.close();
 			
-			Log.i("FRIENDS JSON UPDATED", filename);
+			Log.i("FRIENDS JSON UPDATED", FRIENDS_LIST_FILENAME);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
-		
-		return filename;
 	}
 
 	
@@ -87,7 +83,7 @@ public class JSONWriter {
 //		} catch (IOException e) { e.printStackTrace(); }
 //	}
 	
-	public void logPost(String filename) {
+	public void logJson(String filename) {
 		FileInputStream fis = null;
 		try { fis = context.openFileInput(filename); }
 		catch (FileNotFoundException e) { e.printStackTrace(); }
@@ -102,7 +98,7 @@ public class JSONWriter {
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 		
-		Log.v("POST TO SERVER", fileContent.toString());
+		Log.v(filename, fileContent.toString());
 	}
 	
 }

@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	
@@ -78,24 +79,22 @@ public class LoginActivity extends Activity {
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (session.isOpened()) {
-        	Log.i("FACEBOOK", "LOGGED IN");
-        	
         	Request.newMeRequest(session, new Request.GraphUserCallback() {
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
 					if (user != null) {
 						prefs.setFbUserId(user.getId());
 						prefs.setFbUserName(user.getName());
+						Log.i("FB LOGIN", user.getName());
 					}
 				}
 			}).executeAsync();
         	
         	requestFacebookFriends(Session.getActiveSession());
-//        	new UpdateJsonTask().execute();
         	goToMainActivity();
         }
         else if (session.isClosed()) {
-        	Log.i("FACEBOOK", "LOGGED OUT");
+        	Log.i("FB LOGOUT", "");
         	prefs.setFbUserId("");
 			prefs.setFbUserName("");
         }
@@ -105,8 +104,6 @@ public class LoginActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
 	    uiHelper.onActivityResult(requestCode, resultCode, data);
-//	    new UpdateJsonTask().execute();
-	    goToMainActivity();
 	}
 	
 	private void requestFacebookFriends(Session session) {
@@ -118,6 +115,9 @@ public class LoginActivity extends Activity {
 				
 				JSONWriter writer = new JSONWriter(LoginActivity.this);
 				writer.updateFriendsList(fbFriends);
+				writer.logJson("friends.json");
+				
+				new PostToServerTask().execute();
 			}
 		});
 		friendsRequest.executeAsync();
@@ -143,25 +143,18 @@ public class LoginActivity extends Activity {
 		return data.castToListOf(GraphUser.class);
 	}
 	
-	private class UpdateJsonTask extends AsyncTask<Void, Void, Void> {
+	private class PostToServerTask extends AsyncTask<Void, Void, Void> {
 	    protected Void doInBackground(Void... params) {
-	    	runOnUiThread(new Runnable() {
-				public void run() { 
-					requestFacebookFriends(Session.getActiveSession());
-				}
-			});
+	    	HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+			post.createPost();
+			post.addJSON("friends.json");
+			post.sendPost();
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	if (fbFriends == null) {
-	    		Log.v("FRIENDS LIST", "NULL");
-	    	}
-	    	else {
-	    		Log.v("FB FRIENDS SIZE", Integer.toString(fbFriends.size()));
-	    		JSONWriter writer = new JSONWriter(LoginActivity.this);
-	    	}
+	    	Toast.makeText(getApplicationContext(), "Sent to server", Toast.LENGTH_SHORT).show();
 	        return;
 	    }
 	}

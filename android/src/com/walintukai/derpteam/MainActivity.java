@@ -14,7 +14,9 @@ import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,7 +37,6 @@ public class MainActivity extends FragmentActivity {
 	private FragmentManager fm;
 	private FragmentTransaction ft;
 	private FriendPickerFragment fragmentFriendPicker;
-	private TakePictureFragment fragmentTakePicture;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,11 @@ public class MainActivity extends FragmentActivity {
 		getActionBar().setTitle("");
 		
 		fm = getSupportFragmentManager();
+		
+//		if (savedInstanceState == null) {
+//	        Fragment fg = new Right();
+//	        ft.add(R.id.right_frag, fg).commit();
+//	    }
 
 		loadMainFragment();
 //		loadFriendPickerFragment();
@@ -58,11 +64,8 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void loadTakePictureFragment() {
-		TakePictureFragment takePictureFragment = new TakePictureFragment();
-		
-		ft = fm.beginTransaction();
-		ft.replace(android.R.id.content, takePictureFragment);
-        ft.commit();
+		Intent intent = new Intent(this, TakePictureActivity.class);
+		startActivity(intent);
 	}
 	
 	private void loadFriendPickerFragment() {

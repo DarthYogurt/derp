@@ -8,63 +8,112 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-public class TakePictureFragment extends Fragment {
+public class TakePictureActivity extends Activity {
 	
 	private static final int REQUEST_PICTURE = 1;
 	
+	private Preferences prefs;
 	private String filename;
-	
+	private String oldFilename;
+	private ImageView takenPicture;
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_take_picture, null);
-		new NewPictureThread().start();
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_take_picture);
 		
-		return view;
+		prefs = new Preferences(this);
+		filename = "";
+		oldFilename = "";
+		
+		takenPicture = (ImageView) findViewById(R.id.taken_picture);
+		
+		takenPicture.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!filename.isEmpty()) {
+					oldFilename = filename;
+				}
+				new NewPictureThread().start();	
+			}
+		});
+		
+		if (filename.isEmpty()) {
+			new NewPictureThread().start();
+		}
+		
 	}
 	
-	public String getImageFilename() {
-		filename = "photo" + getTimeStampForFilename() + ".jpg";
+	private void showPicture() {
+		try {
+    		File file = new File(getExternalFilesDir(null), filename);
+			FileInputStream fis = new FileInputStream(file);
+			Bitmap imgFromFile = BitmapFactory.decodeStream(fis);
+			fis.close();
+			takenPicture.setImageBitmap(imgFromFile);
+			takenPicture.invalidate();
+		} 
+    	catch (FileNotFoundException e) { e.printStackTrace(); } 
+    	catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	private String getImageFilename() {
+		filename = "fid_" + prefs.getFbUserId() + "_photo_" + getTimeStampForFilename() + ".jpg";
 		return filename;
 	}
 	
 	private static String getTimeStampForFilename() {
-		SimpleDateFormat sdf = new SimpleDateFormat("_MMddyy_HHmmss_");
+		SimpleDateFormat sdf = new SimpleDateFormat("MMddyy_HHmmss");
 		String now = sdf.format(new Date());
 		return now;
 	}
 	
-	public class NewPictureThread extends Thread {
+	private class NewPictureThread extends Thread {
 		public void run() {
-			try { Thread.sleep(700); } 
+			try { 
+				runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast toast = Toast.makeText(getApplicationContext(), R.string.starting_camera, 
+								Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+					}
+				});
+				Thread.sleep(600);
+			} 
 	    	catch (InterruptedException e) { e.printStackTrace(); } 
 			startCameraActivity();
 		}
 	}
 	
 	private void startCameraActivity() {
-		File file = new File(getActivity().getExternalFilesDir(null), getImageFilename());
+		filename = getImageFilename();
+		
+		File file = new File(getExternalFilesDir(null), filename);
 		Uri outputFileUri = Uri.fromFile(file);
 		
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 		
-		if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+		if (intent.resolveActivity(getPackageManager()) != null) {
 			startActivityForResult(intent, REQUEST_PICTURE);
 		}
 	}
@@ -74,40 +123,15 @@ public class TakePictureFragment extends Fragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == REQUEST_PICTURE && resultCode == Activity.RESULT_OK) {
+			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, oldFilename); }
+			
 			Log.i("PICTURE SAVED", filename);
+			compressAndRotateImage(this, filename);
+			showPicture();
 		}
-		
-//		switch (requestCode) {
-//		case REQUEST_PICTURE:
-//			if (resultCode == Activity.RESULT_OK) {	
-//				Log.i("IMAGE FILE WRITTEN", step.getImageFilename());
-//				ImageHandler.compressAndRotateImage(getActivity(), step.getImageFilename());
-//				
-//		    	finishStep();
-//		    	showResult();
-//		    	checkIfAllFinished();
-//		    	if (step.getIsAllFinished()) { ((StepActivity)getActivity()).goToNextStep(); }
-//		    }
-//			break;
-//			
-//		case REQUEST_PICTURE_EXTRA:
-//			if (resultCode == Activity.RESULT_OK) {
-//				Log.i("IMAGE FILE WRITTEN", step.getExtraImageFilename());
-//				ImageHandler.compressAndRotateImage(getActivity(), step.getExtraImageFilename());
-//				showExtras();
-//				
-//		    	if (step.getReqPicture()) { step.setIsReqPictureFinished(true); }
-//		    	checkIfAllFinished();
-//		    	if (step.getIsAllFinished()) { ((StepActivity)getActivity()).goToNextStep(); }
-//		    }
-//			break;
-//		
-//		default:
-//			break;
-//		}
 	}
-	
-	public static void compressAndRotateImage(Context context, String filename) {
+		
+	private static void compressAndRotateImage(Context context, String filename) {
 		try {
 			File file = new File(context.getExternalFilesDir(null), filename);
 			
@@ -155,6 +179,13 @@ public class TakePictureFragment extends Fragment {
 		    System.gc();
 		} 
 		catch (FileNotFoundException e) { e.printStackTrace(); }
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.take_picture, menu);
+		return true;
 	}
 
 }

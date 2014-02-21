@@ -206,7 +206,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020014;
         public static final int com_facebook_loginbutton_silver=0x7f020015;
         public static final int com_facebook_logo=0x7f020016;
-        public static final int com_facebook_picker_default_separator_color=0x7f020037;
+        public static final int com_facebook_picker_default_separator_color=0x7f020038;
         public static final int com_facebook_picker_item_background=0x7f020017;
         public static final int com_facebook_picker_list_focused=0x7f020018;
         public static final int com_facebook_picker_list_longpressed=0x7f020019;
@@ -230,18 +230,20 @@ containing a value of this type.
         public static final int facebook=0x7f02002b;
         public static final int gallery_icon=0x7f02002c;
         public static final int gallery_icon_orig=0x7f02002d;
-        public static final int ic_launcher=0x7f02002e;
-        public static final int image_border=0x7f02002f;
-        public static final int image_placeholder=0x7f020030;
-        public static final int my_team_btn=0x7f020031;
-        public static final int purple_bg=0x7f020032;
-        public static final int sample1=0x7f020033;
-        public static final int sample2=0x7f020034;
-        public static final int sample3=0x7f020035;
-        public static final int transparent_gradient=0x7f020036;
+        public static final int ic_action_share=0x7f02002e;
+        public static final int ic_launcher=0x7f02002f;
+        public static final int image_border=0x7f020030;
+        public static final int image_placeholder=0x7f020031;
+        public static final int my_team_btn=0x7f020032;
+        public static final int purple_bg=0x7f020033;
+        public static final int sample1=0x7f020034;
+        public static final int sample2=0x7f020035;
+        public static final int sample3=0x7f020036;
+        public static final int transparent_gradient=0x7f020037;
     }
     public static final class id {
         public static final int action_settings=0x7f040024;
+        public static final int action_share=0x7f040025;
         public static final int btn_vote_down=0x7f040007;
         public static final int btn_vote_up=0x7f040008;
         public static final int caption=0x7f04000c;
@@ -311,9 +313,10 @@ containing a value of this type.
     }
     public static final class string {
         public static final int action_settings=0x7f07001b;
+        public static final int action_share=0x7f07001c;
         public static final int app_id=0x7f07001a;
         public static final int app_name=0x7f070019;
-        public static final int btn_assign_team=0x7f070021;
+        public static final int btn_assign_team=0x7f070022;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -339,18 +342,18 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
-        public static final int desc_rate_image=0x7f070022;
-        public static final int desc_show_gallery=0x7f070024;
-        public static final int desc_take_picture=0x7f070023;
-        public static final int desc_taken_picture=0x7f070020;
-        public static final int desc_vote_down=0x7f070026;
-        public static final int desc_vote_up=0x7f070025;
-        public static final int enter_caption=0x7f07001e;
-        public static final int hello_world=0x7f070028;
-        public static final int logo=0x7f07001c;
-        public static final int no_friends=0x7f07001d;
-        public static final int starting_camera=0x7f07001f;
-        public static final int title_activity_gallery=0x7f070027;
+        public static final int desc_rate_image=0x7f070023;
+        public static final int desc_show_gallery=0x7f070025;
+        public static final int desc_take_picture=0x7f070024;
+        public static final int desc_taken_picture=0x7f070021;
+        public static final int desc_vote_down=0x7f070027;
+        public static final int desc_vote_up=0x7f070026;
+        public static final int enter_caption=0x7f07001f;
+        public static final int hello_world=0x7f070029;
+        public static final int logo=0x7f07001d;
+        public static final int no_friends=0x7f07001e;
+        public static final int starting_camera=0x7f070020;
+        public static final int title_activity_gallery=0x7f070028;
     }
     public static final class style {
         /** 

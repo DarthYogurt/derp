@@ -21,9 +21,11 @@ import android.graphics.Matrix;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 public class TakePictureActivity extends Activity {
@@ -189,7 +191,28 @@ public class TakePictureActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.take_picture, menu);
+		
+		MenuItem shareItem = menu.findItem(R.id.action_share);
+		
+		// Get the provider and hold onto it to set/change the share intent
+		ShareActionProvider shareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+		
+		// Attach an intent to this ShareActionProvider.  You can update this at any time,
+	    // like when the user selects a new piece of data they might like to share.
+		shareActionProvider.setShareIntent(createShareIntent());
+		
 		return true;
+	}
+	
+	private Intent createShareIntent() {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+		intent.setType("image/*");
+		
+		File file = new File(getExternalFilesDir(null), filename);
+		Uri uri = Uri.fromFile(file);
+		intent.putExtra(Intent.EXTRA_STREAM, uri);
+		return intent;
 	}
 	
 	//	private void loadFriendPickerFragment() {

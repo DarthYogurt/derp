@@ -39,19 +39,17 @@ public class TakePictureActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_take_picture);
+		getActionBar().setTitle("");
 		
 		prefs = new Preferences(this);
 		filename = "";
 		oldFilename = "";
 		
 		takenPicture = (ImageView) findViewById(R.id.taken_picture);
-		
 		takenPicture.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!filename.isEmpty()) {
-					oldFilename = filename;
-				}
+				if (!filename.isEmpty()) { oldFilename = filename; }
 				new NewPictureThread().start();	
 			}
 		});
@@ -59,7 +57,13 @@ public class TakePictureActivity extends Activity {
 		if (filename.isEmpty()) {
 			new NewPictureThread().start();
 		}
-		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, oldFilename); }
+		if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, filename); }
 	}
 	
 	private void showPicture() {
@@ -187,5 +191,20 @@ public class TakePictureActivity extends Activity {
 		getMenuInflater().inflate(R.menu.take_picture, menu);
 		return true;
 	}
+	
+	//	private void loadFriendPickerFragment() {
+	//	fragmentFriendPicker = new FriendPickerFragment();
+	//	fragmentFriendPicker.setMultiSelect(false);
+	//	
+	//	ft = fm.beginTransaction();
+	//	ft.replace(android.R.id.content, fragmentFriendPicker);
+	//    ft.commit();
+	//}
+	
+	//@Override
+	//protected void onStart() {
+	//	super.onStart();
+	//	fragmentFriendPicker.loadData(false);
+	//}
 
 }

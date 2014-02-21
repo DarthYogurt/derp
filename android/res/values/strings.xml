@@ -13,5 +13,7 @@
     <string name="desc_rate_image">Image To Rate</string>
     <string name="desc_take_picture">Take Picture Button</string>
     <string name="desc_show_gallery">Show Gallery Button</string>
+    <string name="desc_vote_up">Vote Up Button</string>
+    <string name="desc_vote_down">Vote Down Button</string>
 
 </resources>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    android:background="#fff" >
+    android:background="@drawable/purple_bg" >
     
     <ImageView
         android:id="@+id/logo"
@@ -44,19 +44,22 @@
         	android:background="@drawable/transparent_gradient" >
         	
             <ImageView
+                android:id="@+id/btn_vote_down"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/arrow_down" />
+                android:src="@drawable/arrow_down"
+                android:contentDescription="@string/desc_vote_down" />
             
             <ImageView
+                android:id="@+id/btn_vote_up"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/arrow_up" />
+                android:src="@drawable/arrow_up"
+                android:contentDescription="@string/desc_vote_up" />
         	
 		</LinearLayout>
-        
     </FrameLayout>
     
     <LinearLayout

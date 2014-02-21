@@ -7,7 +7,8 @@ class User(models.Model):
     phone = models.CharField(max_length=20, null=True, blank=True)
     email = models.CharField(max_length=15, null=True, blank=True)
     
-    fbId = models.IntegerField(unique=True)
+#    fbId = models.IntegerField(unique=True)
+    fbId = models.BigIntegerField(unique=True)
     fbName = models.CharField(max_length=40)
     activated = models.BooleanField(default=False)
     

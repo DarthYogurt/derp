@@ -15,5 +15,7 @@
     <string name="desc_show_gallery">Show Gallery Button</string>
     <string name="desc_vote_up">Vote Up Button</string>
     <string name="desc_vote_down">Vote Down Button</string>
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

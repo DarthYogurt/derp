@@ -43,7 +43,7 @@ public class JSONWriter {
 				GraphUser friend = fbFriends.get(i);
 				
 				writer.beginObject();
-				writer.name(KEY_FB_ID).value(Long.parseLong(friend.getId()));
+				writer.name(KEY_FB_ID).value(friend.getId());
 				writer.name(KEY_FB_NAME).value(friend.getName());
 				writer.endObject();
 			}

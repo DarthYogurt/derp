@@ -302,6 +302,7 @@ containing a value of this type.
         public static final int action_settings=0x7f07001b;
         public static final int app_id=0x7f07001a;
         public static final int app_name=0x7f070019;
+        public static final int btn_assign_team=0x7f070021;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -327,12 +328,11 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
-        public static final int enter_caption=0x7f07001f;
-        public static final int hello_world=0x7f070021;
+        public static final int desc_taken_picture=0x7f070020;
+        public static final int enter_caption=0x7f07001e;
         public static final int logo=0x7f07001c;
         public static final int no_friends=0x7f07001d;
-        public static final int starting_camera=0x7f070020;
-        public static final int title_activity_take_picture=0x7f07001e;
+        public static final int starting_camera=0x7f07001f;
     }
     public static final class style {
         /** 

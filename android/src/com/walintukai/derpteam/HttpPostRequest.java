@@ -3,6 +3,7 @@ package com.walintukai.derpteam;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -41,6 +42,7 @@ public class HttpPostRequest {
 		post.setHeader("enctype", "multipart/form-data");
 
 		multipartEntity = MultipartEntityBuilder.create();
+		multipartEntity.setCharset(Charset.forName("UTF-8"));
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	}
 	

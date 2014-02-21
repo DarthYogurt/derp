@@ -6,9 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="logo">Logo</string>
     <string name="no_friends">No Friends</string>
-    <string name="title_activity_take_picture">TakePictureActivity</string>
     <string name="enter_caption">Enter caption</string>
     <string name="starting_camera">Starting Camera</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="desc_taken_picture">Derp Picture</string>
+    <string name="btn_assign_team">Assign To Team</string>
+    
 
 </resources>

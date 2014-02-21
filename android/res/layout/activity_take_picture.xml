@@ -10,7 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="400dp"
         android:scaleType="fitXY"
-        android:src="@drawable/image_placeholder" />
+        android:src="@drawable/image_placeholder"
+        android:contentDescription="@string/desc_taken_picture" />
     
     <LinearLayout
         android:layout_width="fill_parent"
@@ -22,9 +23,12 @@
 			android:id="@+id/caption"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:gravity="center"
 			android:padding="10dp"
 			android:background="@drawable/edit_text_box"
-			android:hint="@string/enter_caption" />
+			android:hint="@string/enter_caption"
+			android:maxLength="30"
+			android:singleLine="true" />
         
     </LinearLayout>
     
@@ -32,7 +36,6 @@
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:text="Assign To Team" />
-    
+		android:text="@string/btn_assign_team" />
 
 </LinearLayout>

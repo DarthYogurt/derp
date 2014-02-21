@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from django.http.response import HttpResponse
 from django.shortcuts import render
@@ -32,22 +33,26 @@ def login(request):
         newUser.save()
 
     
-    for friend in data['fbFriends']:
-        #print friend
+    for friend in data['fbFriends'][:11]:
+        fbName =""
+        try:
+            fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
+        except:
+            fbName = "Not Available Charset"    
         if User.objects.filter(fbId=friend.get('fbId',0)).exists():
             #print "already in User Database"
             #Update this friend again
             updateUser = User.objects.get(fbId=friend.get('fbId',0))
-            updateUser.fbName = friend.get("fbName",0)
+            updateUser.fbName = fbName #friend.get("fbName",0)
             updateUser.save()
         else:
             newUser = User(
                            fbId=friend.get("fbId",0),
-                           fbName=friend.get("fbName",0),
+                           fbName= fbName, #friend.get("fbName",0),
                            activated = False
                            )
             newUser.save()
-            
+             
         if Friend.objects.filter(parentFriend = User.objects.get(fbId =data.get('fbUserId',0)), 
                                  friendId = User.objects.get(fbId = friend.get("fbId",0))
                                  ).exists():
@@ -58,7 +63,7 @@ def login(request):
                                friendId = User.objects.get(fbId=friend.get("fbId",0))
                                )
             newFriend.save()
-    
+     
     return HttpResponse("")
 
 

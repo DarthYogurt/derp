@@ -85,6 +85,7 @@ def uploadPic(request):
                          poster = User.objects.get(fbId=data.get("fbUserId",1)),
                          targetFbId = User.objects.get(fbId=data.get("targetFbId", 1)),
                          image = request.FILES['image'],
+                         caption = data.get("caption", 0)
                          )
     newPicture.save()
     return HttpResponse("")

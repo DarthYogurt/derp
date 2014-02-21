@@ -1,7 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from derp_app.views import * 
+from derp import settings
+from derp_app.views import *
+
 
 admin.autodiscover()
 urlpatterns = patterns('',
@@ -15,4 +17,5 @@ urlpatterns = patterns('',
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),
+    url(r'^derp_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
 )

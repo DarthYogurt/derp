@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import os
 import sys
@@ -35,35 +36,33 @@ def login(request):
     
     for friend in data['fbFriends']:
         #fbName =""
-        try:
-            fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
-     
-            if User.objects.filter(fbId=friend.get('fbId',0)).exists():
-                #print "already in User Database"
-                #Update this friend again
-                updateUser = User.objects.get(fbId=friend.get('fbId',0))
-                updateUser.fbName = fbName #friend.get("fbName",0)
-                updateUser.save()
-            else:
-                newUser = User(
-                               fbId=friend.get("fbId",0),
-                               fbName= fbName, #friend.get("fbName",0),
-                               activated = False
-                               )
-                newUser.save()
-                 
-            if Friend.objects.filter(parentFriend = User.objects.get(fbId =data.get('fbUserId',0)), 
-                                     friendId = User.objects.get(fbId = friend.get("fbId",0))
-                                     ).exists():
-                True #already friends can just do an update
-            else:
-                newFriend = Friend(
-                                   parentFriend = User.objects.get(fbId=data.get("fbUserId",0)),
-                                   friendId = User.objects.get(fbId=friend.get("fbId",0))
-                                   )
-                newFriend.save()
-        except:
-            print "skipped"
+        print friend
+        fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
+ 
+        if User.objects.filter(fbId=friend.get('fbId',0)).exists():
+            #print "already in User Database"
+            #Update this friend again
+            updateUser = User.objects.get(fbId=friend.get('fbId',0))
+            updateUser.fbName = fbName #friend.get("fbName",0)
+            updateUser.save()
+        else:
+            newUser = User(
+                           fbId=friend.get("fbId",0),
+                           fbName= fbName, #friend.get("fbName",0),
+                           activated = False
+                           )
+            newUser.save()
+#              
+#         if Friend.objects.filter(parentFriend = User.objects.get(fbId =data.get('fbUserId',0)), 
+#                                  friendId = User.objects.get(fbId = friend.get("fbId",0))
+#                                  ).exists():
+#             True #already friends can just do an update
+#         else:
+#             newFriend = Friend(
+#                                parentFriend = User.objects.get(fbId=data.get("fbUserId",0)),
+#                                friendId = User.objects.get(fbId=friend.get("fbId",0))
+#                                )
+#             newFriend.save()
      
     return HttpResponse("")
 

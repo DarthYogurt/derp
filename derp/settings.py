@@ -96,12 +96,16 @@ else:
 
 LANGUAGE_CODE = 'en-us'
 
+<<<<<<< HEAD
 LANGUAGES = (
     ('zh-cn', u'简体中文'), # instead of 'zh-CN'
     ('zh-tw', u'繁體中文'), # instead of 'zh-TW'
 )
 
 TIME_ZONE = 'UTC'
+=======
+TIME_ZONE = 'America/Los_Angeles'
+>>>>>>> master
 
 USE_I18N = True
 

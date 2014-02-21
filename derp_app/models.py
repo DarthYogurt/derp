@@ -14,7 +14,7 @@ class User(models.Model):
     activated = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return str(self.id) + "Active: " + str(self.active)#str(self.fbName) + "-" +str(self.id) + " Active:" + str(self.activated)
+        return str(self.id) + " Active: " + str(self.activated)#str(self.fbName) + "-" +str(self.id) + " Active:" + str(self.activated)
 
 
 

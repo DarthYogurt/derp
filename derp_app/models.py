@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 
@@ -23,7 +24,7 @@ class Friend(models.Model):
     friendId = models.ForeignKey("User",related_name='friendId')
    
     def __unicode__(self):
-         #return str(self.parentFriend.id) + " - " + str(self.friendId.id)
+        return str(self.parentFriend.id) + " - " + str(self.friendId.id)
         
         #return str(self.parentFriend.fbName) + " - " + str(self.friendId.fbName)
         

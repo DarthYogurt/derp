@@ -23,11 +23,11 @@
         android:layout_centerHorizontal="true" >
         
         <ImageView 
-	        android:id="@+id/rate_image"
+	        android:id="@+id/rate_picture"
 	        android:layout_width="320dp"
 	        android:layout_height="320dp"
 	        android:scaleType="fitXY"
-	        android:src="@drawable/sample"
+	        android:src="@drawable/sample1"
 	        android:background="@drawable/image_border"
 	        android:contentDescription="@string/desc_rate_image" />
         

@@ -13,6 +13,7 @@ from derp_app.models import *
 # Create your views here.
 @csrf_exempt
 def login(request):
+    
     dataString = request.FILES.get('data', "empty")
     if dataString == "empty":
         return HttpResponse("Post Data Empty")
@@ -32,38 +33,31 @@ def login(request):
                        activated = True,                   
                        )
         newUser.save()
-
     
-    for friend in data['fbFriends']:
-        #fbName =""
-        print friend
-        fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
- 
-        if User.objects.filter(fbId=friend.get('fbId',0)).exists():
-            #print "already in User Database"
-            #Update this friend again
-            updateUser = User.objects.get(fbId=friend.get('fbId',0))
-            updateUser.fbName = fbName #friend.get("fbName",0)
-            updateUser.save()
-        else:
-            newUser = User(
-                           fbId=friend.get("fbId",0),
-                           fbName= fbName, #friend.get("fbName",0),
-                           activated = False
-                           )
-            newUser.save()
-#              
-#         if Friend.objects.filter(parentFriend = User.objects.get(fbId =data.get('fbUserId',0)), 
-#                                  friendId = User.objects.get(fbId = friend.get("fbId",0))
-#                                  ).exists():
-#             True #already friends can just do an update
-#         else:
-#             newFriend = Friend(
-#                                parentFriend = User.objects.get(fbId=data.get("fbUserId",0)),
-#                                friendId = User.objects.get(fbId=friend.get("fbId",0))
-#                                )
-#             newFriend.save()
-     
+    
+        for friend in data['fbFriends']:
+            try:
+                #fbName =""
+                print friend
+                fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
+         
+                if User.objects.filter(fbId=friend.get('fbId',0)).exists():
+                    #print "already in User Database"
+                    #Update this friend again
+                    updateUser = User.objects.get(fbId=friend.get('fbId',0))
+                    updateUser.fbName = fbName #friend.get("fbName",0)
+                    updateUser.save()
+                else:
+                    newUser = User(
+                                   fbId=friend.get("fbId",0),
+                                   fbName= fbName, #friend.get("fbName",0),
+                                   activated = False
+                                   )
+                    newUser.save()
+
+            except:
+                print "skipped"
+        
     return HttpResponse("")
 
 
@@ -75,16 +69,17 @@ def uploadPic(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    #for d in data:
-    #    print d,data[d]
+    for d in data:
+        print d,data[d]
     
     print request.FILES['image']
     
     
     newPicture = Picture(
-                         poster = User.objects.get(fbId=data.get("fbUserId",0)),
-                         targetFbId = User.objects.get(fbId=data.get("targetFbId",0)),
-                         #image = request.FILES['image'],
+                         poster = User.objects.get(fbId=data.get("fbUserId",1)),
+                         targetFbId = User.objects.get(fbId=data.get("targetFbId", 1)),
+                         image = request.FILES['image'],
+                         caption = data.get("caption", 0)
                          )
     newPicture.save()
     return HttpResponse("")

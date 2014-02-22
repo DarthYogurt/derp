@@ -37,3 +37,4 @@ class Picture(models.Model):
     downvote = models.IntegerField(null=True, blank=True)
     views = models.IntegerField(null=True,blank=True)
     image = models.FileField(upload_to="/derp_media/%Y/%m/%d")
+    caption = models.CharField(max_length=50, blank=True, null=True)

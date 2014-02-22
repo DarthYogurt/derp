@@ -9,14 +9,15 @@
     <string name="no_friends">No Friends</string>
     <string name="enter_caption">enter caption</string>
     <string name="starting_camera">Starting Camera</string>
-    <string name="desc_taken_picture">Derp Picture</string>
     <string name="btn_assign_team">Assign To Team</string>
+    <string name="desc_taken_picture">Derp Picture</string>
     <string name="desc_rate_image">Image To Rate</string>
     <string name="desc_take_picture">Take Picture Button</string>
     <string name="desc_show_gallery">Show Gallery Button</string>
     <string name="desc_vote_up">Vote Up Button</string>
     <string name="desc_vote_down">Vote Down Button</string>
-    <string name="title_activity_gallery">GalleryActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="dialog_go_back">Going back will lose the current picture. Are you sure you want to go back?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
 
 </resources>

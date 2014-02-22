@@ -14,7 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -129,9 +132,10 @@ public class TakePictureActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, oldFilename); }
-		if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, filename); }
+//		super.onBackPressed();
+		
+		GoBackDialogFrament dialog = new GoBackDialogFrament();
+		dialog.show(getFragmentManager(), "goBack");
 	}
 	
 	private void showPicture(File file) {
@@ -148,14 +152,10 @@ public class TakePictureActivity extends Activity {
 	}
 	
 	private String getImageFilename() {
-		return getTimeStampForFilename() + "-" + prefs.getFbUserId() + ".jpg";
-		
-	}
-	
-	private static String getTimeStampForFilename() {
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
-		String now = sdf.format(new Date());
-		return now;
+		String timeStamp = sdf.format(new Date());
+		return timeStamp + "-" + prefs.getFbUserId() + ".jpg";
+		
 	}
 	
 	private class NewPictureThread extends Thread {
@@ -279,6 +279,30 @@ public class TakePictureActivity extends Activity {
 		intent.putExtra(Intent.EXTRA_STREAM, uri);
 		
 		return intent;
+	}
+	
+	private class GoBackDialogFrament extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(TakePictureActivity.this);
+	        builder.setMessage(R.string.dialog_go_back)
+	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(TakePictureActivity.this, oldFilename); }
+	        			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(TakePictureActivity.this, filename); }
+	        			finish();
+	        		}
+	        	})
+	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dismiss();
+	        		}
+	        	});
+	        
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+		}
 	}
 	
 	//	private void loadFriendPickerFragment() {

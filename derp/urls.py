@@ -17,5 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),
+    
+    url(r'^addComment', addComment),
     url(r'^derp_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
 )

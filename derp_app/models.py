@@ -38,3 +38,12 @@ class Picture(models.Model):
     views = models.IntegerField(null=True,blank=True)
     image = models.FileField(upload_to="/derp_media/%Y/%m/%d")
     caption = models.CharField(max_length=50, blank=True, null=True)
+    
+    def __unicode__(self):
+        return str(self.id)
+    
+class Comment(models.Model):
+    picture = models.ForeignKey("Picture")
+    poster = models.ForeignKey("User")
+    comment = models.TextField(blank=True, null=True)
+    timeModified = models.DateTimeField(blank=True,null=True)

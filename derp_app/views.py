@@ -85,6 +85,36 @@ def uploadPic(request):
     newPicture.save()
     return HttpResponse("")
 
+def getPic(request, picId):
+    
+#     
+#     checklists = List.objects.filter(group=groupId)
+#     j = {}
+#     j['groupId'] = int(groupId)
+#     j['checklist'] = []
+#     
+#     if len(checklists) == 0:
+#         j['error'] = "No Results"
+#         return HttpResponse(json.dumps(j), content_type="application/json")
+#     for item in checklists:
+#         temp = {}
+#         temp['name'] = item.name
+#         temp['numOfSteps'] = ListStep.objects.filter(list=List.objects.get(id=item.id)).count()
+#         temp['id'] = item.id
+#         
+#         j['checklist'].append(temp)
+#     return HttpResponse(json.dumps(j), content_type="application/json")
+    return HttpResponse(picId)
+
+def getTeamGallery(request,userId):
+    
+    
+    return HttpResponse(userId)
+    
+    
+    
+
+
 @csrf_exempt
 def addComment(request):
     dataString = request.FILES.get('data', "empty")
@@ -104,6 +134,9 @@ def addComment(request):
                          )
 
     return HttpResponse("done")
+
+
+
 @csrf_exempt
 def uploadError(request):
     f = open("error.html", "w")

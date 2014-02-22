@@ -30,8 +30,8 @@ class Friend(models.Model):
         
 
 class Picture(models.Model):
-    poster = models.ForeignKey("User", related_name="poster")
-    targetFbId = models.ForeignKey("User", related_name="targetUser")
+    posterId = models.ForeignKey("User", related_name="poster")
+    targetId = models.ForeignKey("User", related_name="targetUser")
     popularity = models.IntegerField(null=True, blank=True)
     upVote = models.IntegerField(null=True, blank=True)
     downvote = models.IntegerField(null=True, blank=True)
@@ -41,6 +41,7 @@ class Picture(models.Model):
     
     def __unicode__(self):
         return str(self.id)
+    
     
 class Comment(models.Model):
     picture = models.ForeignKey("Picture")

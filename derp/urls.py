@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^login/', login),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^uploadPic/', uploadPic),
+    url(r'^getPic/(\d*)/$', getPic),
+    url(r'^getTeamGallery/(\d*)/$', getTeamGallery),
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),

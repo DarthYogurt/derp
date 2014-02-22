@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import json
 import os
 import sys
@@ -83,6 +84,57 @@ def uploadPic(request):
                          )
     newPicture.save()
     return HttpResponse("")
+
+def getPic(request, picId):
+    
+#     
+#     checklists = List.objects.filter(group=groupId)
+#     j = {}
+#     j['groupId'] = int(groupId)
+#     j['checklist'] = []
+#     
+#     if len(checklists) == 0:
+#         j['error'] = "No Results"
+#         return HttpResponse(json.dumps(j), content_type="application/json")
+#     for item in checklists:
+#         temp = {}
+#         temp['name'] = item.name
+#         temp['numOfSteps'] = ListStep.objects.filter(list=List.objects.get(id=item.id)).count()
+#         temp['id'] = item.id
+#         
+#         j['checklist'].append(temp)
+#     return HttpResponse(json.dumps(j), content_type="application/json")
+    return HttpResponse(picId)
+
+def getTeamGallery(request,userId):
+    
+    
+    return HttpResponse(userId)
+    
+    
+    
+
+
+@csrf_exempt
+def addComment(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    for d in data:
+        print d,data[d]
+
+    newComment = Comment(
+                         picture = Picture.objects.get(id = data.get("pictureId", 1)),
+                         poster = User.objects.get(id = data.get("posterId",1)),
+                         comment = data.get("comment",""),
+                         timeModified = datetime.datetime.today()
+                         
+                         )
+
+    return HttpResponse("done")
+
 
 
 @csrf_exempt

@@ -30,11 +30,21 @@ class Friend(models.Model):
         
 
 class Picture(models.Model):
-    poster = models.ForeignKey("User", related_name="poster")
-    targetFbId = models.ForeignKey("User", related_name="targetUser")
+    posterId = models.ForeignKey("User", related_name="poster")
+    targetId = models.ForeignKey("User", related_name="targetUser")
     popularity = models.IntegerField(null=True, blank=True)
     upVote = models.IntegerField(null=True, blank=True)
     downvote = models.IntegerField(null=True, blank=True)
     views = models.IntegerField(null=True,blank=True)
     image = models.FileField(upload_to="/derp_media/%Y/%m/%d")
     caption = models.CharField(max_length=50, blank=True, null=True)
+    
+    def __unicode__(self):
+        return str(self.id)
+    
+    
+class Comment(models.Model):
+    picture = models.ForeignKey("Picture")
+    poster = models.ForeignKey("User")
+    comment = models.TextField(blank=True, null=True)
+    timeModified = models.DateTimeField(blank=True,null=True)

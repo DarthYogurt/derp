@@ -7,3 +7,4 @@ from derp_app.models import *
 admin.site.register(User)
 admin.site.register(Friend)
 admin.site.register(Picture)
+admin.site.register(Comment)

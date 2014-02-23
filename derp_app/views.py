@@ -86,6 +86,10 @@ def uploadPic(request):
     newPicture.save()
     return HttpResponse("")
 
+def getUserId(request,fbUserId):
+    return HttpResponse(User.objects.get(fbId=fbUserId, "Does Not Exist"))
+    
+
 def getPic(request, picId):
     
 #     

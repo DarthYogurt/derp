@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
@@ -37,12 +38,15 @@ import android.widget.Toast;
 public class TakePictureActivity extends Activity {
 	
 	private static final int REQUEST_PICTURE = 1;
+	private static final String KEY_IMG_FILENAME = "imgFilename";
+	private static final String KEY_CAPTION = "caption";
 	
 	private Preferences prefs;
 	private ImageView takenPicture;
 	private String filename;
 	private String oldFilename;
 	private File file;
+	private boolean hasPicture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class TakePictureActivity extends Activity {
 		prefs = new Preferences(this);
 		filename = "";
 		oldFilename = "";
+		
+		final EditText caption = (EditText) findViewById(R.id.caption);
 		
 		takenPicture = (ImageView) findViewById(R.id.taken_picture);
 		takenPicture.setOnClickListener(new OnClickListener() {
@@ -78,8 +84,16 @@ public class TakePictureActivity extends Activity {
 		btnAssignTeam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
-				startActivity(intent);
+				if (hasPicture) {
+					Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
+					intent.putExtra(KEY_IMG_FILENAME, filename);
+					intent.putExtra(KEY_CAPTION, caption.getText());
+					startActivity(intent);
+				}
+				else {
+					NoPictureDialogFrament dialog = new NoPictureDialogFrament();
+					dialog.show(getFragmentManager(), "noPicture");
+				}
 			}
 		});
 	}
@@ -96,6 +110,7 @@ public class TakePictureActivity extends Activity {
 		
 			compressAndRotateImage(file);
 			showPicture(file);
+			hasPicture = true;
 		}
 		else { Log.e("RECEIVED IMAGE", "NULL"); }
 	}
@@ -163,7 +178,6 @@ public class TakePictureActivity extends Activity {
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		String timeStamp = sdf.format(new Date());
 		return timeStamp + "-" + prefs.getFbUserId() + ".jpg";
-		
 	}
 	
 	private class NewPictureThread extends Thread {
@@ -202,6 +216,7 @@ public class TakePictureActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == REQUEST_PICTURE && resultCode == Activity.RESULT_OK) {
+			hasPicture = true;
 			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(this, oldFilename); }
 			
 			Log.i("PICTURE SAVED", filename);
@@ -303,6 +318,23 @@ public class TakePictureActivity extends Activity {
 	        		}
 	        	})
 	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dismiss();
+	        		}
+	        	});
+	        
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+		}
+	}
+	
+	private class NoPictureDialogFrament extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(TakePictureActivity.this);
+	        builder.setMessage(R.string.dialog_no_picture)
+	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
 	        			dismiss();
 	        		}

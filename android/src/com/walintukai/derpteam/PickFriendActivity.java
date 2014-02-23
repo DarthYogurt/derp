@@ -32,6 +32,7 @@ public class PickFriendActivity extends Activity {
 	private List<GraphUser> fbFriends;
 	private ListView listView;
 	private String selectedName;
+	private String selectedFbId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class PickFriendActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
 				GraphUser friend = fbFriends.get(position);
 				selectedName = friend.getName();
+				selectedFbId = friend.getId();
 				
 				AssignTeamDialogFrament dialog = new AssignTeamDialogFrament();
 				dialog.show(getFragmentManager(), "assignTeam");
@@ -103,7 +105,8 @@ public class PickFriendActivity extends Activity {
 	        builder.setMessage("Assign to " + selectedName + "'s Team?")
 	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
-	        			
+	        			JSONWriter writer = new JSONWriter(PickFriendActivity.this);
+//	        			writer.createJsonForImage(imgFilename, caption, selectedFbId, targetUserId);
 	        		}
 	        	})
 	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {

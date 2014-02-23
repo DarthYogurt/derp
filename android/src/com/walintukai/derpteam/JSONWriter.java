@@ -64,14 +64,14 @@ public class JSONWriter {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	public void createJsonForSentImage(String imgFilename, String caption, String targetFbId, String targetUserId) {
+	public void createJsonForImage(String imgFilename, String caption, String targetFbId, int targetUserId) {
 		try {
 			fos = context.openFileOutput(FILENAME_ASSIGN_TEAM, Context.MODE_PRIVATE);
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
 			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
-			writer.name(KEY_USER_ID).value("insert user id");
+			writer.name(KEY_USER_ID).value(prefs.getUserId());
 			writer.name(KEY_IMAGE).value(imgFilename);
 			writer.name(KEY_CAPTION).value(caption);
 			writer.name(KEY_TARGET_FB_ID).value(targetFbId);
@@ -80,7 +80,7 @@ public class JSONWriter {
 			writer.close();
 			fos.close();
 			
-			Log.i("JSON FOR SENT IMAGE CREATED", FILENAME_ASSIGN_TEAM);
+			Log.i("JSON FOR IMAGE CREATED", FILENAME_ASSIGN_TEAM);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

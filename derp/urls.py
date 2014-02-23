@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^uploadPic/', uploadPic),
     url(r'^getPic/(\d*)/$', getPic),
     url(r'^getTeamGallery/(\d*)/$', getTeamGallery),
+    url(r'^getRandomPic/(\d*)/$', getRandomPic),
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),

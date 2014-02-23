@@ -321,7 +321,6 @@ public class TakePictureActivity extends Activity {
 	//	ft.replace(android.R.id.content, fragmentFriendPicker);
 	//    ft.commit();
 	//}
-	
 	//@Override
 	//protected void onStart() {
 	//	super.onStart();

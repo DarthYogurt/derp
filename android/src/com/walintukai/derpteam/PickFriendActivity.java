@@ -17,14 +17,21 @@ import com.facebook.model.GraphUser;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.text.TextUtils;
-import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class PickFriendActivity extends Activity {
 	
 	private List<GraphUser> fbFriends;
 	private ListView listView;
+	private String selectedName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,16 @@ public class PickFriendActivity extends Activity {
 		getActionBar().setTitle("");
 		
 		listView = (ListView) findViewById(R.id.fb_friend_listview);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
+				GraphUser friend = fbFriends.get(position);
+				selectedName = friend.getName();
+				
+				AssignTeamDialogFrament dialog = new AssignTeamDialogFrament();
+				dialog.show(getFragmentManager(), "assignTeam");
+			}
+		});
 		
 		requestFacebookFriends(Session.getActiveSession());
 	}
@@ -75,6 +92,28 @@ public class PickFriendActivity extends Activity {
 		@Override
 		public int compare(GraphUser user1, GraphUser user2) {
 			return user1.getName().compareTo(user2.getName());
+		}
+	}
+	
+	private class AssignTeamDialogFrament extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(PickFriendActivity.this);
+	        builder.setMessage("Assign to " + selectedName + "'s Team?")
+	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			
+	        		}
+	        	})
+	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dismiss();
+	        		}
+	        	});
+	        
+	        // Create the AlertDialog object and return it
+	        return builder.create();
 		}
 	}
 

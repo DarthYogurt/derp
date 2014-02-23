@@ -11,12 +11,18 @@ import com.google.gson.stream.JsonWriter;
 
 public class JSONWriter {
 
-	private static final String FRIENDS_LIST_FILENAME = "friends.json";
+	private static final String FILENAME_FRIENDS_LIST = "friends.json";
+	private static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	private static final String KEY_FB_USER_ID = "fbUserId";
 	private static final String KEY_FB_USER_NAME = "fbUserName";
 	private static final String KEY_FB_FRIENDS = "fbFriends";
 	private static final String KEY_FB_ID = "fbId";
 	private static final String KEY_FB_NAME = "fbName";
+	private static final String KEY_USER_ID = "userId";
+	private static final String KEY_IMAGE = "image";
+	private static final String KEY_CAPTION = "caption";
+	private static final String KEY_TARGET_FB_ID = "targetFbId";
+	private static final String KEY_TARGET_USER_ID = "targetUserId";
 	
 	private Context context;
 	private FileOutputStream fos;
@@ -30,7 +36,7 @@ public class JSONWriter {
 	
 	public void updateFriendsList(List<GraphUser> fbFriends) {	
 		try {
-			fos = context.openFileOutput(FRIENDS_LIST_FILENAME, Context.MODE_PRIVATE);
+			fos = context.openFileOutput(FILENAME_FRIENDS_LIST, Context.MODE_PRIVATE);
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
@@ -53,35 +59,31 @@ public class JSONWriter {
 			writer.close();
 			fos.close();
 			
-			Log.i("FRIENDS JSON UPDATED", FRIENDS_LIST_FILENAME);
+			Log.i("FRIENDS JSON UPDATED", FILENAME_FRIENDS_LIST);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}
-
 	
-//	public void writeToInternal(String filename, String data) throws IOException {
-//		try {
-//			fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
-//			fos.write(data.getBytes());
-//			fos.close();
-//			Log.i("FILE SAVED", filename);
-//		} 
-//		catch (IOException e) { e.printStackTrace(); } 
-//	}
-	
-//	public void writeStepImage(Step step) throws IOException {
-//		try {
-//			writer.beginObject();
-//			writer.name(KEY_STEP_ID).value(step.getId());
-//			writer.name(KEY_STEP_TYPE).value(TYPE_IMAGE);
-//			writer.name(KEY_VALUE).value(step.getImageFilename());
-//			if (!step.getExtraNote().isEmpty()) { writer.name(KEY_EXTRA_NOTE).value(step.getExtraNote()); }
-//			if (!step.getExtraImageFilename().isEmpty()) { writer.name(KEY_EXTRA_IMAGE).value(step.getExtraImageFilename()); }
-//			writer.name(KEY_TIME_STARTED).value(step.getTimeStarted());
-//			writer.name(KEY_TIME_FINISHED).value(step.getTimeFinished());
-//			writer.endObject();
-//		} catch (IOException e) { e.printStackTrace(); }
-//	}
+	public void createJsonForSentImage(String imgFilename, String caption, String targetFbId, String targetUserId) {
+		try {
+			fos = context.openFileOutput(FILENAME_ASSIGN_TEAM, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
+			writer.name(KEY_USER_ID).value("insert user id");
+			writer.name(KEY_IMAGE).value(imgFilename);
+			writer.name(KEY_CAPTION).value(caption);
+			writer.name(KEY_TARGET_FB_ID).value(targetFbId);
+			writer.name(KEY_TARGET_USER_ID).value(targetUserId);
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR SENT IMAGE CREATED", FILENAME_ASSIGN_TEAM);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
 	
 	public void logJson(String filename) {
 		FileInputStream fis = null;

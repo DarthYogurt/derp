@@ -2,6 +2,7 @@ package com.walintukai.derpteam;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +43,7 @@ public class PickFriendActivity extends Activity {
 			@Override
 			public void onCompleted(Response response) {
 				fbFriends = getResults(response);
+				Collections.sort(fbFriends, new GraphUserComparator());
 				FriendsListAdapter adapter = new FriendsListAdapter(PickFriendActivity.this, R.layout.listview_row_friend, fbFriends);
 				listView.setAdapter(adapter);
 			}
@@ -53,7 +55,7 @@ public class PickFriendActivity extends Activity {
 		Request request = Request.newGraphPathRequest(session, "me/friends", null);
 
 		Set<String> fields = new HashSet<String>();
-		String[] requiredFields = new String[] {"id", "name", "picture"};
+		String[] requiredFields = new String[] {"id", "name"};
 		fields.addAll(Arrays.asList(requiredFields));
 
 		Bundle parameters = request.getParameters();
@@ -67,6 +69,13 @@ public class PickFriendActivity extends Activity {
 		GraphMultiResult multiResult = response.getGraphObjectAs(GraphMultiResult.class);
 		GraphObjectList<GraphObject> data = multiResult.getData();
 		return data.castToListOf(GraphUser.class);
+	}
+	
+	private class GraphUserComparator implements Comparator<GraphUser> {
+		@Override
+		public int compare(GraphUser user1, GraphUser user2) {
+			return user1.getName().compareTo(user2.getName());
+		}
 	}
 
 //	@Override

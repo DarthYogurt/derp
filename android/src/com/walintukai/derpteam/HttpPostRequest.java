@@ -72,12 +72,9 @@ public class HttpPostRequest {
 		multipartEntity.addPart("data", new FileBody(json));
 	}
 	
-	public void addPictures(ArrayList<String> imageFilenamesArray) {
-		for (int i = 0; i < imageFilenamesArray.size(); i++) {
-			String filename = imageFilenamesArray.get(i);
-			File file = new File(context.getExternalFilesDir(null) + File.separator + filename);
-			multipartEntity.addPart(filename, new FileBody(file));
-		}
+	public void addPicture(String filename) {
+		File file = new File(context.getExternalFilesDir(null) + File.separator + filename);
+		multipartEntity.addPart(filename, new FileBody(file));
 	}
 	
 	private void sendErrorPost() {

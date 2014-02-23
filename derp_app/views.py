@@ -2,6 +2,7 @@
 import datetime
 import json
 import os
+import random
 import sys
 
 from django.http.response import HttpResponse
@@ -77,8 +78,8 @@ def uploadPic(request):
     
     
     newPicture = Picture(
-                         poster = User.objects.get(fbId=data.get("fbUserId",1)),
-                         targetFbId = User.objects.get(fbId=data.get("targetFbId", 1)),
+                         posterId = User.objects.get(fbId=data.get("fbUserId",1)),
+                         targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
                          image = request.FILES['image'],
                          caption = data.get("caption", 0)
                          )
@@ -106,10 +107,57 @@ def getPic(request, picId):
 #     return HttpResponse(json.dumps(j), content_type="application/json")
     return HttpResponse(picId)
 
+def getRandomPic(request, userId):
+       
+    totalPics = Picture.objects.all().count()
+    print totalPics
+    randomNum = random.randint(1,totalPics)
+    print randomNum
+    pic = Picture.objects.all()[randomNum-1]
+    j={}
+#     count = Picture.objects.filter(targetId = User.objects.get(id=userId)).count()
+#     randomPic = random.randint(1,count)
+#     j={}
+#         
+#     pic = None    
+#     if count > 0:
+#         pic = Picture.objects.all()[randomPic-1]
+#         j['friend'] = True
+#     else:
+#         
+#         pic = Picture.objects.all()[Picture.objects.all().count()]
+#         j['friend'] = False
+    
+    if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
+        j['friend'] = True
+    else:
+        j['friend'] = False
+    
+    j['picId'] = pic.id
+    j['targetUserId'] = pic.targetId.id
+    j['targetFbId'] = pic.targetId.fbId
+    j['posterUserId'] = pic.posterId.id
+    j['posterFbId'] = pic.posterId.fbId
+    j['imageUrl'] = request.get_host() + str(pic.image)
+    j['caption'] = pic.caption
+    j['views'] = pic.views
+    j['popularity'] = pic.popularity
+    
+
+    
+    
+    return HttpResponse(json.dumps(j), content_type="application/json")
+    
+
 def getTeamGallery(request,userId):
+    user = User.objects.get(id=userId)
     
+    pictures = Picture.objects.get(targetId = user)
     
-    return HttpResponse(userId)
+    for p in pictures:
+        print p
+    
+    return HttpResponse(pictures)
     
     
     

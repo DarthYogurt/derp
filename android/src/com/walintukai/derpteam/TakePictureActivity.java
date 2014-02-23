@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
@@ -72,6 +73,15 @@ public class TakePictureActivity extends Activity {
 		}
 		
 		if (filename.isEmpty()) { new NewPictureThread().start(); }
+		
+		Button btnAssignTeam = (Button) findViewById(R.id.btn_assign_team);
+		btnAssignTeam.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 	
 	private void handleSentImage(Intent intent) {
@@ -132,8 +142,6 @@ public class TakePictureActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-//		super.onBackPressed();
-		
 		GoBackDialogFrament dialog = new GoBackDialogFrament();
 		dialog.show(getFragmentManager(), "goBack");
 	}

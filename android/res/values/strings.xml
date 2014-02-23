@@ -19,5 +19,6 @@
     <string name="dialog_go_back">Going back will lose the current picture. Are you sure you want to go back?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="pick_friend">Assign To Team</string>
 
 </resources>

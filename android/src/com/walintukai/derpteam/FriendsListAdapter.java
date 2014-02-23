@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.facebook.model.GraphUser;
+import com.facebook.widget.ProfilePictureView;
 
 public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
 	
@@ -26,19 +27,21 @@ public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
 	}
 	
 	private static class ViewHolder {
+		private ProfilePictureView picture;
 		private TextView name;
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
+		final ViewHolder holder;
 		
 		if (convertView == null) {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ViewHolder();
-            holder.name = (TextView)convertView.findViewById(R.id.friend_name);
+            holder.picture = (ProfilePictureView) convertView.findViewById(R.id.friend_picture);
+            holder.name = (TextView) convertView.findViewById(R.id.friend_name);
 
             convertView.setTag(holder);
         } 
@@ -46,6 +49,7 @@ public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
             holder = (ViewHolder)convertView.getTag();
         }
 		
+		holder.picture.setProfileId(friends.get(position).getId());
         holder.name.setText(friends.get(position).getName());
 
         return convertView;

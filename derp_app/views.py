@@ -56,14 +56,10 @@ def login(request):
                                activated = False
                                )
                 newUser.save()
-
         except:
-            print "skipped"
+            print "skipped",friend['fbId']
         
     userId = User.objects.get(fbId=data.get("fbUserId",1))
-    
-    
-    
     return HttpResponse(userId.id)
 
 
@@ -119,19 +115,7 @@ def getRandomPic(request, userId):
     print randomNum
     pic = Picture.objects.all()[randomNum-1]
     j={}
-#     count = Picture.objects.filter(targetId = User.objects.get(id=userId)).count()
-#     randomPic = random.randint(1,count)
-#     j={}
-#         
-#     pic = None    
-#     if count > 0:
-#         pic = Picture.objects.all()[randomPic-1]
-#         j['friend'] = True
-#     else:
-#         
-#         pic = Picture.objects.all()[Picture.objects.all().count()]
-#         j['friend'] = False
-    
+
     if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
         j['friend'] = True
     else:

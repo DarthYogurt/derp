@@ -60,7 +60,7 @@ def login(request):
         except:
             print "skipped"
         
-    userId = User.objects.get(fbId=data.get("fbId",1))
+    userId = User.objects.get(fbId=data.get("fbUserId",1))
     
     
     

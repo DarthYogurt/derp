@@ -146,20 +146,17 @@ public class LoginActivity extends Activity {
 	}
 	
 	private class PostToServerTask extends AsyncTask<Void, Void, Void> {
-		private int responseCode;
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
 			post.createPost();
 			post.addJSON("friends.json");
-			responseCode = post.sendPost();
+			String idAsString = post.sendPost();
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	if (responseCode == HTTP_RESPONSE_SUCCESS ) { Log.i("POST TO SERVER", "SUCCESS"); }
-	    	else { Log.e("POST TO SERVER", "ERROR"); }
 	        return;
 	    }
 	}

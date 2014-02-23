@@ -353,13 +353,14 @@ containing a value of this type.
         public static final int desc_taken_picture=0x7f070022;
         public static final int desc_vote_down=0x7f070027;
         public static final int desc_vote_up=0x7f070026;
-        public static final int dialog_go_back=0x7f070028;
-        public static final int dialog_no=0x7f07002a;
-        public static final int dialog_yes=0x7f070029;
+        public static final int dialog_go_back=0x7f070029;
+        public static final int dialog_no=0x7f07002b;
+        public static final int dialog_no_picture=0x7f070028;
+        public static final int dialog_yes=0x7f07002a;
         public static final int enter_caption=0x7f07001f;
         public static final int logo=0x7f07001d;
         public static final int no_friends=0x7f07001e;
-        public static final int pick_friend=0x7f07002b;
+        public static final int pick_friend=0x7f07002c;
         public static final int starting_camera=0x7f070020;
     }
     public static final class style {

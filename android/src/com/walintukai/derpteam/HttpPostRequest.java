@@ -46,7 +46,7 @@ public class HttpPostRequest {
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	}
 	
-	public int sendPost() {
+	public String sendPost() {
 		post.setEntity(multipartEntity.build());
 		
 		int responseCode = 0;
@@ -58,13 +58,20 @@ public class HttpPostRequest {
 			
 			responseBody = EntityUtils.toString(response.getEntity());
 			Log.i("POST RESPONSE BODY", responseBody);
-			
-			if (responseCode != HTTP_RESPONSE_SUCCESS) { sendErrorPost(); }
+
+			if (responseCode == HTTP_RESPONSE_SUCCESS) { 
+				Log.i("POST TO SERVER", "SUCCESS"); 
+				return responseBody; // Returns user id if success
+			}
+	    	else { 
+	    		Log.e("POST TO SERVER", "ERROR"); 
+	    		sendErrorPost();
+	    	}
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }
 		
-		return responseCode;
+		return "";
 	}
 	
 	public void addJSON(String filename) {

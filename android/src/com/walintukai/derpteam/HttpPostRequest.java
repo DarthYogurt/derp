@@ -20,7 +20,8 @@ import android.util.Log;
 
 public class HttpPostRequest {
 	
-	private static final String POST_URL = "http://dev.darthyogurt.com:8001/login/";
+	public static final String LOGIN_URL = "http://dev.darthyogurt.com:8001/login/";
+	public static final String UPLOAD_PIC_URL = "http://dev.darthyogurt.com:8001/uploadPic/";
 	private static final String ERROR_URL = "http://dev.darthyogurt.com:8001/uploadError/";
 	private static final String ERROR_FILENAME = "error.txt";
 	private static final int HTTP_RESPONSE_SUCCESS = 200;
@@ -35,9 +36,9 @@ public class HttpPostRequest {
 		this.context = context;
 	}
 	
-	public void createPost() {
+	public void createPost(String url) {
 		client = new DefaultHttpClient();
-		post = new HttpPost(POST_URL);
+		post = new HttpPost(url);
 		post.setHeader("enctype", "multipart/form-data");
 
 		multipartEntity = MultipartEntityBuilder.create();
@@ -76,7 +77,7 @@ public class HttpPostRequest {
 	
 	public void addPicture(String filename) {
 		File file = new File(context.getExternalFilesDir(null) + File.separator + filename);
-		multipartEntity.addPart(filename, new FileBody(file));
+		multipartEntity.addPart("image", new FileBody(file));
 	}
 	
 	private void sendErrorPost() {

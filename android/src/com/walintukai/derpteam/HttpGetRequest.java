@@ -11,7 +11,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
-public class HTTPGetRequest {
+public class HttpGetRequest {
 	
 	private static final String BASE_URL = "http://dev.darthyogurt.com:8001/";
 	private static final String GET_ID_URL = "getUserId/";

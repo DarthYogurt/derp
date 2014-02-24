@@ -145,7 +145,7 @@ public class LoginActivity extends Activity {
 	private class UpdateFriendsThread extends Thread {
 		public void run() {
 			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
-			post.createPost();
+			post.createPost(HttpPostRequest.LOGIN_URL);
 			post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
 			post.sendPost();
 		}
@@ -159,7 +159,7 @@ public class LoginActivity extends Activity {
 		}
 		
 		public void run() {
-			HTTPGetRequest get = new HTTPGetRequest();
+			HttpGetRequest get = new HttpGetRequest();
 			prefs.setUserId(get.getUserId(fbId));
 		}
 	}

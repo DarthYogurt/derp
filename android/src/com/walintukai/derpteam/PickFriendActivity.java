@@ -144,7 +144,7 @@ public class PickFriendActivity extends Activity {
 		}
 		
 	    protected Void doInBackground(Void... params) {
-	    	HTTPGetRequest get = new HTTPGetRequest();
+	    	HttpGetRequest get = new HttpGetRequest();
 			targetUserId = get.getUserId(targetFbId);
 	    	
 	    	JSONWriter writer = new JSONWriter(PickFriendActivity.this);
@@ -152,7 +152,7 @@ public class PickFriendActivity extends Activity {
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
 			HttpPostRequest post = new HttpPostRequest(PickFriendActivity.this);
-			post.createPost();
+			post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
 			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
 			post.addPicture(imgFilename);
 			post.sendPost();

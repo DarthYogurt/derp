@@ -317,28 +317,6 @@ containing a value of this type.
         public static final int take_picture=0x7f090004;
     }
     public static final class string {
-<<<<<<< HEAD
-        public static final int action_settings=0x7f050002;
-        public static final int action_share=0x7f050003;
-        public static final int app_id=0x7f050001;
-        public static final int app_name=0x7f050000;
-        public static final int btn_assign_team=0x7f050008;
-        public static final int desc_rate_image=0x7f05000a;
-        public static final int desc_show_gallery=0x7f05000c;
-        public static final int desc_take_picture=0x7f05000b;
-        public static final int desc_taken_picture=0x7f050009;
-        public static final int desc_vote_down=0x7f05000e;
-        public static final int desc_vote_up=0x7f05000d;
-        public static final int dialog_go_back=0x7f050010;
-        public static final int dialog_no=0x7f050012;
-        public static final int dialog_no_picture=0x7f05000f;
-        public static final int dialog_yes=0x7f050011;
-        public static final int enter_caption=0x7f050006;
-        public static final int logo=0x7f050004;
-        public static final int no_friends=0x7f050005;
-        public static final int pick_friend=0x7f050013;
-        public static final int starting_camera=0x7f050007;
-=======
         public static final int action_settings=0x7f07001b;
         public static final int action_share=0x7f07001c;
         public static final int app_id=0x7f07001a;
@@ -385,7 +363,6 @@ containing a value of this type.
         public static final int no_friends=0x7f07001e;
         public static final int pick_friend=0x7f07002d;
         public static final int starting_camera=0x7f070020;
->>>>>>> deric
     }
     public static final class style {
         /** 

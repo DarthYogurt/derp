@@ -15,24 +15,33 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class PickFriendActivity extends Activity {
 	
+	private static final String KEY_IMG_FILENAME = "imgFilename";
+	private static final String KEY_CAPTION = "caption";
+	
 	private List<GraphUser> fbFriends;
 	private ListView listView;
-	private String selectedName;
-	private String selectedFbId;
+	private String imgFilename;
+	private String caption;
+	private String targetName;
+	private String targetFbId;
+	private int targetUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +49,16 @@ public class PickFriendActivity extends Activity {
 		setContentView(R.layout.activity_pick_friend);
 		getActionBar().setTitle("");
 		
+		imgFilename = getIntent().getStringExtra(KEY_IMG_FILENAME);
+		caption = getIntent().getStringExtra(KEY_CAPTION);
+		
 		listView = (ListView) findViewById(R.id.fb_friend_listview);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
 				GraphUser friend = fbFriends.get(position);
-				selectedName = friend.getName();
-				selectedFbId = friend.getId();
+				targetName = friend.getName();
+				targetFbId = friend.getId();
 				
 				AssignTeamDialogFrament dialog = new AssignTeamDialogFrament();
 				dialog.show(getFragmentManager(), "assignTeam");
@@ -102,11 +114,10 @@ public class PickFriendActivity extends Activity {
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 	        // Use the Builder class for convenient dialog construction
 	        AlertDialog.Builder builder = new AlertDialog.Builder(PickFriendActivity.this);
-	        builder.setMessage("Assign to " + selectedName + "'s Team?")
+	        builder.setMessage("Assign to " + targetName + "'s Team?")
 	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
-	        			JSONWriter writer = new JSONWriter(PickFriendActivity.this);
-//	        			writer.createJsonForImage(imgFilename, caption, selectedFbId, targetUserId);
+	        			new SendImageTask().execute();
 	        		}
 	        	})
 	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
@@ -118,6 +129,42 @@ public class PickFriendActivity extends Activity {
 	        // Create the AlertDialog object and return it
 	        return builder.create();
 		}
+	}
+	
+	private class SendImageTask extends AsyncTask<Void, Void, Void> {
+		private ProgressDialog progressDialog;
+		
+		protected void onPreExecute() {
+			progressDialog = new ProgressDialog(PickFriendActivity.this);
+			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage(getResources().getString(R.string.dialog_send_to_server));
+			progressDialog.show();
+			progressDialog.setCanceledOnTouchOutside(false);	
+		}
+		
+	    protected Void doInBackground(Void... params) {
+	    	HTTPGetRequest get = new HTTPGetRequest();
+			targetUserId = get.getUserId(targetFbId);
+	    	
+	    	JSONWriter writer = new JSONWriter(PickFriendActivity.this);
+			writer.createJsonForImage(imgFilename, caption, targetFbId, targetUserId);
+			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
+			
+			HttpPostRequest post = new HttpPostRequest(PickFriendActivity.this);
+			post.createPost();
+			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
+			post.addPicture(imgFilename);
+			post.sendPost();
+			
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	progressDialog.dismiss();
+	        return;
+	    }
 	}
 
 //	@Override

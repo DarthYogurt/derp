@@ -1,2 +1,9 @@
 *.pyc
 *.class
+*.jar
+*.dex
+*.apk
+*.ap_
+bin/
+gen/
+Thumbs.db

@@ -2,7 +2,6 @@ package com.walintukai.derpteam;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -24,16 +23,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	
-	private static final int HTTP_RESPONSE_SUCCESS = 200;
 	
 	private Preferences prefs;
 	public List<GraphUser> fbFriends;
@@ -85,9 +80,10 @@ public class LoginActivity extends Activity {
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
 					if (user != null) {
+						Log.i("FB LOGIN", user.getName());
 						prefs.setFbUserId(user.getId());
 						prefs.setFbUserName(user.getName());
-						Log.i("FB LOGIN", user.getName());
+						new SetIdThread(user.getId()).start();
 					}
 				}
 			}).executeAsync();
@@ -96,9 +92,10 @@ public class LoginActivity extends Activity {
         	goToMainActivity();
         }
         else if (session.isClosed()) {
-        	Log.i("FB LOGOUT", "");
+        	Log.i("FB LOGOUT", " ");
         	prefs.setFbUserId("");
 			prefs.setFbUserName("");
+			prefs.setUserId(-1);
         }
     }
 	
@@ -117,9 +114,9 @@ public class LoginActivity extends Activity {
 				
 				JSONWriter writer = new JSONWriter(LoginActivity.this);
 				writer.updateFriendsList(fbFriends);
-				writer.logJson("friends.json");
+				writer.logJson(JSONWriter.FILENAME_FRIENDS_LIST);
 				
-				new PostToServerTask().execute();
+				new UpdateFriendsThread().start();
 			}
 		});
 		friendsRequest.executeAsync();
@@ -145,20 +142,26 @@ public class LoginActivity extends Activity {
 		return data.castToListOf(GraphUser.class);
 	}
 	
-	private class PostToServerTask extends AsyncTask<Void, Void, Void> {
-		
-	    protected Void doInBackground(Void... params) {
-	    	HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+	private class UpdateFriendsThread extends Thread {
+		public void run() {
+			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
 			post.createPost();
-			post.addJSON("friends.json");
-			String idAsString = post.sendPost();
-	        return null;
-	    }
-
-	    protected void onPostExecute(Void result) {
-	    	super.onPostExecute(result);
-	        return;
-	    }
+			post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
+			post.sendPost();
+		}
+	}
+	
+	private class SetIdThread extends Thread {
+		String fbId;
+		
+		private SetIdThread(String fbId) {
+			this.fbId = fbId;
+		}
+		
+		public void run() {
+			HTTPGetRequest get = new HTTPGetRequest();
+			prefs.setUserId(get.getUserId(fbId));
+		}
 	}
 
 	@Override

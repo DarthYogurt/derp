@@ -18,6 +18,7 @@
     <string name="desc_vote_down">Vote Down Button</string>
     <string name="dialog_no_picture">No picture to assign to team. Find something funny and take one!</string>
     <string name="dialog_go_back">Going back will lose the current picture. Are you sure you want to go back?</string>
+    <string name="dialog_send_to_server">Assigning to team. Please wait.</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="pick_friend">Assign To Team</string>

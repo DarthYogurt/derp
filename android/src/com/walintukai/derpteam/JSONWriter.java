@@ -11,8 +11,8 @@ import com.google.gson.stream.JsonWriter;
 
 public class JSONWriter {
 
-	private static final String FILENAME_FRIENDS_LIST = "friends.json";
-	private static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
+	public static final String FILENAME_FRIENDS_LIST = "friends.json";
+	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	private static final String KEY_FB_USER_ID = "fbUserId";
 	private static final String KEY_FB_USER_NAME = "fbUserName";
 	private static final String KEY_FB_FRIENDS = "fbFriends";

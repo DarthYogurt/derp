@@ -201,13 +201,14 @@ int string desc_taken_picture 0x7f070022
 int string desc_vote_down 0x7f070027
 int string desc_vote_up 0x7f070026
 int string dialog_go_back 0x7f070029
-int string dialog_no 0x7f07002b
+int string dialog_no 0x7f07002c
 int string dialog_no_picture 0x7f070028
-int string dialog_yes 0x7f07002a
+int string dialog_send_to_server 0x7f07002a
+int string dialog_yes 0x7f07002b
 int string enter_caption 0x7f07001f
 int string logo 0x7f07001d
 int string no_friends 0x7f07001e
-int string pick_friend 0x7f07002c
+int string pick_friend 0x7f07002d
 int string starting_camera 0x7f070020
 int style AppBaseTheme 0x7f080002
 int style AppTheme 0x7f080003

@@ -58,8 +58,6 @@ public class TakePictureActivity extends Activity {
 		filename = "";
 		oldFilename = "";
 		
-		final EditText caption = (EditText) findViewById(R.id.caption);
-		
 		takenPicture = (ImageView) findViewById(R.id.taken_picture);
 		takenPicture.setOnClickListener(new OnClickListener() {
 			@Override
@@ -85,9 +83,11 @@ public class TakePictureActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (hasPicture) {
+					EditText caption = (EditText) findViewById(R.id.caption);
+					
 					Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
 					intent.putExtra(KEY_IMG_FILENAME, filename);
-					intent.putExtra(KEY_CAPTION, caption.getText());
+					intent.putExtra(KEY_CAPTION, caption.getText().toString());
 					startActivity(intent);
 				}
 				else {
@@ -140,9 +140,7 @@ public class TakePictureActivity extends Activity {
 	    
     	try { inChannel.transferTo(0, inChannel.size(), outChannel); } 
     	catch (IOException e) { e.printStackTrace(); }
-    	finally {
-    		Log.i("FILE COPIED", "");
-    		
+    	finally {    		
     		if (inChannel != null) {
     			try { inChannel.close(); } 
     			catch (IOException e) { e.printStackTrace(); }

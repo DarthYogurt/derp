@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -46,14 +45,13 @@ public class HttpPostRequest {
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	}
 	
-	public String sendPost() {
+	public void sendPost() {
 		post.setEntity(multipartEntity.build());
 		
-		int responseCode = 0;
 		try {
 			HttpResponse response = client.execute(post);
 			
-			responseCode = response.getStatusLine().getStatusCode();
+			int responseCode = response.getStatusLine().getStatusCode();
 			Log.i("POST RESPONSE CODE", Integer.toString(responseCode));
 			
 			responseBody = EntityUtils.toString(response.getEntity());
@@ -61,7 +59,6 @@ public class HttpPostRequest {
 
 			if (responseCode == HTTP_RESPONSE_SUCCESS) { 
 				Log.i("POST TO SERVER", "SUCCESS"); 
-				return responseBody; // Returns user id if success
 			}
 	    	else { 
 	    		Log.e("POST TO SERVER", "ERROR"); 
@@ -70,8 +67,6 @@ public class HttpPostRequest {
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }
-		
-		return "";
 	}
 	
 	public void addJSON(String filename) {

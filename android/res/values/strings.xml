@@ -21,6 +21,7 @@
     <string name="dialog_send_to_server">Assigning to team. Please wait.</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="dialog_ok">OK</string>
     <string name="pick_friend">Assign To Team</string>
 
 </resources>

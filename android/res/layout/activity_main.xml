@@ -32,7 +32,7 @@
 	        android:contentDescription="@string/desc_rate_image" />
         
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:layout_gravity="bottom"
         	android:paddingTop="4dp"

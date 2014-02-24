@@ -17,12 +17,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -35,11 +38,9 @@ import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
-public class TakePictureActivity extends Activity {
+public class TakePictureActivity extends FragmentActivity {
 	
 	private static final int REQUEST_PICTURE = 1;
-	private static final String KEY_IMG_FILENAME = "imgFilename";
-	private static final String KEY_CAPTION = "caption";
 	
 	private Preferences prefs;
 	private ImageView takenPicture;
@@ -83,12 +84,19 @@ public class TakePictureActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (hasPicture) {
-					EditText caption = (EditText) findViewById(R.id.caption);
+					EditText editText = (EditText) findViewById(R.id.caption);
+					String caption = editText.getText().toString();
 					
-					Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
-					intent.putExtra(KEY_IMG_FILENAME, filename);
-					intent.putExtra(KEY_CAPTION, caption.getText().toString());
-					startActivity(intent);
+					FragmentManager fm = getFragmentManager();
+					FragmentTransaction ft = fm.beginTransaction();
+					PickFriendFragment fragment = PickFriendFragment.newInstance(filename, caption);
+					ft.replace(android.R.id.content, fragment);
+					ft.commit();
+					
+//					Intent intent = new Intent(TakePictureActivity.this, PickFriendActivity.class);
+//					intent.putExtra(KEY_IMG_FILENAME, filename);
+//					intent.putExtra(KEY_CAPTION, caption.getText().toString());
+//					startActivity(intent);
 				}
 				else {
 					NoPictureDialogFrament dialog = new NoPictureDialogFrament();
@@ -332,7 +340,7 @@ public class TakePictureActivity extends Activity {
 	        // Use the Builder class for convenient dialog construction
 	        AlertDialog.Builder builder = new AlertDialog.Builder(TakePictureActivity.this);
 	        builder.setMessage(R.string.dialog_no_picture)
-	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+	        	.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
 	        			dismiss();
 	        		}
@@ -342,19 +350,5 @@ public class TakePictureActivity extends Activity {
 	        return builder.create();
 		}
 	}
-	
-	//	private void loadFriendPickerFragment() {
-	//	fragmentFriendPicker = new FriendPickerFragment();
-	//	fragmentFriendPicker.setMultiSelect(false);
-	//	
-	//	ft = fm.beginTransaction();
-	//	ft.replace(android.R.id.content, fragmentFriendPicker);
-	//    ft.commit();
-	//}
-	//@Override
-	//protected void onStart() {
-	//	super.onStart();
-	//	fragmentFriendPicker.loadData(false);
-	//}
 
 }

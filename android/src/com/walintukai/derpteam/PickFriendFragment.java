@@ -15,23 +15,25 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class PickFriendActivity extends Activity {
-	
+public class PickFriendFragment extends Fragment {
+
 	private static final String KEY_IMG_FILENAME = "imgFilename";
 	private static final String KEY_CAPTION = "caption";
 	
@@ -43,16 +45,24 @@ public class PickFriendActivity extends Activity {
 	private String targetFbId;
 	private int targetUserId;
 
+	static PickFriendFragment newInstance(String imgFilename, String caption) {
+		PickFriendFragment fragment = new PickFriendFragment();
+		Bundle args = new Bundle();
+		args.putString(KEY_IMG_FILENAME, imgFilename);
+		args.putString(KEY_CAPTION, caption);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_pick_friend);
-		getActionBar().setTitle("");
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_pick_friend, container, false);
 		
-		imgFilename = getIntent().getStringExtra(KEY_IMG_FILENAME);
-		caption = getIntent().getStringExtra(KEY_CAPTION);
+		Bundle args = getArguments();
+		imgFilename = args.getString(KEY_IMG_FILENAME);
+		caption = args.getString(KEY_CAPTION);
 		
-		listView = (ListView) findViewById(R.id.fb_friend_listview);
+		listView = (ListView) view.findViewById(R.id.fb_friend_listview);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
@@ -61,11 +71,13 @@ public class PickFriendActivity extends Activity {
 				targetFbId = friend.getId();
 				
 				AssignTeamDialogFrament dialog = new AssignTeamDialogFrament();
-				dialog.show(getFragmentManager(), "assignTeam");
+				dialog.show(getActivity().getFragmentManager(), "assignTeam");
 			}
 		});
 		
 		requestFacebookFriends(Session.getActiveSession());
+		
+		return view;
 	}
 	
 	private void requestFacebookFriends(Session session) {
@@ -75,7 +87,7 @@ public class PickFriendActivity extends Activity {
 			public void onCompleted(Response response) {
 				fbFriends = getResults(response);
 				Collections.sort(fbFriends, new GraphUserComparator());
-				FriendsListAdapter adapter = new FriendsListAdapter(PickFriendActivity.this, R.layout.listview_row_friend, fbFriends);
+				FriendsListAdapter adapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
 				listView.setAdapter(adapter);
 			}
 		});
@@ -113,7 +125,7 @@ public class PickFriendActivity extends Activity {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(PickFriendActivity.this);
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	        builder.setMessage("Assign to " + targetName + "'s Team?")
 	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
@@ -135,7 +147,7 @@ public class PickFriendActivity extends Activity {
 		private ProgressDialog progressDialog;
 		
 		protected void onPreExecute() {
-			progressDialog = new ProgressDialog(PickFriendActivity.this);
+			progressDialog = new ProgressDialog(getActivity());
 			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			progressDialog.setMessage(getResources().getString(R.string.dialog_send_to_server));
@@ -147,11 +159,11 @@ public class PickFriendActivity extends Activity {
 	    	HttpGetRequest get = new HttpGetRequest();
 			targetUserId = get.getUserId(targetFbId);
 	    	
-	    	JSONWriter writer = new JSONWriter(PickFriendActivity.this);
+	    	JSONWriter writer = new JSONWriter(getActivity());
 			writer.createJsonForImage(imgFilename, caption, targetFbId, targetUserId);
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
-			HttpPostRequest post = new HttpPostRequest(PickFriendActivity.this);
+			HttpPostRequest post = new HttpPostRequest(getActivity());
 			post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
 			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
 			post.addPicture(imgFilename);
@@ -163,16 +175,8 @@ public class PickFriendActivity extends Activity {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	progressDialog.dismiss();
-	    	finish();
 	        return;
 	    }
 	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.pick_friend, menu);
-//		return true;
-//	}
-
+	
 }

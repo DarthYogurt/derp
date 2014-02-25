@@ -19,8 +19,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -175,6 +178,17 @@ public class PickFriendFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	progressDialog.dismiss();
+	    	
+	    	Intent intent = new Intent(getActivity(), MainActivity.class);
+	    	startActivity(intent);
+	    	getActivity().finish();
+	    	
+//	    	FragmentManager fm = getFragmentManager();
+//			FragmentTransaction ft = fm.beginTransaction();
+//			MainFragment fragment = MainFragment.newInstance();
+//			ft.replace(R.id.fragment_container, fragment);
+//			ft.commit();
+	    	
 	        return;
 	    }
 	}

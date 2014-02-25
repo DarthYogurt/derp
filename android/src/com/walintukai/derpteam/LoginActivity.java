@@ -53,11 +53,16 @@ public class LoginActivity extends Activity {
 		prefs = new Preferences(this);
 		
 		getKeyHash();
+		
+		if (Session.getActiveSession().isOpened()) {
+			goToMainActivity();
+		}
 	}
 	
 	private void goToMainActivity() {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	
 	private void getKeyHash() {

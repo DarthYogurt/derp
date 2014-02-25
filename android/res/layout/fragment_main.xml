@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp" >
+    android:padding="20dp"
+    android:background="@drawable/purple_bg" >
     
     <ImageView
         android:id="@+id/logo"
@@ -14,15 +15,52 @@
         android:src="@drawable/derpteam_logo"
         android:contentDescription="@string/logo" />
     
-    <ImageView 
-        android:id="@+id/rate_image"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_below="@id/logo"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/derpteam_logo"
-        android:background="@drawable/image_border" />
+        android:layout_centerHorizontal="true" >
+        
+        <ImageView 
+	        android:id="@+id/rate_picture"
+	        android:layout_width="320dp"
+	        android:layout_height="320dp"
+	        android:scaleType="fitXY"
+	        android:src="@drawable/sample1"
+	        android:background="@drawable/image_border"
+	        android:contentDescription="@string/desc_rate_image" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="bottom"
+        	android:paddingTop="4dp"
+        	android:paddingBottom="4dp"
+        	android:layout_marginBottom="5dp"
+        	android:layout_marginLeft="5dp"
+        	android:layout_marginRight="5dp"
+        	android:orientation="horizontal"
+        	android:background="@drawable/transparent_gradient" >
+        	
+            <ImageView
+                android:id="@+id/btn_vote_down"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/arrow_down"
+                android:contentDescription="@string/desc_vote_down" />
+            
+            <ImageView
+                android:id="@+id/btn_vote_up"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/arrow_up"
+                android:contentDescription="@string/desc_vote_up" />
+        	
+		</LinearLayout>
+    </FrameLayout>
     
     <LinearLayout
         android:layout_width="wrap_content"
@@ -35,13 +73,17 @@
             android:id="@+id/take_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/camera_icon" />
+            android:layout_marginRight="10dp"
+            android:background="@drawable/camera_icon"
+            android:contentDescription="@string/desc_take_picture" />
         
         <ImageButton
             android:id="@+id/show_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/gallery_icon" />
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/gallery_icon"
+            android:contentDescription="@string/desc_show_gallery" />
         
     </LinearLayout>
 

@@ -5,7 +5,7 @@ import os
 import random
 import sys
 
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -82,7 +82,8 @@ def uploadPic(request):
                          posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
                          image = request.FILES['image'],
-                         caption = data.get("caption", 0)
+                         caption = data.get("caption", 0),
+                         date = datetime.datetime.now()
                          )
     newPicture.save()
     return HttpResponse("")
@@ -103,7 +104,7 @@ def getPic(request, picId):
             randomNum = random.randint(1,totalPics)
             pic = Picture.objects.all()[randomNum-1]
         else:
-            HttpResponse("no pictures in database")
+            HttpResponse("no pictures in ")
     else:
         pic = Picture.objects.get(id = picId)
     j['picId'] = pic.id
@@ -159,25 +160,32 @@ def getTeamGallery(request,userId):
     
     return HttpResponse(pictures)
     
-# def gallery(request):
-#     
-#     picture_list = Picture.objects.sort_by("?")
-#     paginator = Paginator(picture_list,15)
-#     page = request.GET.get("page")
-#     
+def gallery(request, numPerPage, pageNum):
+     
+    picture_list = Picture.objects.order_by("date")
+    paginator = Paginator(picture_list, numPerPage)
+    page = pageNum
+     
+    try:
+        pictures = paginator.page(page)
+    except PageNotAnInteger:
+        pictures = paginator.page(1)
+    except EmptyPage:
+        pictures = paginator.page(paginator.num_pages)
+    
+    
+    return HttpResponse(pictures)
+ 
 #     try:
-#         True
+#         contacts = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         contacts = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         contacts = paginator.page(paginator.num_pages)
 # 
-# #     try:
-# #         contacts = paginator.page(page)
-# #     except PageNotAnInteger:
-# #         # If page is not an integer, deliver first page.
-# #         contacts = paginator.page(1)
-# #     except EmptyPage:
-# #         # If page is out of range (e.g. 9999), deliver last page of results.
-# #         contacts = paginator.page(paginator.num_pages)
-# # 
-# #     return render_to_response('list.html', {"contacts": contacts})
+#     return render_to_response('list.html', {"contacts": contacts})
 #     return HttpResponse()
     
 

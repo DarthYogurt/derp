@@ -39,6 +39,7 @@ class Picture(models.Model):
     image = models.FileField(upload_to="/derp_media/%Y/%m/%d")
     caption = models.CharField(max_length=50, blank=True, null=True)
     date = models.DateTimeField(blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
     
     def __unicode__(self):
         return str(self.id)

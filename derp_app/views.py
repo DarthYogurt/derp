@@ -77,12 +77,13 @@ def uploadPic(request):
     
     print request.FILES['image']
     
-    
+
     newPicture = Picture(
                          posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
                          image = request.FILES['image'],
                          caption = data.get("caption", 0),
+                         title = data.get("title",""),
                          date = datetime.datetime.now()
                          )
     newPicture.save()
@@ -115,6 +116,7 @@ def getPic(request, picId):
     j['imageUrl'] = request.get_host() + str(pic.image)
     j['caption'] = pic.caption
     j['views'] = pic.views
+    j['title'] = pic.title
     j['popularity'] = str(pic.popularity)
 #
     return HttpResponse(json.dumps(j), content_type="application/json")
@@ -155,33 +157,31 @@ def getTeamGallery(request,userId):
     #print user,user.name
     pictures = Picture.objects.filter(targetId = user)
     
-    for p in pictures:
-        print p.image
     
-#     j={}
-# 
-#     if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
-#         j['friend'] = True
-#     else:
-#         j['friend'] = False
-#     
-#     j['picId'] = pic.id
-#     j['targetUserId'] = pic.targetId.id
-#     j['targetFbId'] = pic.targetId.fbId
-#     j['posterUserId'] = pic.posterId.id
-#     j['posterFbId'] = pic.posterId.fbId
-#     j['imageUrl'] = request.get_host() + str(pic.image)
-#     j['caption'] = pic.caption
-#     j['views'] = pic.views
-#     j['popularity'] = pic.popularity
-#     
-# 
-#     
-#     
-#     return HttpResponse(json.dumps(j), content_type="application/json")
+    
+    j={}
+    j['teamId'] = userId
+    j['teamGallery'] =[]
+    for p in pictures:
+        temp = {}
+        #temp['teamId'] = p.posterId.id
+        temp['posterId'] = p.posterId.id
+        temp['popularity'] = p.popularity
+        temp['upVote'] = p.upVote
+        temp['downVote'] = p.downVote
+        temp['views'] = p.views
+        temp['image'] = str(request.get_host()) + str(p.image)
+        temp['caption'] = p.caption
+        temp['title'] = p.title
+        j['teamGallery'].append(temp)
+    
+ 
+     
+     
+    return HttpResponse(json.dumps(j), content_type="application/json")
     
 
-    return HttpResponse(pictures)
+    #return HttpResponse(pictures)
     
 def gallery(request, numPerPage, pageNum):
      

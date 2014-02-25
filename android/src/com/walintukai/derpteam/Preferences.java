@@ -38,13 +38,13 @@ public class Preferences {
 		return pref.getString(KEY_FB_USER_NAME, "");
 	}
 	
-	public void setUserId(int i) {
-		prefEditor.putInt(KEY_USER_ID, i).commit();
-		Log.i("PREF: SET FB USER ID", Integer.toString(i));
+	public void setUserId(String s) {
+		prefEditor.putString(KEY_USER_ID, s).commit();
+		Log.i("PREF: SET FB USER ID", s);
 	}
 	
-	public int getUserId() {
-		return pref.getInt(KEY_USER_ID, -1);
+	public String getUserId() {
+		return pref.getString(KEY_USER_ID, "");
 	}
 	
 }

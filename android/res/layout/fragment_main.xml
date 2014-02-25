@@ -18,7 +18,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true" >
         
@@ -27,7 +27,6 @@
 	        android:layout_width="320dp"
 	        android:layout_height="320dp"
 	        android:scaleType="fitXY"
-	        android:src="@drawable/sample1"
 	        android:background="@drawable/image_border"
 	        android:contentDescription="@string/desc_rate_image" />
         
@@ -69,6 +68,35 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
         
+        <Button
+            android:id="@+id/btn_your_team"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Your Team" />
+        
+        <Button
+            android:id="@+id/btn_take_picture"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Take Picture" />
+        
+        <Button
+            android:id="@+id/btn_gallery"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Gallery" />
+        
+        <Button
+            android:id="@+id/btn_friends_team"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Friends Teams" />
+        
+        <!--  
         <ImageButton
             android:id="@+id/take_picture"
             android:layout_width="wrap_content"
@@ -84,6 +112,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/gallery_icon"
             android:contentDescription="@string/desc_show_gallery" />
+		-->
         
     </LinearLayout>
 

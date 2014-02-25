@@ -5,6 +5,7 @@ import os
 import random
 import sys
 
+from django.core.paginator import Paginator
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -104,14 +105,14 @@ def getPic(request, picId):
     else:
         pic = Picture.objects.get(id = picId)
     j['picId'] = pic.id
-    j['targetUserId'] = pic.targetId.id
-    j['targetFbId'] = pic.targetId.fbId
-    j['posterUserId'] = pic.posterId.id
-    j['posterFbId'] = pic.posterId.fbId
+    j['targetUserId'] = str(pic.targetId.id)
+    j['targetFbId'] = str(pic.targetId.fbId)
+    j['posterUserId'] = str(pic.posterId.id)
+    j['posterFbId'] = str(pic.posterId.fbId)
     j['imageUrl'] = request.get_host() + str(pic.image)
     j['caption'] = pic.caption
     j['views'] = pic.views
-    j['popularity'] = pic.popularity
+    j['popularity'] = str(pic.popularity)
 #
     return HttpResponse(json.dumps(j), content_type="application/json")
 
@@ -156,7 +157,29 @@ def getTeamGallery(request,userId):
     
     return HttpResponse(pictures)
     
+def gallery(request):
     
+    pictures = Picture.objects.sort_by("?")
+    paginator = Paginator(pictures,15)
+    page = request.GET.get("page")
+    
+    try:
+        True
+#         contact_list = Contacts.objects.all()
+#     paginator = Paginator(contact_list, 25) # Show 25 contacts per page
+# 
+#     page = request.GET.get('page')
+#     try:
+#         contacts = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         contacts = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         contacts = paginator.page(paginator.num_pages)
+# 
+#     return render_to_response('list.html', {"contacts": contacts})
+    return HttpResponse()
     
 
 

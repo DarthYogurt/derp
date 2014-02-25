@@ -158,6 +158,29 @@ def getTeamGallery(request,userId):
     for p in pictures:
         print p.image
     
+#     j={}
+# 
+#     if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
+#         j['friend'] = True
+#     else:
+#         j['friend'] = False
+#     
+#     j['picId'] = pic.id
+#     j['targetUserId'] = pic.targetId.id
+#     j['targetFbId'] = pic.targetId.fbId
+#     j['posterUserId'] = pic.posterId.id
+#     j['posterFbId'] = pic.posterId.fbId
+#     j['imageUrl'] = request.get_host() + str(pic.image)
+#     j['caption'] = pic.caption
+#     j['views'] = pic.views
+#     j['popularity'] = pic.popularity
+#     
+# 
+#     
+#     
+#     return HttpResponse(json.dumps(j), content_type="application/json")
+    
+
     return HttpResponse(pictures)
     
 def gallery(request, numPerPage, pageNum):
@@ -173,8 +196,18 @@ def gallery(request, numPerPage, pageNum):
     except EmptyPage:
         pictures = paginator.page(paginator.num_pages)
     
+    j={}
+    j['gallery'] = []
+    for p in pictures:
+        pic = {}
+        pic['url'] = str(request.get_host()) + str(p.image)
+        pic['picId'] = p.id
     
-    return HttpResponse(pictures)
+        
+        j['gallery'].append(pic)
+    
+    
+    return HttpResponse(json.dumps(j), content_type="application/json")
  
 #     try:
 #         contacts = paginator.page(page)

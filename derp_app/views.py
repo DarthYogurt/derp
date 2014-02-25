@@ -87,8 +87,6 @@ def uploadPic(request):
     return HttpResponse("")
 
 def getUserId(request,fbUserId):
-    
-    #return HttpResponse("nothing")
     try:
         return HttpResponse(User.objects.get(fbId=fbUserId).id)
     except:
@@ -96,40 +94,15 @@ def getUserId(request,fbUserId):
     
 
 def getPic(request, picId):
-    
-#     
-#     checklists = List.objects.filter(group=groupId)
-#     j = {}
-#     j['groupId'] = int(groupId)
-#     j['checklist'] = []
-#     
-#     if len(checklists) == 0:
-#         j['error'] = "No Results"
-#         return HttpResponse(json.dumps(j), content_type="application/json")
-#     for item in checklists:
-#         temp = {}
-#         temp['name'] = item.name
-#         temp['numOfSteps'] = ListStep.objects.filter(list=List.objects.get(id=item.id)).count()
-#         temp['id'] = item.id
-#         
-#         j['checklist'].append(temp)
-#     return HttpResponse(json.dumps(j), content_type="application/json")
-    return HttpResponse(picId)
-
-def getRandomPic(request, userId):
-       
-    totalPics = Picture.objects.all().count()
-    print totalPics
-    randomNum = random.randint(1,totalPics)
-    print randomNum
-    pic = Picture.objects.all()[randomNum-1]
     j={}
-
-    if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
-        j['friend'] = True
+    pic = None
+    print type(str(picId))
+    if picId == "0":
+        totalPics = Picture.objects.all().count()
+        randomNum = random.randint(1,totalPics)
+        pic = Picture.objects.all()[randomNum-1]
     else:
-        j['friend'] = False
-    
+        pic = Picture.objects.get(id = picId)
     j['picId'] = pic.id
     j['targetUserId'] = pic.targetId.id
     j['targetFbId'] = pic.targetId.fbId
@@ -139,20 +112,47 @@ def getRandomPic(request, userId):
     j['caption'] = pic.caption
     j['views'] = pic.views
     j['popularity'] = pic.popularity
-    
-
-    
-    
+#
     return HttpResponse(json.dumps(j), content_type="application/json")
+
+
+# def getRandomPic(request, userId):
+#        
+#     totalPics = Picture.objects.all().count()
+#     print totalPics
+#     randomNum = random.randint(1,totalPics)
+#     print randomNum
+#     pic = Picture.objects.all()[randomNum-1]
+#     j={}
+# 
+#     if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
+#         j['friend'] = True
+#     else:
+#         j['friend'] = False
+#     
+#     j['picId'] = pic.id
+#     j['targetUserId'] = pic.targetId.id
+#     j['targetFbId'] = pic.targetId.fbId
+#     j['posterUserId'] = pic.posterId.id
+#     j['posterFbId'] = pic.posterId.fbId
+#     j['imageUrl'] = request.get_host() + str(pic.image)
+#     j['caption'] = pic.caption
+#     j['views'] = pic.views
+#     j['popularity'] = pic.popularity
+#     
+# 
+#     
+#     
+#     return HttpResponse(json.dumps(j), content_type="application/json")
     
 
 def getTeamGallery(request,userId):
     user = User.objects.get(id=userId)
-    
-    pictures = Picture.objects.get(targetId = user)
+    print user,user.name
+    pictures = Picture.objects.filter(targetId = user)
     
     for p in pictures:
-        print p
+        print p.image
     
     return HttpResponse(pictures)
     

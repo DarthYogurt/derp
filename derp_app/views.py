@@ -159,16 +159,13 @@ def getTeamGallery(request,userId):
     
 def gallery(request):
     
-    pictures = Picture.objects.sort_by("?")
-    paginator = Paginator(pictures,15)
+    picture_list = Picture.objects.sort_by("?")
+    paginator = Paginator(picture_list,15)
     page = request.GET.get("page")
     
     try:
-        True
-#         contact_list = Contacts.objects.all()
-#     paginator = Paginator(contact_list, 25) # Show 25 contacts per page
-# 
-#     page = request.GET.get('page')
+        
+
 #     try:
 #         contacts = paginator.page(page)
 #     except PageNotAnInteger:

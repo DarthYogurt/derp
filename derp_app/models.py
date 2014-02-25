@@ -33,9 +33,9 @@ class Picture(models.Model):
     posterId = models.ForeignKey("User", related_name="poster")
     targetId = models.ForeignKey("User", related_name="targetUser")
     popularity = models.IntegerField(null=True, blank=True)
-    upVote = models.IntegerField(null=True, blank=True)
-    downvote = models.IntegerField(null=True, blank=True)
-    views = models.IntegerField(null=True,blank=True)
+    upVote = models.IntegerField(default=0, blank=True)
+    downvote = models.IntegerField(default=0, blank=True)
+    views = models.IntegerField(default=0,blank=True)
     image = models.FileField(upload_to="/derp_media/%Y/%m/%d")
     caption = models.CharField(max_length=50, blank=True, null=True)
     

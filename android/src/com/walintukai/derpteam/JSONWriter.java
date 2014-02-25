@@ -64,7 +64,7 @@ public class JSONWriter {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	public void createJsonForImage(String imgFilename, String caption, String targetFbId, int targetUserId) {
+	public void createJsonForImage(String imgFilename, String caption, String targetFbId, String targetUserId) {
 		try {
 			fos = context.openFileOutput(FILENAME_ASSIGN_TEAM, Context.MODE_PRIVATE);
 			

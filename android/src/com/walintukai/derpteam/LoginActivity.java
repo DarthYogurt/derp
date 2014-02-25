@@ -100,7 +100,7 @@ public class LoginActivity extends Activity {
         	Log.i("FB LOGOUT", " ");
         	prefs.setFbUserId("");
 			prefs.setFbUserName("");
-			prefs.setUserId(-1);
+			prefs.setUserId("");
         }
     }
 	

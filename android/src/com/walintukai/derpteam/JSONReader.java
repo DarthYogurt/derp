@@ -8,14 +8,24 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
 
 public class JSONReader {
+	
+	private static final String KEY_POSTER_USER_ID = "posterUserId";
+	private static final String KEY_POSTER_FB_ID = "posterFbId";
+	private static final String KEY_TARGET_USER_ID = "targetUserId";
+	private static final String KEY_TARGET_FB_ID = "targetFbId";
+	private static final String KEY_IMAGE_URL = "imageUrl";
+	private static final String KEY_CAPTION = "caption";
+	private static final String KEY_PIC_ID = "picId";
+	private static final String KEY_VIEWS = "views";
 
-	Context context;
+	private Context context;
 	
 	public JSONReader(Context context) {
 		this.context = context;
@@ -41,27 +51,28 @@ public class JSONReader {
 		return jsonString;
 	}
 	
-//	public ArrayList<Checklist> getChecklistsArray(String jsonString) {
-//		ArrayList<Checklist> checklistsArray = new ArrayList<Checklist>();
-//		
-//		try {
-//            JSONObject jObject = new JSONObject(jsonString);
-//            JSONArray jArray = jObject.getJSONArray("checklist");
-//
-//            for (int i = 0; i < jArray.length(); i++) {
-//            	int groupId = Integer.parseInt(jObject.getString("groupId"));
-//            	int checklistId = Integer.parseInt(jArray.getJSONObject(i).getString("id"));
-//            	String checklistName = jArray.getJSONObject(i).getString("name");
-//            	int numOfSteps = Integer.parseInt(jArray.getJSONObject(i).getString("numOfSteps"));
-//                
-//                Checklist checklist = new Checklist(groupId, checklistId, checklistName, numOfSteps);
-//                checklistsArray.add(checklist);
-//            }
-//        } 
-//		catch (Exception e) { e.printStackTrace(); }
-//		return checklistsArray;
-//	}
-//	
+	public Picture getPictureObject(String jsonString) {
+		try {
+			JSONObject jObject = new JSONObject(jsonString);
+			
+			String posterUserId = jObject.getString(KEY_POSTER_USER_ID);
+			String posterFbId = jObject.getString(KEY_POSTER_FB_ID);
+	    	String targetUserId = jObject.getString(KEY_TARGET_USER_ID);
+	    	String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+	    	String imageUrl = jObject.getString(KEY_IMAGE_URL);
+	    	String caption = jObject.getString(KEY_CAPTION);
+	    	int picId = jObject.getInt(KEY_PIC_ID);
+	    	int views = jObject.getInt(KEY_VIEWS);
+		
+	    	Picture picture = new Picture(posterUserId, posterFbId, targetUserId, targetFbId, 
+	    			imageUrl, caption, picId, views);
+	    	
+	    	return picture;
+		} 
+		catch (JSONException e) { e.printStackTrace(); }
+		return null;
+	}
+
 //	public ArrayList<Step> getStepsArray(String jsonString) {
 //		ArrayList<Step> stepsArray = new ArrayList<Step>();
 //		

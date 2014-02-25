@@ -52,7 +52,7 @@ public class TakePictureActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_take_picture);
+		setContentView(R.layout.fragment_take_picture);
 		getActionBar().setTitle("");
 		
 		prefs = new Preferences(this);
@@ -281,22 +281,22 @@ public class TakePictureActivity extends FragmentActivity {
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.take_picture, menu);
-		
-		MenuItem shareItem = menu.findItem(R.id.action_share);
-		
-		// Get the provider and hold onto it to set/change the share intent
-		ShareActionProvider shareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-		
-		// Attach an intent to this ShareActionProvider.  You can update this at any time,
-	    // like when the user selects a new piece of data they might like to share.
-		shareActionProvider.setShareIntent(createShareIntent());
-		
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.take_picture, menu);
+//		
+//		MenuItem shareItem = menu.findItem(R.id.action_share);
+//		
+//		// Get the provider and hold onto it to set/change the share intent
+//		ShareActionProvider shareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+//		
+//		// Attach an intent to this ShareActionProvider.  You can update this at any time,
+//	    // like when the user selects a new piece of data they might like to share.
+//		shareActionProvider.setShareIntent(createShareIntent());
+//		
+//		return true;
+//	}
 	
 	private Intent createShareIntent() {
 		Intent intent = new Intent(Intent.ACTION_SEND);

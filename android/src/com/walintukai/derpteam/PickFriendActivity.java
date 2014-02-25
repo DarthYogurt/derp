@@ -41,7 +41,7 @@ public class PickFriendActivity extends Activity {
 	private String caption;
 	private String targetName;
 	private String targetFbId;
-	private int targetUserId;
+	private String targetUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

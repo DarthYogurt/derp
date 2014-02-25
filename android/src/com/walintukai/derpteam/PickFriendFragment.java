@@ -46,7 +46,7 @@ public class PickFriendFragment extends Fragment {
 	private String caption;
 	private String targetName;
 	private String targetFbId;
-	private int targetUserId;
+	private String targetUserId;
 
 	static PickFriendFragment newInstance(String imgFilename, String caption) {
 		PickFriendFragment fragment = new PickFriendFragment();

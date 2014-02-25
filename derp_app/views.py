@@ -97,11 +97,13 @@ def getUserId(request,fbUserId):
 def getPic(request, picId):
     j={}
     pic = None
-    print type(str(picId))
     if picId == "0":
         totalPics = Picture.objects.all().count()
-        randomNum = random.randint(1,totalPics)
-        pic = Picture.objects.all()[randomNum-1]
+        if totalPics > 0:
+            randomNum = random.randint(1,totalPics)
+            pic = Picture.objects.all()[randomNum-1]
+        else:
+            HttpResponse("no pictures in database")
     else:
         pic = Picture.objects.get(id = picId)
     j['picId'] = pic.id
@@ -149,7 +151,7 @@ def getPic(request, picId):
 
 def getTeamGallery(request,userId):
     user = User.objects.get(id=userId)
-    print user,user.name
+    #print user,user.name
     pictures = Picture.objects.filter(targetId = user)
     
     for p in pictures:

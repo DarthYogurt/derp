@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,24 +45,28 @@ public class TakePictureFragment extends Fragment {
 
 	private static final int REQUEST_PICTURE = 1;
 	
-	private Preferences prefs;
 	private ImageView takenPicture;
 	private String filename;
 	private String oldFilename;
 	private File file;
 	private boolean hasPicture;
 	
-	static TakePictureFragment newInstance() {
+	static TakePictureFragment newInstance(String filename) {
 		TakePictureFragment fragment = new TakePictureFragment();
+		Bundle args = new Bundle();
+		args.putString("filename", filename);
+		fragment.setArguments(args);
 		return fragment;
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_take_picture, container, false);
+		setHasOptionsMenu(true);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		prefs = new Preferences(getActivity());
-		filename = "";
+		Bundle args = getArguments();
+		filename = args.getString("filename");
 		oldFilename = "";
 		
 		takenPicture = (ImageView) view.findViewById(R.id.taken_picture);
@@ -73,13 +78,10 @@ public class TakePictureFragment extends Fragment {
 			}
 		});
 		
-		// Handles image being sent from other application
-		Intent intent = getActivity().getIntent();
-		String action = intent.getAction();
-		String type = intent.getType();
-		
-		if (Intent.ACTION_SEND.equals(action) && type != null) {
-			if (type.startsWith("image/")) { handleSentImage(intent); }
+		if (!filename.isEmpty()) { 
+			hasPicture = true;
+			File file = new File(getActivity().getExternalFilesDir(null), filename);
+			showPicture(file);
 		}
 		
 		if (filename.isEmpty()) { new NewPictureThread().start(); }
@@ -111,69 +113,26 @@ public class TakePictureFragment extends Fragment {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-	
-	private void handleSentImage(Intent intent) {
-		Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-		if (imageUri != null) {
-			String realPath = getRealPathFromUri(imageUri);
-			File extFile = new File(realPath);
-			filename = getImageFilename();
-			file = new File(getActivity().getExternalFilesDir(null), filename);
-			copyFile(extFile, file);
-			Log.i("PICTURE COPIED TO INTERNAL", filename);
-		
-			compressAndRotateImage(file);
-			showPicture(file);
-			hasPicture = true;
-		}
-		else { Log.e("RECEIVED IMAGE", "NULL"); }
-	}
-	
-	public String getRealPathFromUri (Uri contentUri) {
-		Cursor cursor = null;
-		try { 
-			String[] proj = { MediaStore.Images.Media.DATA };
-			cursor = getActivity().getContentResolver().query(contentUri,  proj, null, null, null);
-			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-			cursor.moveToFirst();
-			return cursor.getString(column_index);
-		} 
-		finally {
-			if (cursor != null) { cursor.close(); }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
+			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
+			getActivity().getFragmentManager().popBackStack();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 	
-	public static void copyFile(File src, File dst) {
-	    FileChannel inChannel = null;
-		try { inChannel = new FileInputStream(src).getChannel(); } 
-		catch (FileNotFoundException e) { e.printStackTrace(); }
-		
-	    FileChannel outChannel = null;
-		try { outChannel = new FileOutputStream(dst).getChannel(); } 
-		catch (FileNotFoundException e) { e.printStackTrace(); }
-	    
-    	try { inChannel.transferTo(0, inChannel.size(), outChannel); } 
-    	catch (IOException e) { e.printStackTrace(); }
-    	finally {    		
-    		if (inChannel != null) {
-    			try { inChannel.close(); } 
-    			catch (IOException e) { e.printStackTrace(); }
-    		}
-				
-    		if (outChannel != null) {
-	        	try { outChannel.close(); } 
-	        	catch (IOException e) { e.printStackTrace(); }
-	        }	
-	    }
-	}
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if( keyCode == KeyEvent.KEYCODE_BACK ) {
+//	    	if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
+//			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
+//	    	return true;
+//	    }
+//	    return false;
+//	}
 	
 	private void showPicture(File file) {
 		try {
@@ -186,12 +145,6 @@ public class TakePictureFragment extends Fragment {
 		} 
     	catch (FileNotFoundException e) { e.printStackTrace(); } 
     	catch (IOException e) { e.printStackTrace(); }
-	}
-	
-	private String getImageFilename() {
-		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
-		String timeStamp = sdf.format(new Date());
-		return timeStamp + "-" + prefs.getFbUserId() + ".jpg";
 	}
 	
 	private class NewPictureThread extends Thread {
@@ -212,7 +165,7 @@ public class TakePictureFragment extends Fragment {
 	}
 	
 	private void startCameraActivity() {
-		filename = getImageFilename();
+		filename = ImageHandler.getImageFilename(getActivity());
 		file = new File(getActivity().getExternalFilesDir(null), filename);
 		Uri outputFileUri = Uri.fromFile(file);
 		
@@ -233,59 +186,10 @@ public class TakePictureFragment extends Fragment {
 			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
 			
 			Log.i("PICTURE SAVED", filename);
-			
-			file = new File(getActivity().getExternalFilesDir(null), filename);
-			compressAndRotateImage(file);
+
+			ImageHandler.compressAndRotateImage(getActivity(), filename);
 			showPicture(file);
 		}
-	}
-		
-	private void compressAndRotateImage(File file) {
-		try {
-		    // Decode image size
-		    BitmapFactory.Options o = new BitmapFactory.Options();
-		    o.inJustDecodeBounds = true;
-		    BitmapFactory.decodeStream(new FileInputStream(file), null, o);
-
-		    // The new size we want to scale to
-		    final int REQUIRED_SIZE = 300;
-
-		    // Find the correct scale value. It should be the power of 2.
-		    int scale = 1;
-		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) {
-		    	scale*=2;
-		    }
-		        
-		    // Decode with inSampleSize
-		    BitmapFactory.Options o2 = new BitmapFactory.Options();
-		    o2.inSampleSize = scale;
-		    Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(file), null, o2);
-		    
-		    // Get orientation of picture
-		    ExifInterface exif = null;
-			try { exif = new ExifInterface(getActivity().getExternalFilesDir(null) + "/" + filename); } 
-			catch (IOException e1) { e1.printStackTrace(); }
-			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
-			Log.i("ORIENTATION", Integer.toString(orientation));
-			
-			// Rotate image to portrait based on taken orientation
-			Matrix matrix = new Matrix();
-            if (orientation == 6) { matrix.postRotate(90); }
-            else if (orientation == 3) { matrix.postRotate(180); }
-            else if (orientation == 8) { matrix.postRotate(270); }
-            bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-		    
-	        // Save file
-		    FileOutputStream fos = new FileOutputStream(file);
-		    bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-		    
-		    try { fos.flush(); fos.close(); } 
-		    catch (IOException e) { e.printStackTrace(); }
-		    
-		    bm.recycle();
-		    System.gc();
-		} 
-		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 
 //	@Override
@@ -327,6 +231,7 @@ public class TakePictureFragment extends Fragment {
 	        		public void onClick(DialogInterface dialog, int id) {
 	        			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
 	        			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
+	        			getActivity().getFragmentManager().popBackStack();
 	        		}
 	        	})
 	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {

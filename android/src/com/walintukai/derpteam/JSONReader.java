@@ -31,26 +31,6 @@ public class JSONReader {
 		this.context = context;
 	}
 	
-	public String readFromInternal(String filename) throws IOException {
-		BufferedReader br = null;
-		String jsonString = "";
-		
-		try {
-			FileInputStream fis = context.openFileInput(filename);
-			InputStreamReader isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			jsonString = br.readLine();
-			
-			Log.i("JSON STRING", jsonString);
-		} 
-		catch (FileNotFoundException e) { e.printStackTrace(); } 
-		finally {
-			try { if (br != null) { br.close(); } } 
-			catch (IOException e) { e.printStackTrace(); }
-		}
-		return jsonString;
-	}
-	
 	public Picture getPictureObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);
@@ -72,6 +52,26 @@ public class JSONReader {
 		catch (JSONException e) { e.printStackTrace(); }
 		return null;
 	}
+	
+//	public String readFromInternal(String filename) throws IOException {
+//		BufferedReader br = null;
+//		String jsonString = "";
+//		
+//		try {
+//			FileInputStream fis = context.openFileInput(filename);
+//			InputStreamReader isr = new InputStreamReader(fis);
+//			br = new BufferedReader(isr);
+//			jsonString = br.readLine();
+//			
+//			Log.i("JSON STRING", jsonString);
+//		} 
+//		catch (FileNotFoundException e) { e.printStackTrace(); } 
+//		finally {
+//			try { if (br != null) { br.close(); } } 
+//			catch (IOException e) { e.printStackTrace(); }
+//		}
+//		return jsonString;
+//	}
 
 //	public ArrayList<Step> getStepsArray(String jsonString) {
 //		ArrayList<Step> stepsArray = new ArrayList<Step>();

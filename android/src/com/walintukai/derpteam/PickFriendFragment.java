@@ -28,11 +28,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PickFriendFragment extends Fragment {
@@ -60,6 +62,8 @@ public class PickFriendFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_pick_friend, container, false);
+		setHasOptionsMenu(true);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		Bundle args = getArguments();
 		imgFilename = args.getString(KEY_IMG_FILENAME);
@@ -81,6 +85,17 @@ public class PickFriendFragment extends Fragment {
 		requestFacebookFriends(Session.getActiveSession());
 		
 		return view;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			getActivity().getFragmentManager().popBackStack();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	private void requestFacebookFriends(Session session) {
@@ -178,16 +193,11 @@ public class PickFriendFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	progressDialog.dismiss();
+	    	Toast.makeText(getActivity(), R.string.derp_assigned, Toast.LENGTH_SHORT).show();
 	    	
 	    	Intent intent = new Intent(getActivity(), MainActivity.class);
 	    	startActivity(intent);
 	    	getActivity().finish();
-	    	
-//	    	FragmentManager fm = getFragmentManager();
-//			FragmentTransaction ft = fm.beginTransaction();
-//			MainFragment fragment = MainFragment.newInstance();
-//			ft.replace(R.id.fragment_container, fragment);
-//			ft.commit();
 	    	
 	        return;
 	    }

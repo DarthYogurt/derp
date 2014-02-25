@@ -28,6 +28,8 @@ public class MainFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		setHasOptionsMenu(false);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		ratePicture = (ImageView) view.findViewById(R.id.rate_picture);
 		new GetRandomPicTask().execute();
@@ -71,7 +73,7 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-				TakePictureFragment fragment = new TakePictureFragment();
+				TakePictureFragment fragment = TakePictureFragment.newInstance("");
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();
@@ -85,7 +87,7 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-				GalleryFragment fragment = new GalleryFragment();
+				GalleryFragment fragment = GalleryFragment.newInstance();
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();

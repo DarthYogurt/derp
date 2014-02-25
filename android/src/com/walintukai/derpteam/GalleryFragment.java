@@ -3,6 +3,7 @@ package com.walintukai.derpteam;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +21,8 @@ public class GalleryFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+		setHasOptionsMenu(true);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		GridView gridView = (GridView) view.findViewById(R.id.gridview);
 		gridView.setAdapter(new GalleryAdapter(getActivity()));
@@ -32,6 +35,17 @@ public class GalleryFragment extends Fragment {
 	    });
 		
 		return view;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			getActivity().getFragmentManager().popBackStack();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

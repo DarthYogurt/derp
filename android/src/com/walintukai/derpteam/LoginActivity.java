@@ -55,6 +55,7 @@ public class LoginActivity extends Activity {
 		getKeyHash();
 		
 		if (Session.getActiveSession().isOpened()) {
+			requestFacebookFriends(Session.getActiveSession());
 			goToMainActivity();
 		}
 	}

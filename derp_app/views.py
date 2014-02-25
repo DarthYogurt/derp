@@ -157,26 +157,26 @@ def getTeamGallery(request,userId):
     
     return HttpResponse(pictures)
     
-def gallery(request):
-    
-    picture_list = Picture.objects.sort_by("?")
-    paginator = Paginator(picture_list,15)
-    page = request.GET.get("page")
-    
-    try:
-        
-
+# def gallery(request):
+#     
+#     picture_list = Picture.objects.sort_by("?")
+#     paginator = Paginator(picture_list,15)
+#     page = request.GET.get("page")
+#     
 #     try:
-#         contacts = paginator.page(page)
-#     except PageNotAnInteger:
-#         # If page is not an integer, deliver first page.
-#         contacts = paginator.page(1)
-#     except EmptyPage:
-#         # If page is out of range (e.g. 9999), deliver last page of results.
-#         contacts = paginator.page(paginator.num_pages)
+#         True
 # 
-#     return render_to_response('list.html', {"contacts": contacts})
-    return HttpResponse()
+# #     try:
+# #         contacts = paginator.page(page)
+# #     except PageNotAnInteger:
+# #         # If page is not an integer, deliver first page.
+# #         contacts = paginator.page(1)
+# #     except EmptyPage:
+# #         # If page is out of range (e.g. 9999), deliver last page of results.
+# #         contacts = paginator.page(paginator.num_pages)
+# # 
+# #     return render_to_response('list.html', {"contacts": contacts})
+#     return HttpResponse()
     
 
 

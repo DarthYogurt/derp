@@ -9,3 +9,4 @@ gen/
 Thumbs.db
 R.java
 .classpath
+.project

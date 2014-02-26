@@ -23,8 +23,9 @@ import android.widget.AdapterView.OnItemClickListener;
 public class GalleryFragment extends Fragment {
 	
 	private GridView gridView;
-	GalleryAdapter adapter;
+	private GalleryAdapter adapter;
 	private List<Picture> picturesArray;
+	private int totalPages;
 	
 	static GalleryFragment newInstance() {
 		GalleryFragment fragment = new GalleryFragment();
@@ -84,8 +85,9 @@ public class GalleryFragment extends Fragment {
 		
 	    protected List<Picture> doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
+	    	JSONReader reader = new JSONReader(getActivity());
 		    String jsonString = get.getGalleryJsonString(10, pageNumber);
-		    JSONReader reader = new JSONReader(getActivity());
+		    totalPages = reader.getTotalPages(jsonString);
 		    
 		    if (!picturesArray.isEmpty()) {
 		    	List<Picture> newPictures = reader.getPicturesArray(jsonString);
@@ -99,7 +101,6 @@ public class GalleryFragment extends Fragment {
 
 	    protected void onPostExecute(List<Picture> result) {
 	    	super.onPostExecute(result);
-	    	Log.v("PICTURES ARRAY", Integer.toString(picturesArray.size()));
 	    	adapter.refreshList(result);
 	        return;
 	    }
@@ -127,9 +128,11 @@ public class GalleryFragment extends Fragment {
 				}
 			}
 			if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-				loading = true;
-				Log.i("LOADING", "PAGE " + Integer.toString(currentPage));
-				new GetPicturesTask(currentPage).execute();
+				if (currentPage <= totalPages) {
+					loading = true;
+					Log.i("LOADING", "PAGE " + Integer.toString(currentPage));
+					new GetPicturesTask(currentPage).execute();
+				}
 			}
 		}
 

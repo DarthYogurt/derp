@@ -25,6 +25,7 @@ public class JSONReader {
 	private static final String KEY_CAPTION = "caption";
 	private static final String KEY_PIC_ID = "picId";
 	private static final String KEY_VIEWS = "views";
+	private static final String KEY_TOTAL_PAGES = "totalPages";
 
 	private Context context;
 	
@@ -60,7 +61,7 @@ public class JSONReader {
 		try {
             JSONObject jObject = new JSONObject(jsonString);
             JSONArray jArray = jObject.getJSONArray("gallery");
-
+            
             for (int i = 0; i < jArray.length(); i++) {
             	String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
             	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
@@ -71,6 +72,16 @@ public class JSONReader {
         } 
 		catch (Exception e) { e.printStackTrace(); }
 		return picturesArray;
+	}
+	
+	public int getTotalPages(String jsonString) {
+		int totalPages = 0;
+		try {
+            JSONObject jObject = new JSONObject(jsonString);
+            totalPages = jObject.getInt(KEY_TOTAL_PAGES);
+        } 
+		catch (Exception e) { e.printStackTrace(); }
+		return totalPages;
 	}
 	
 //	public String readFromInternal(String filename) throws IOException {

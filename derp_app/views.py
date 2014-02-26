@@ -118,47 +118,20 @@ def getPic(request, picId):
     j['views'] = pic.views
     j['title'] = pic.title
     j['popularity'] = str(pic.popularity)
+    
+    j['comments'] = []
+    for comment in Comment.objects.filter(picture=Picture.objects.get(id=picId)):
+        com = {}
+        com['comPoster'] = comment.poster.id
+        com['comText'] = comment.comment
+        com['comTime'] = comment.timeModified
 #
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 
-# def getRandomPic(request, userId):
-#        
-#     totalPics = Picture.objects.all().count()
-#     print totalPics
-#     randomNum = random.randint(1,totalPics)
-#     print randomNum
-#     pic = Picture.objects.all()[randomNum-1]
-#     j={}
-# 
-#     if Friend.objects.filter(parentFriend=User.objects.get(id=userId), friendId=User.objects.get(id=pic.targetId.id)).count() > 0:
-#         j['friend'] = True
-#     else:
-#         j['friend'] = False
-#     
-#     j['picId'] = pic.id
-#     j['targetUserId'] = pic.targetId.id
-#     j['targetFbId'] = pic.targetId.fbId
-#     j['posterUserId'] = pic.posterId.id
-#     j['posterFbId'] = pic.posterId.fbId
-#     j['imageUrl'] = request.get_host() + str(pic.image)
-#     j['caption'] = pic.caption
-#     j['views'] = pic.views
-#     j['popularity'] = pic.popularity
-#     
-# 
-#     
-#     
-#     return HttpResponse(json.dumps(j), content_type="application/json")
-    
-
 def getTeamGallery(request,userId):
     user = User.objects.get(id=userId)
-    #print user,user.name
-    pictures = Picture.objects.filter(targetId = user)
-    
-    
-    
+    pictures = Picture.objects.filter(targetId = user)    
     j={}
     j['teamId'] = userId
     j['teamGallery'] =[]
@@ -174,10 +147,7 @@ def getTeamGallery(request,userId):
         temp['caption'] = p.caption
         temp['title'] = p.title
         j['teamGallery'].append(temp)
-    
- 
-     
-     
+
     return HttpResponse(json.dumps(j), content_type="application/json")
     
 
@@ -201,27 +171,10 @@ def gallery(request, numPerPage, pageNum):
     for p in pictures:
         pic = {}
         pic['url'] = str(request.get_host()) + str(p.image)
-        pic['picId'] = p.id
-    
-        
+        pic['picId'] = p.id    
         j['gallery'].append(pic)
     
-    
     return HttpResponse(json.dumps(j), content_type="application/json")
- 
-#     try:
-#         contacts = paginator.page(page)
-#     except PageNotAnInteger:
-#         # If page is not an integer, deliver first page.
-#         contacts = paginator.page(1)
-#     except EmptyPage:
-#         # If page is out of range (e.g. 9999), deliver last page of results.
-#         contacts = paginator.page(paginator.num_pages)
-# 
-#     return render_to_response('list.html', {"contacts": contacts})
-#     return HttpResponse()
-    
-
 
 @csrf_exempt
 def addComment(request):
@@ -238,7 +191,6 @@ def addComment(request):
                          poster = User.objects.get(id = data.get("posterId",1)),
                          comment = data.get("comment",""),
                          timeModified = datetime.datetime.today()
-                         
                          )
 
     return HttpResponse("done")

@@ -116,7 +116,7 @@ public class MainFragment extends Fragment {
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getImageJsonString(0);
+	    	String jsonString = get.getPictureJsonString(0);
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
 	    	picture = reader.getPictureObject(jsonString);

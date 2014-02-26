@@ -1,18 +1,30 @@
 package com.walintukai.derpteam;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class GalleryFragment extends Fragment {
+	
+	private GridView gridView;
+	private List<Picture> picturesArray;
 	
 	static GalleryFragment newInstance() {
 		GalleryFragment fragment = new GalleryFragment();
@@ -25,8 +37,13 @@ public class GalleryFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		GridView gridView = (GridView) view.findViewById(R.id.gridview);
-		gridView.setAdapter(new GalleryAdapter(getActivity()));
+		picturesArray = new ArrayList<Picture>();
+		
+		gridView = (GridView) view.findViewById(R.id.gridview);
+		
+		GalleryAdapter adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
+		gridView.setAdapter(adapter);
+		
 		gridView.setOnScrollListener(new EndlessScrollListener());
 
 	    gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -36,7 +53,7 @@ public class GalleryFragment extends Fragment {
 	        }
 	    });
 	    
-	    new GetGalleryThread().start();
+	    new GetPicturesTask(1).execute();
 		
 		return view;
 	}
@@ -52,11 +69,62 @@ public class GalleryFragment extends Fragment {
 		}
 	}
 	
-	private class GetGalleryThread extends Thread {
-		public void run() {
-			HttpGetRequest get = new HttpGetRequest();
-		    String json = get.getGalleryJsonString(6, 1);
-		    Log.v("GALLERY JSON", json);
+	private class GetPicturesTask extends AsyncTask<Void, Void, Void> {
+		private int pageNumber;
+		
+		private GetPicturesTask(int pageNumber) {
+			this.pageNumber = pageNumber;
+		}
+		
+	    protected Void doInBackground(Void... params) {
+	    	HttpGetRequest get = new HttpGetRequest();
+		    String jsonString = get.getGalleryJsonString(8, pageNumber);
+		    
+		    JSONReader reader = new JSONReader(getActivity());
+		    picturesArray = reader.getPicturesArray(jsonString);
+		    
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	// TODO: REFRESH LIST, NOTIFY DATA SET CHANGED
+	    	GalleryAdapter adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
+			gridView.setAdapter(adapter);
+	        return;
+	    }
+	}
+	
+	public class EndlessScrollListener implements OnScrollListener {
+		private int visibleThreshold = 2;
+		private int currentPage = 1;
+		private int previousTotal = 0;
+		private boolean loading = true;
+		
+		public EndlessScrollListener() { }
+		
+		public EndlessScrollListener(int visibleThreshold) {
+			this.visibleThreshold = visibleThreshold;
+		}
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			if (loading) {
+				if (totalItemCount > previousTotal) {
+					loading = false;
+					previousTotal = totalItemCount;
+					currentPage++;
+				}
+			}
+			if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+				// execute loading of new items here: new LoadPicsTask().execute(currentPage + 1);
+				Log.v("LOADING", "PAGE " + Integer.toString(currentPage));
+				loading = true;
+			}
+		}
+
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
 		}
 	}
 

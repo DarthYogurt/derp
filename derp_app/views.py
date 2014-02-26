@@ -99,11 +99,8 @@ def getUserId(request,fbUserId):
 def getPic(request, picId):
     j={}
     pic = None
-   # print str(picId), type(str(picId))
-    #print picId,type(picId)
-    #print int(picId) == 0
-    
-    if int(picId) == 0: # or str(picId == 0:
+
+    if int(picId) == 0: 
         totalPics = Picture.objects.all().count()
         if totalPics > 0:
             
@@ -133,7 +130,6 @@ def getPic(request, picId):
         com['comTime'] = comment.timeModified
     return HttpResponse(json.dumps(j), content_type="application/json")
 
-
 def getTeamGallery(request,userId):
     user = User.objects.get(id=userId)
     pictures = Picture.objects.filter(targetId = user)    
@@ -152,10 +148,8 @@ def getTeamGallery(request,userId):
         temp['caption'] = p.caption
         temp['title'] = p.title
         j['teamGallery'].append(temp)
-
     return HttpResponse(json.dumps(j), content_type="application/json")
 
-    
 def gallery(request, numPerPage, pageNum):
      
     picture_list = Picture.objects.order_by("date")

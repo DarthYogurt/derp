@@ -14,7 +14,7 @@ class User(models.Model):
     activated = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return str(self.id) + " Active: " + str(self.activated)#str(self.fbName) + "-" +str(self.id) + " Active:" + str(self.activated)
+        return str(self.id) + " " + self.fbName  +" - Active: " + str(self.activated)#str(self.fbName) + "-" +str(self.id) + " Active:" + str(self.activated)
 
 
 
@@ -24,7 +24,7 @@ class Friend(models.Model):
     friendId = models.ForeignKey("User",related_name='friendId')
    
     def __unicode__(self):
-        return str(self.parentFriend.id) + " - " + str(self.friendId.id)
+        return self.parentFriend.fbName + " - " + self.friendId.fbName
         
         #return str(self.parentFriend.fbName) + " - " + str(self.friendId.fbName)
         
@@ -42,7 +42,7 @@ class Picture(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     
     def __unicode__(self):
-        return str(self.id)
+        return str(self.id) + " - " + self.targetId.fbName
     
     
 class Comment(models.Model):

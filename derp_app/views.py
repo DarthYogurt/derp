@@ -33,34 +33,36 @@ def login(request):
         #print "not exist"
         newUser = User(
                        fbId = data.get('fbUserId',0),
-                       fbName = data.get("fbUserName", ""),
+                       fbName = data.get("fbUserName", "").encode("utf-8"),
                        activated = True,                   
                        )
         newUser.save()
     
-    
     for friend in data['fbFriends']:
-        try:
-            #fbName =""
-            print friend
-            fbName = friend['fbName'] #.encode("utf-8") #.encode("utf-8")   
-     
-            if User.objects.filter(fbId=friend.get('fbId',0)).exists():
-                #print "already in User Database"
-                #Update this friend again
-                updateUser = User.objects.get(fbId=friend.get('fbId',0))
-                updateUser.fbName = fbName #friend.get("fbName",0)
-                updateUser.save()
-            else:
-                newUser = User(
-                               fbId=friend.get("fbId",0),
-                               fbName= fbName, #friend.get("fbName",0),
-                               activated = False
-                               )
-                newUser.save()
-        except:
-            print "skipped",friend['fbId']
-        
+        fbName = friend['fbName'].encode("utf-8") #.encode("utf-8") #.encode("utf-8")   
+ 
+        user = None
+        if User.objects.filter(fbId=friend.get('fbId',0)).exists():
+
+            user = User.objects.get(fbId=friend.get('fbId',0))
+            user.fbName = fbName #friend.get("fbName",0)
+            user.save()
+        else:
+            user = User(
+                           fbId=friend.get("fbId",0),
+                           fbName= fbName, #friend.get("fbName",0),
+                           activated = False
+                           )
+            user.save()
+   
+        if not Friend.objects.filter(parentFriend = User.objects.get(fbId=data.get('fbUserId',0)), 
+                                 friendId = user).exists():
+             newFriendModel = Friend(
+                                    parentFriend = User.objects.get(fbId=data.get('fbUserId',1)),
+                                    friendId = user
+                                    )
+             newFriendModel.save()
+    
     userId = User.objects.get(fbId=data.get("fbUserId",1))
     return HttpResponse(userId.id)
 

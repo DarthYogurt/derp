@@ -32,20 +32,16 @@ def login(request):
         #print "not exist"
         newUser = User(
                        fbId = data.get('fbUserId',0),
-                       fbName = data.get("fbUserName", ""),
+                       fbName = data.get("fbUserName", "").encode("utf-8"),
                        activated = True,                   
                        )
         newUser.save()
     
-    
     for friend in data['fbFriends']:
-        #fbName =""
-        print friend
         fbName = friend['fbName'].encode("utf-8") #.encode("utf-8") #.encode("utf-8")   
  
         if User.objects.filter(fbId=friend.get('fbId',0)).exists():
-            #print "already in User Database"
-            #Update this friend again
+
             updateUser = User.objects.get(fbId=friend.get('fbId',0))
             updateUser.fbName = fbName #friend.get("fbName",0)
             updateUser.save()
@@ -57,11 +53,7 @@ def login(request):
                            )
             newUser.save()
    
-            
-            
-        a = friend['fbName'].encode("utf-8")
-        #print a
-        #print "skipped",friend['fbId']
+       # newFriend
     
     userId = User.objects.get(fbId=data.get("fbUserId",1))
     return HttpResponse(userId.id)

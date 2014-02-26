@@ -242,8 +242,8 @@ containing a value of this type.
         public static final int transparent_gradient=0x7f020037;
     }
     public static final class id {
-        public static final int action_log_out=0x7f040029;
-        public static final int action_settings=0x7f04002a;
+        public static final int action_log_out=0x7f04002a;
+        public static final int action_settings=0x7f040029;
         public static final int btn_assign_team=0x7f040026;
         public static final int btn_friends_team=0x7f040022;
         public static final int btn_gallery=0x7f040021;
@@ -311,7 +311,8 @@ containing a value of this type.
         public static final int listview_row_friend=0x7f030015;
     }
     public static final class menu {
-        public static final int main=0x7f090000;
+        public static final int gallery=0x7f090000;
+        public static final int main=0x7f090001;
     }
     public static final class string {
         public static final int action_log_out=0x7f07001d;
@@ -359,10 +360,12 @@ containing a value of this type.
         public static final int dialog_send_to_server=0x7f07002b;
         public static final int dialog_yes=0x7f07002c;
         public static final int enter_caption=0x7f070020;
+        public static final int hello_world=0x7f070032;
         public static final int logo=0x7f07001e;
         public static final int no_friends=0x7f07001f;
         public static final int pick_friend=0x7f07002f;
         public static final int starting_camera=0x7f070021;
+        public static final int title_activity_gallery=0x7f070031;
     }
     public static final class style {
         /** 

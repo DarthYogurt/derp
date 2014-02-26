@@ -16,6 +16,7 @@ public class HttpGetRequest {
 	private static final String BASE_URL = "http://dev.darthyogurt.com:8001/";
 	private static final String GET_ID_URL = "getUserId/";
 	private static final String GET_PIC_URL = "getPic/";
+	private static final String GET_GALLERY_URL = "gallery/";
 	
 	public String getString(String url) {
 		HttpClient client = new DefaultHttpClient();
@@ -41,6 +42,11 @@ public class HttpGetRequest {
 	
 	public String getImageJsonString(int id) {
 		String url = BASE_URL + GET_PIC_URL + Integer.toString(id);
+		return getString(url);
+	}
+	
+	public String getGalleryJsonString(int picsPerPage, int pageNum) {
+		String url = BASE_URL + GET_GALLERY_URL + Integer.toString(picsPerPage) + "/" + Integer.toString(pageNum) + "/";
 		return getString(url);
 	}
 	

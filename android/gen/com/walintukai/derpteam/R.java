@@ -242,8 +242,8 @@ containing a value of this type.
         public static final int transparent_gradient=0x7f020037;
     }
     public static final class id {
-        public static final int action_log_out=0x7f04002b;
-        public static final int action_settings=0x7f04002a;
+        public static final int action_log_out=0x7f04002c;
+        public static final int action_settings=0x7f04002b;
         public static final int btn_assign_team=0x7f040026;
         public static final int btn_friends_team=0x7f040022;
         public static final int btn_gallery=0x7f040021;
@@ -272,13 +272,14 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040019;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040017;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040018;
+        public static final int derp_picture=0x7f040027;
         public static final int fb_friend_listview=0x7f040023;
         public static final int fb_login_button=0x7f040003;
         public static final int fragment_container=0x7f040004;
-        public static final int friend_name=0x7f040029;
-        public static final int friend_picture=0x7f040028;
+        public static final int friend_name=0x7f04002a;
+        public static final int friend_picture=0x7f040029;
         public static final int gridview=0x7f04001a;
-        public static final int gridview_picture=0x7f040027;
+        public static final int gridview_picture=0x7f040028;
         public static final int large=0x7f040002;
         public static final int logo=0x7f04001b;
         public static final int normal=0x7f040001;
@@ -309,8 +310,9 @@ containing a value of this type.
         public static final int fragment_main=0x7f030012;
         public static final int fragment_pick_friend=0x7f030013;
         public static final int fragment_take_picture=0x7f030014;
-        public static final int gridview_image=0x7f030015;
-        public static final int listview_row_friend=0x7f030016;
+        public static final int fragment_view_picture=0x7f030015;
+        public static final int gridview_image=0x7f030016;
+        public static final int listview_row_friend=0x7f030017;
     }
     public static final class menu {
         public static final int gallery=0x7f090000;
@@ -348,26 +350,27 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
-        public static final int derp_assigned=0x7f070030;
-        public static final int desc_rate_image=0x7f070024;
-        public static final int desc_show_gallery=0x7f070026;
-        public static final int desc_take_picture=0x7f070025;
-        public static final int desc_taken_picture=0x7f070023;
-        public static final int desc_vote_down=0x7f070028;
-        public static final int desc_vote_up=0x7f070027;
-        public static final int dialog_go_back=0x7f07002a;
-        public static final int dialog_no=0x7f07002d;
-        public static final int dialog_no_picture=0x7f070029;
-        public static final int dialog_ok=0x7f07002e;
-        public static final int dialog_send_to_server=0x7f07002b;
-        public static final int dialog_yes=0x7f07002c;
+        public static final int derp_assigned=0x7f070031;
+        public static final int desc_derp_picture=0x7f070023;
+        public static final int desc_rate_image=0x7f070025;
+        public static final int desc_show_gallery=0x7f070027;
+        public static final int desc_take_picture=0x7f070026;
+        public static final int desc_taken_picture=0x7f070024;
+        public static final int desc_vote_down=0x7f070029;
+        public static final int desc_vote_up=0x7f070028;
+        public static final int dialog_go_back=0x7f07002b;
+        public static final int dialog_no=0x7f07002e;
+        public static final int dialog_no_picture=0x7f07002a;
+        public static final int dialog_ok=0x7f07002f;
+        public static final int dialog_send_to_server=0x7f07002c;
+        public static final int dialog_yes=0x7f07002d;
         public static final int enter_caption=0x7f070020;
-        public static final int hello_world=0x7f070032;
+        public static final int hello_world=0x7f070033;
         public static final int logo=0x7f07001e;
         public static final int no_friends=0x7f07001f;
-        public static final int pick_friend=0x7f07002f;
+        public static final int pick_friend=0x7f070030;
         public static final int starting_camera=0x7f070021;
-        public static final int title_activity_gallery=0x7f070031;
+        public static final int title_activity_gallery=0x7f070032;
     }
     public static final class style {
         /** 

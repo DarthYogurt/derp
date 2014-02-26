@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +49,13 @@ public class GalleryFragment extends Fragment {
 	    gridView.setOnItemClickListener(new OnItemClickListener() {
 	    	@Override
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	    		Toast.makeText(getActivity(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+	    		FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				
+				ViewPictureFragment fragment = ViewPictureFragment.newInstance(picturesArray.get(position).getPicId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
 	        }
 	    });
 	    

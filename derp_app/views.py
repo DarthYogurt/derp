@@ -170,7 +170,7 @@ def gallery(request, numPerPage, pageNum):
     j['gallery'] = []
     for p in pictures:
         pic = {}
-        pic['url'] = str(request.get_host()) + str(p.image)
+        pic['imageUrl'] = str(request.get_host()) + str(p.image)
         pic['picId'] = p.id    
         j['gallery'].append(pic)
     

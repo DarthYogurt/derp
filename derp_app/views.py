@@ -14,7 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from derp_app.models import *
 
 
-# Create your views here.
 @csrf_exempt
 def login(request):
     
@@ -23,14 +22,10 @@ def login(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    #for d in data:  print d,data[d]
-    
     if User.objects.filter(fbId=data.get('fbUserId',0)).exists():
-        #print "User exists"
-        True
-        # need to update user info
+        existUser = User.objects.get(fbId=data.get('fbUserId',1))
+        existUser.fbName = data.get("fbUserName", "").encode("utf-8")
     else:
-        #print "not exist"
         newUser = User(
                        fbId = data.get('fbUserId',0),
                        fbName = data.get("fbUserName", "").encode("utf-8"),
@@ -65,8 +60,6 @@ def login(request):
     
     userId = User.objects.get(fbId=data.get("fbUserId",1))
     return HttpResponse(userId.id)
-
-
 
 @csrf_exempt
 def uploadPic(request):
@@ -155,7 +148,7 @@ def getTeamGallery(request,userId):
 
 def gallery(request, numPerPage, pageNum):
      
-    picture_list = Picture.objects.order_by("date")
+    picture_list = Picture.objects.order_by("-date")
     paginator = Paginator(picture_list, numPerPage)
     page = pageNum
     totalPages = int(math.ceil(picture_list.count()/float(numPerPage)))
@@ -192,7 +185,7 @@ def addComment(request):
     newComment = Comment(
                          picture = Picture.objects.get(id = data.get("pictureId", 1)),
                          poster = User.objects.get(id = data.get("posterId",1)),
-                         comment = data.get("comment",""),
+                         comment = data.get("comment","").encode("utf-8"),
                          timeModified = datetime.datetime.today()
                          )
 

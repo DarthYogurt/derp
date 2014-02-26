@@ -11,7 +11,8 @@
     <string name="enter_caption">enter caption</string>
     <string name="starting_camera">Starting Camera</string>
     <string name="btn_assign_team">Assign To Team</string>
-    <string name="desc_taken_picture">Derp Picture</string>
+    <string name="desc_derp_picture">Derp Picture</string>
+    <string name="desc_taken_picture">Taken Picture</string>
     <string name="desc_rate_image">Image To Rate</string>
     <string name="desc_take_picture">Take Picture Button</string>
     <string name="desc_show_gallery">Show Gallery Button</string>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+import math
 import os
 import random
 import sys
@@ -155,7 +156,8 @@ def gallery(request, numPerPage, pageNum):
     picture_list = Picture.objects.order_by("date")
     paginator = Paginator(picture_list, numPerPage)
     page = pageNum
-     
+    totalPages = int(math.ceil(picture_list.count()/float(numPerPage)))
+    
     try:
         pictures = paginator.page(page)
     except PageNotAnInteger:
@@ -164,6 +166,8 @@ def gallery(request, numPerPage, pageNum):
         pictures = paginator.page(paginator.num_pages)
     
     j={}
+    j['totalPages'] = totalPages
+    j['onPage'] = page
     j['gallery'] = []
     for p in pictures:
         pic = {}

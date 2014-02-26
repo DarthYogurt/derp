@@ -99,11 +99,16 @@ def getUserId(request,fbUserId):
 def getPic(request, picId):
     j={}
     pic = None
-    if picId == "0":
+   # print str(picId), type(str(picId))
+    #print picId,type(picId)
+    #print int(picId) == 0
+    
+    if int(picId) == 0: # or str(picId == 0:
         totalPics = Picture.objects.all().count()
         if totalPics > 0:
-            randomNum = random.randint(1,totalPics)
-            pic = Picture.objects.all()[randomNum-1]
+            
+            picId = random.randint(1,totalPics)
+            pic = Picture.objects.all()[picId-1]
         else:
             HttpResponse("no pictures in ")
     else:
@@ -120,12 +125,12 @@ def getPic(request, picId):
     j['popularity'] = str(pic.popularity)
     
     j['comments'] = []
+    
     for comment in Comment.objects.filter(picture=Picture.objects.get(id=picId)):
         com = {}
         com['comPoster'] = comment.poster.id
         com['comText'] = comment.comment
         com['comTime'] = comment.timeModified
-#
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 
@@ -149,9 +154,7 @@ def getTeamGallery(request,userId):
         j['teamGallery'].append(temp)
 
     return HttpResponse(json.dumps(j), content_type="application/json")
-    
 
-    #return HttpResponse(pictures)
     
 def gallery(request, numPerPage, pageNum):
      

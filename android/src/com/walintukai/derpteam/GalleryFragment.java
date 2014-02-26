@@ -1,11 +1,9 @@
 package com.walintukai.derpteam;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -24,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class GalleryFragment extends Fragment {
 	
 	private GridView gridView;
+	GalleryAdapter adapter;
 	private List<Picture> picturesArray;
 	
 	static GalleryFragment newInstance() {
@@ -41,7 +39,7 @@ public class GalleryFragment extends Fragment {
 		
 		gridView = (GridView) view.findViewById(R.id.gridview);
 		
-		GalleryAdapter adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
+		adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
 		gridView.setAdapter(adapter);
 		
 		gridView.setOnScrollListener(new EndlessScrollListener());
@@ -69,34 +67,38 @@ public class GalleryFragment extends Fragment {
 		}
 	}
 	
-	private class GetPicturesTask extends AsyncTask<Void, Void, Void> {
+	private class GetPicturesTask extends AsyncTask<Void, Void, List<Picture>> {
 		private int pageNumber;
 		
 		private GetPicturesTask(int pageNumber) {
 			this.pageNumber = pageNumber;
 		}
 		
-	    protected Void doInBackground(Void... params) {
+	    protected List<Picture> doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
-		    String jsonString = get.getGalleryJsonString(8, pageNumber);
-		    
+		    String jsonString = get.getGalleryJsonString(10, pageNumber);
 		    JSONReader reader = new JSONReader(getActivity());
-		    picturesArray = reader.getPicturesArray(jsonString);
 		    
-	        return null;
+		    if (!picturesArray.isEmpty()) {
+		    	List<Picture> newPictures = reader.getPicturesArray(jsonString);
+		    	picturesArray.addAll(newPictures);
+		    }
+		    else {
+		    	picturesArray = reader.getPicturesArray(jsonString);
+		    }
+	        return picturesArray;
 	    }
 
-	    protected void onPostExecute(Void result) {
+	    protected void onPostExecute(List<Picture> result) {
 	    	super.onPostExecute(result);
-	    	// TODO: REFRESH LIST, NOTIFY DATA SET CHANGED
-	    	GalleryAdapter adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
-			gridView.setAdapter(adapter);
+	    	Log.v("PICTURES ARRAY", Integer.toString(picturesArray.size()));
+	    	adapter.refreshList(result);
 	        return;
 	    }
 	}
 	
 	public class EndlessScrollListener implements OnScrollListener {
-		private int visibleThreshold = 2;
+		private int visibleThreshold = 1;
 		private int currentPage = 1;
 		private int previousTotal = 0;
 		private boolean loading = true;
@@ -117,9 +119,9 @@ public class GalleryFragment extends Fragment {
 				}
 			}
 			if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-				// execute loading of new items here: new LoadPicsTask().execute(currentPage + 1);
-				Log.v("LOADING", "PAGE " + Integer.toString(currentPage));
 				loading = true;
+				Log.i("LOADING", "PAGE " + Integer.toString(currentPage));
+				new GetPicturesTask(currentPage).execute();
 			}
 		}
 

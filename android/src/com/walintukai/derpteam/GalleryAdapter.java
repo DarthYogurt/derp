@@ -54,6 +54,12 @@ public class GalleryAdapter extends ArrayAdapter<Picture> {
 
         return convertView;
 	}
+	
+	public void refreshList(List<Picture> newPictures) {
+		pictures.clear();
+		pictures.addAll(newPictures);
+		this.notifyDataSetChanged();
+	}
 
 //	@Override
 //	public View getView(int position, View convertView, ViewGroup parent) {

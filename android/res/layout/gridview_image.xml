@@ -4,5 +4,4 @@
     android:id="@+id/gridview_picture"
     android:layout_width="170dp"
     android:layout_height="170dp"
-    android:layout_gravity="center_horizontal"
     android:scaleType="fitXY" />

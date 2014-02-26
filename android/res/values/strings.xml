@@ -25,5 +25,7 @@
     <string name="dialog_ok">OK</string>
     <string name="pick_friend">Assign To Team</string>
     <string name="derp_assigned">Derp assigned!</string>
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

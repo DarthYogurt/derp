@@ -53,6 +53,34 @@ public class JSONReader {
 		return null;
 	}
 	
+//	public void getNotificationsArray(String jsonString) {
+//		ArrayList<Notification> notificationsArray = new ArrayList<Notification>();
+//		
+//		try {
+//            JSONObject jObject = new JSONObject(jsonString);
+//            JSONArray jArray = jObject.getJSONArray("slate");
+//
+//            for (int i = 0; i < jArray.length(); i++) {
+//            	int slateId = Integer.parseInt(jArray.getJSONObject(i).getString("slateId"));
+//            	String userName = jArray.getJSONObject(i).getString("userName");
+//            	String checklist = jArray.getJSONObject(i).getString("checklist");
+//            	String stepName = jArray.getJSONObject(i).getString("stepName");
+//            	String notifyName = jArray.getJSONObject(i).getString("notifyName");
+//                String note = jArray.getJSONObject(i).getString("addNote");
+//                String imgFilename = jArray.getJSONObject(i).getString("addImage");
+//                if (!imgFilename.contains(".jpg")) { imgFilename = ""; }
+//                else { imgFilename = "http://" + imgFilename; }
+//                boolean finished = jArray.getJSONObject(i).getBoolean("complete");
+//                
+//                Notification notification = new Notification(slateId, userName, checklist, stepName, notifyName, note, imgFilename, finished);
+//            	
+//                notificationsArray.add(notification);
+//            }
+//        } 
+//		catch (Exception e) { e.printStackTrace(); }
+//		return notificationsArray;
+//	}
+	
 //	public String readFromInternal(String filename) throws IOException {
 //		BufferedReader br = null;
 //		String jsonString = "";

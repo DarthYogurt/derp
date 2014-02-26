@@ -1,6 +1,9 @@
 package com.walintukai.derpteam;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +13,8 @@ import android.widget.ImageView;
 public class GalleryAdapter extends BaseAdapter {
 	
 	private Context context;
+	ImageView imageView;
+	
 	private Integer[] thumbIds = { 
 			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
 			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
@@ -45,21 +50,41 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageView imageView;
+//		ImageView imageView;
 		
 		if (convertView == null) {
 			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(220, 220));
+			imageView.setLayoutParams(new GridView.LayoutParams(340, 340));
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-//			imageView.setPadding(8, 8, 8, 8);
 		}
 		else {
 			imageView = (ImageView) convertView;
 		}
 		
 		imageView.setImageResource(thumbIds[position]);
+//		new GetRandomPicTask().execute();
 		
 		return imageView;
+	}
+	
+	private class GetRandomPicTask extends AsyncTask<Void, Void, Void> {
+		Picture picture;
+		
+	    protected Void doInBackground(Void... params) {
+	    	HttpGetRequest get = new HttpGetRequest();
+	    	String jsonString = get.getImageJsonString(0);
+	    	
+	    	JSONReader reader = new JSONReader(context);
+	    	picture = reader.getPictureObject(jsonString);
+	    	
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	UrlImageViewHelper.setUrlDrawable(imageView, picture.getImageUrl(), R.drawable.image_placeholder);
+	        return;
+	    }
 	}
 
 }

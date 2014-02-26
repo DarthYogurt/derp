@@ -2,6 +2,7 @@ package com.walintukai.derpteam;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,7 @@ public class GalleryFragment extends Fragment {
 		
 		GridView gridView = (GridView) view.findViewById(R.id.gridview);
 		gridView.setAdapter(new GalleryAdapter(getActivity()));
+		gridView.setOnScrollListener(new EndlessScrollListener());
 
 	    gridView.setOnItemClickListener(new OnItemClickListener() {
 	    	@Override
@@ -33,6 +35,8 @@ public class GalleryFragment extends Fragment {
 	    		Toast.makeText(getActivity(), Integer.toString(position), Toast.LENGTH_SHORT).show();
 	        }
 	    });
+	    
+	    new GetGalleryThread().start();
 		
 		return view;
 	}
@@ -45,6 +49,14 @@ public class GalleryFragment extends Fragment {
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private class GetGalleryThread extends Thread {
+		public void run() {
+			HttpGetRequest get = new HttpGetRequest();
+		    String json = get.getGalleryJsonString(6, 1);
+		    Log.v("GALLERY JSON", json);
 		}
 	}
 

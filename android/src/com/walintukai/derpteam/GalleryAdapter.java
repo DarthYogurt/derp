@@ -1,90 +1,73 @@
 package com.walintukai.derpteam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-public class GalleryAdapter extends BaseAdapter {
+public class GalleryAdapter extends ArrayAdapter<Picture> {
 	
 	private Context context;
-	ImageView imageView;
+	private int layoutResourceId;
+	private List<Picture> pictures;
 	
-	private Integer[] thumbIds = { 
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-			R.drawable.sample1, R.drawable.sample2, R.drawable.sample3,
-	};
-	
-	public GalleryAdapter(Context context) {
+	public GalleryAdapter(Context context, int layoutResourceId, List<Picture> pictures) {
+		super(context, layoutResourceId, pictures);
 		this.context = context;
+		this.layoutResourceId = layoutResourceId;
+		this.pictures = pictures;
 	}
-
-	@Override
-	public int getCount() {
-		return thumbIds.length;
-//		return 0;
+	
+	private static class ViewHolder {
+		private ImageView imageView;
 	}
-
-	@Override
-	public Object getItem(int position) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return 0;
-	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-//		ImageView imageView;
+		ViewHolder holder;
 		
 		if (convertView == null) {
-			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(340, 340));
-			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		}
-		else {
-			imageView = (ImageView) convertView;
-		}
-		
-		imageView.setImageResource(thumbIds[position]);
-//		new GetRandomPicTask().execute();
-		
-		return imageView;
-	}
-	
-	private class GetRandomPicTask extends AsyncTask<Void, Void, Void> {
-		Picture picture;
-		
-	    protected Void doInBackground(Void... params) {
-	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getImageJsonString(0);
-	    	
-	    	JSONReader reader = new JSONReader(context);
-	    	picture = reader.getPictureObject(jsonString);
-	    	
-	        return null;
-	    }
+			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+			convertView = inflater.inflate(layoutResourceId, parent, false);
 
-	    protected void onPostExecute(Void result) {
-	    	super.onPostExecute(result);
-	    	UrlImageViewHelper.setUrlDrawable(imageView, picture.getImageUrl(), R.drawable.image_placeholder);
-	        return;
-	    }
+            holder = new ViewHolder();
+            holder.imageView = (ImageView) convertView.findViewById(R.id.gridview_picture);
+//			holder.imageView.setLayoutParams(new GridView.LayoutParams(340, 340));
+//			holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            convertView.setTag(holder);
+        } 
+		else {
+            holder = (ViewHolder)convertView.getTag();
+        }
+		
+        UrlImageViewHelper.setUrlDrawable(holder.imageView, pictures.get(position).getImageUrl());
+
+        return convertView;
 	}
+
+//	@Override
+//	public View getView(int position, View convertView, ViewGroup parent) {
+//		
+//		if (convertView == null) {
+//			imageView = new ImageView(context);
+//			imageView.setLayoutParams(new GridView.LayoutParams(340, 340));
+//			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//		}
+//		else {
+//			imageView = (ImageView) convertView;
+//		}
+//		
+//		return imageView;
+//	}
 
 }

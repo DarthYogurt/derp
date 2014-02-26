@@ -23,6 +23,17 @@ public class Picture {
 		this.views = views;
 	}
 	
+	public Picture(String imageUrl, int picId) {
+		this.posterUserId = "";
+		this.posterFbId = "";
+		this.targetUserId = "";
+		this.targetFbId = "";
+		this.imageUrl = "http://" + imageUrl;
+		this.caption = "";
+		this.picId = picId;
+		this.views = 0;
+	}
+	
 	public String getPosterUserId() { return posterUserId; }
 	public String getPosterFbId() { return posterFbId; }
 	public String getTargetUserId() { return targetUserId; }

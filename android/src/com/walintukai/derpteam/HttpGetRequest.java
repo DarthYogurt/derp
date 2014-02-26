@@ -29,10 +29,12 @@ public class HttpGetRequest {
 			
 			int statusCode = response.getStatusLine().getStatusCode();
 			Log.i("HTTP GET STATUS CODE", Integer.toString(statusCode));
+			
+			return string;
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }
-		return string;
+		return "";
 	}
 	
 	public String getUserId(String fbId) {
@@ -40,14 +42,18 @@ public class HttpGetRequest {
 		return getString(url);
 	}
 	
-	public String getImageJsonString(int id) {
+	public String getPictureJsonString(int id) {
 		String url = BASE_URL + GET_PIC_URL + Integer.toString(id);
-		return getString(url);
+		String jsonString = getString(url);
+		Log.v("PICTURE JSON", jsonString);
+		return jsonString;
 	}
 	
 	public String getGalleryJsonString(int picsPerPage, int pageNum) {
 		String url = BASE_URL + GET_GALLERY_URL + Integer.toString(picsPerPage) + "/" + Integer.toString(pageNum) + "/";
-		return getString(url);
+		String jsonString = getString(url);
+		Log.v("GALLERY JSON", jsonString);
+		return jsonString;
 	}
 	
 }

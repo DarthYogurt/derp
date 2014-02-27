@@ -26,6 +26,7 @@ def login(request):
         existUser = User.objects.get(fbId=data.get('fbUserId',1))
         existUser.fbName = data.get("fbUserName", "").encode("utf-8")
         existUser.activated = True
+        existUser.save()
     else:
         newUser = User(
                        fbId = data.get('fbUserId',0),
@@ -47,7 +48,6 @@ def login(request):
             user = User(
                            fbId=friend.get("fbId",0),
                            fbName= fbName, #friend.get("fbName",0),
-                           #activated = False
                            )
             user.save()
    

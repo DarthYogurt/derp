@@ -74,7 +74,7 @@ public class JSONReader {
 		return picturesArray;
 	}
 	
-	public int getTotalPages(String jsonString) {
+	public int getGalleryTotalPages(String jsonString) {
 		int totalPages = 0;
 		try {
             JSONObject jObject = new JSONObject(jsonString);

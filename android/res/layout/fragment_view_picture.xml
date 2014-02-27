@@ -11,6 +11,40 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
 	    
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="6dp" >
+	        
+	        <ImageView 
+		        android:id="@+id/fb_picture"
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_marginRight="10dp"
+		        android:scaleType="fitXY"
+		        android:contentDescription="@string/desc_fb_picture"
+		        android:src="@drawable/fb_pic_placeholder" />
+	        
+	        <TextView
+	            android:id="@+id/fb_name"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentBottom="true"
+	        	android:layout_toRightOf="@id/fb_picture" />
+	        
+	        <TextView 
+	            android:id="@+id/derp_title"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentBottom="true"
+	        	android:layout_alignParentRight="true"
+	        	android:textSize="16sp"
+	        	android:textStyle="bold"
+	        	android:text="title" />
+	        
+	    </RelativeLayout>
+	    
 	    <FrameLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -59,8 +93,18 @@
 	        android:id="@+id/caption"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:gravity="center" />
+	        android:layout_marginTop="4dp"
+	        android:gravity="center"
+	        android:textSize="18sp"
+	        android:textStyle="bold" />
 	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:textSize="18sp"
+	        android:textStyle="bold"
+	        android:text="@string/comments" />
 	
 	</LinearLayout>
 	

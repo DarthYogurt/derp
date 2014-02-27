@@ -27,8 +27,9 @@ public class ViewPictureFragment extends Fragment {
 	
 	public Picture picture;
 	private int picId;
-	private ImageView ivDerpPicture;
+	private ImageView ivPosterPicture;
 	private TextView tvPosterName;
+	private ImageView ivDerpPicture;
 	private TextView tvCaption;
 	
 	static ViewPictureFragment newInstance(int picId) {
@@ -45,6 +46,7 @@ public class ViewPictureFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		ivPosterPicture = (ImageView) view.findViewById(R.id.fb_picture);
 		tvPosterName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
@@ -92,17 +94,20 @@ public class ViewPictureFragment extends Fragment {
 	private void getPosterFbInfo() {
 		String posterFbId = picture.getPosterFbId();
 		String graphPath = "/" + posterFbId + "/";
+		String graphPathPic = "http://graph.facebook.com/" + posterFbId + "/picture";
 		
 		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
 			public void onCompleted(Response response) {
 				try {
 					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
-					String name = jObject.getString("name");
+					String name = jObject.getString("first_name");
 					tvPosterName.setText(name);
 				} 
 				catch (JSONException e) { e.printStackTrace(); }
 			}
 		}).executeAsync();
+		
+		UrlImageViewHelper.setUrlDrawable(ivPosterPicture, graphPathPic, R.drawable.image_placeholder);
 	}
 	
 }

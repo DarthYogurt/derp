@@ -9,6 +9,8 @@ import sys
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponse
 from django.shortcuts import render
+from django.template.context import Context
+from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
 
 from derp_app.models import *
@@ -74,10 +76,9 @@ def uploadPic(request):
     
     print request.FILES['image']
     
-
     newPicture = Picture(
-                         posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
+                         posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          image = request.FILES['image'],
                          caption = data.get("caption", 0),
                          title = data.get("title",""),
@@ -85,6 +86,22 @@ def uploadPic(request):
                          )
     newPicture.save()
     return HttpResponse("")
+
+def externalPicView(request,picId):
+    
+    pic = Picture.objects.get(id=picId)
+    
+    variables = {}
+    variables['friend'] = pic.posterId.fbName
+    variables['you'] = pic.posterId.fbName
+    variables['caption'] = pic.caption
+    variables['title'] = pic.title
+    variables['imageUrl'] = str(request.get_host()) + str(pic.image) 
+    
+    t = get_template('external-view.html')
+    c = Context(variables)
+    return HttpResponse(t.render(c))
+
 
 def getUserId(request,fbUserId):
     try:

@@ -76,15 +76,23 @@ def uploadPic(request):
     
 
     newPicture = Picture(
-                         posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
+                         posterId = User.objects.get(fbId=data.get("fbUserId",1)),
                          image = request.FILES['image'],
                          caption = data.get("caption", 0),
                          title = data.get("title",""),
                          date = datetime.datetime.now()
                          )
     newPicture.save()
+    
+    
+    
+    
     return HttpResponse("")
+
+def externalPicView(request,picId):
+    
+    return HttpRequest("")
 
 def getUserId(request,fbUserId):
     try:

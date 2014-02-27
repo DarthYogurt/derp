@@ -144,11 +144,11 @@ def getPic(request, picId):
         com['comTime'] = comment.timeModified
     return HttpResponse(json.dumps(j), content_type="application/json")
 
-def getTeamGallery(request,userId):
-    user = User.objects.get(id=userId)
+def getTeamGallery(request,fbId):
+    user = User.objects.get(id=fbId)
     pictures = Picture.objects.filter(targetId = user)    
     j={}
-    j['teamId'] = userId
+    j['teamId'] = user.id
     j['teamGallery'] =[]
     for p in pictures:
         temp = {}

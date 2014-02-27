@@ -11,6 +11,7 @@
     <string name="enter_caption">enter caption</string>
     <string name="starting_camera">Starting Camera</string>
     <string name="btn_assign_team">Assign To Team</string>
+    <string name="desc_fb_picture">Facebook Picture</string>
     <string name="desc_derp_picture">Derp Picture</string>
     <string name="desc_taken_picture">Taken Picture</string>
     <string name="desc_rate_image">Image To Rate</string>
@@ -26,7 +27,6 @@
     <string name="dialog_ok">OK</string>
     <string name="pick_friend">Assign To Team</string>
     <string name="derp_assigned">Derp assigned!</string>
-    <string name="title_activity_gallery">GalleryActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="comments">Comments</string>
 
 </resources>

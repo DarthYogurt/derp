@@ -87,7 +87,7 @@ public class GalleryFragment extends Fragment {
 	    	HttpGetRequest get = new HttpGetRequest();
 	    	JSONReader reader = new JSONReader(getActivity());
 		    String jsonString = get.getGalleryJsonString(10, pageNumber);
-		    totalPages = reader.getTotalPages(jsonString);
+		    totalPages = reader.getGalleryTotalPages(jsonString);
 		    
 		    if (!picturesArray.isEmpty()) {
 		    	List<Picture> newPictures = reader.getPicturesArray(jsonString);

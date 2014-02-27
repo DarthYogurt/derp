@@ -1,5 +1,13 @@
 package com.walintukai.derpteam;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
@@ -11,13 +19,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ViewPictureFragment extends Fragment {
 
 	private static final String KEY_PIC_ID = "picId";
 	
+	public Picture picture;
 	private int picId;
-	private ImageView pictureView;
+	private ImageView ivDerpPicture;
+	private TextView tvPosterName;
+	private TextView tvCaption;
 	
 	static ViewPictureFragment newInstance(int picId) {
 		ViewPictureFragment fragment = new ViewPictureFragment();
@@ -33,7 +45,9 @@ public class ViewPictureFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		pictureView = (ImageView) view.findViewById(R.id.derp_picture);
+		tvPosterName = (TextView) view.findViewById(R.id.fb_name);
+		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
+		tvCaption = (TextView) view.findViewById(R.id.caption);
 		
 		Bundle args = getArguments();
 		picId = args.getInt(KEY_PIC_ID);
@@ -55,7 +69,6 @@ public class ViewPictureFragment extends Fragment {
 	}
 	
 	private class GetPictureTask extends AsyncTask<Void, Void, Void> {
-		Picture picture;
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
@@ -69,9 +82,27 @@ public class ViewPictureFragment extends Fragment {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	UrlImageViewHelper.setUrlDrawable(pictureView, picture.getImageUrl(), R.drawable.image_placeholder);
+	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, picture.getImageUrl(), R.drawable.image_placeholder);
+	    	tvCaption.setText(picture.getCaption());
+			getPosterFbInfo();
 	        return;
 	    }
+	}
+	
+	private void getPosterFbInfo() {
+		String posterFbId = picture.getPosterFbId();
+		String graphPath = "/" + posterFbId + "/";
+		
+		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
+			public void onCompleted(Response response) {
+				try {
+					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
+					String name = jObject.getString("name");
+					tvPosterName.setText(name);
+				} 
+				catch (JSONException e) { e.printStackTrace(); }
+			}
+		}).executeAsync();
 	}
 	
 }

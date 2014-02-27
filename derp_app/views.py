@@ -145,7 +145,7 @@ def getPic(request, picId):
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def getTeamGallery(request,fbId):
-    user = User.objects.get(id=fbId)
+    user = User.objects.get(fbId=fbId)
     pictures = Picture.objects.filter(targetId = user)    
     j={}
     j['teamId'] = user.id

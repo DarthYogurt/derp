@@ -1,0 +1,32 @@
+<header>
+    {% load staticfiles %}
+	<link href="{% static "bootstrap-3.1.1-dist/css/bootstrap.css" %}" rel="stylesheet" />
+    
+</header>
+
+<div class="container">
+    <div class="row">
+    	Hey {{ you }}
+    </div>
+    
+    <div class="row">
+    	Your Friend: {{ friend }}
+    </div>
+    
+    <div class="row">
+    	Recruited for your team:
+    </div>
+    
+    <div class="row">
+    
+    	<img src="http://{{ imageUrl}}" />
+    </div>
+    <div class="row">
+    
+    {{title}}
+    </div>
+    <div class="row">
+    
+    {{ caption }}
+	</div>
+</div>

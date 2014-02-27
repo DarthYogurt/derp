@@ -114,5 +114,16 @@ DEFAULT_CHARSET = 'utf-8'
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+TEMPLATE_DIRS = {
+                 #'/home/django/medusa/templates',
+                 #'E:/coding_workspace/medusa_backend/templates',
+                 os.path.join(os.path.dirname(__file__),'../static/templates'),
+}
+
 MEDIA_ROOT = '/derp_media/'
 MEDIA_URL = '/derp_media/'

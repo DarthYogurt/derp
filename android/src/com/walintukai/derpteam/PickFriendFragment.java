@@ -40,20 +40,23 @@ import android.widget.AdapterView.OnItemClickListener;
 public class PickFriendFragment extends Fragment {
 
 	private static final String KEY_IMG_FILENAME = "imgFilename";
+	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
 	
 	private List<GraphUser> fbFriends;
 	private ListView listView;
 	private String imgFilename;
+	private String title;
 	private String caption;
 	private String targetName;
 	private String targetFbId;
 	private String targetUserId;
 
-	static PickFriendFragment newInstance(String imgFilename, String caption) {
+	static PickFriendFragment newInstance(String imgFilename, String title, String caption) {
 		PickFriendFragment fragment = new PickFriendFragment();
 		Bundle args = new Bundle();
 		args.putString(KEY_IMG_FILENAME, imgFilename);
+		args.putString(KEY_TITLE, title);
 		args.putString(KEY_CAPTION, caption);
 		fragment.setArguments(args);
 		return fragment;
@@ -67,6 +70,7 @@ public class PickFriendFragment extends Fragment {
 		
 		Bundle args = getArguments();
 		imgFilename = args.getString(KEY_IMG_FILENAME);
+		title = args.getString(KEY_TITLE);
 		caption = args.getString(KEY_CAPTION);
 		
 		listView = (ListView) view.findViewById(R.id.fb_friend_listview);
@@ -178,7 +182,7 @@ public class PickFriendFragment extends Fragment {
 			targetUserId = get.getUserId(targetFbId);
 	    	
 	    	JSONWriter writer = new JSONWriter(getActivity());
-			writer.createJsonForImage(imgFilename, caption, targetFbId, targetUserId);
+			writer.createJsonForImage(imgFilename, title, caption, targetFbId, targetUserId);
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
 			HttpPostRequest post = new HttpPostRequest(getActivity());

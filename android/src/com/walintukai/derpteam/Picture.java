@@ -7,17 +7,19 @@ public class Picture {
 	private String targetUserId;
 	private String targetFbId;
 	private String imageUrl;
+	private String title;
 	private String caption;
 	private int picId;
 	private int views;
 	
 	public Picture(String posterUserId, String posterFbId, String targetUserId, String targetFbId,
-				   String imageUrl, String caption, int picId, int views) {
+				   String imageUrl, String title, String caption, int picId, int views) {
 		this.posterUserId = posterUserId;
 		this.posterFbId = posterFbId;
 		this.targetUserId = targetUserId;
 		this.targetFbId = targetFbId;
 		this.imageUrl = "http://" + imageUrl;
+		this.title = title;
 		this.caption = caption;
 		this.picId = picId;
 		this.views = views;
@@ -29,6 +31,7 @@ public class Picture {
 		this.targetUserId = "";
 		this.targetFbId = "";
 		this.imageUrl = "http://" + imageUrl;
+		this.title = "";
 		this.caption = "";
 		this.picId = picId;
 		this.views = 0;
@@ -39,6 +42,7 @@ public class Picture {
 	public String getTargetUserId() { return targetUserId; }
 	public String getTargetFbId() { return targetFbId; }
 	public String getImageUrl() { return imageUrl; }
+	public String getTitle() { return title; }
 	public String getCaption() { return caption; }
 	public int getPicId() { return picId; }
 	public int getViews() { return views; }

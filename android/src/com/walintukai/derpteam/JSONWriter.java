@@ -20,6 +20,7 @@ public class JSONWriter {
 	private static final String KEY_FB_NAME = "fbName";
 	private static final String KEY_USER_ID = "userId";
 	private static final String KEY_IMAGE = "image";
+	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
 	private static final String KEY_TARGET_FB_ID = "targetFbId";
 	private static final String KEY_TARGET_USER_ID = "targetUserId";
@@ -64,7 +65,8 @@ public class JSONWriter {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	public void createJsonForImage(String imgFilename, String caption, String targetFbId, String targetUserId) {
+	public void createJsonForImage(String imgFilename, String title, String caption, 
+								   String targetFbId, String targetUserId) {
 		try {
 			fos = context.openFileOutput(FILENAME_ASSIGN_TEAM, Context.MODE_PRIVATE);
 			
@@ -73,6 +75,7 @@ public class JSONWriter {
 			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
 			writer.name(KEY_USER_ID).value(prefs.getUserId());
 			writer.name(KEY_IMAGE).value(imgFilename);
+			writer.name(KEY_TITLE).value(title);
 			writer.name(KEY_CAPTION).value(caption);
 			writer.name(KEY_TARGET_FB_ID).value(targetFbId);
 			writer.name(KEY_TARGET_USER_ID).value(targetUserId);

@@ -1,6 +1,5 @@
 package com.walintukai.derpteam;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +29,7 @@ public class ViewPictureFragment extends Fragment {
 	private ImageView ivPosterPicture;
 	private TextView tvPosterName;
 	private ImageView ivDerpPicture;
+	private TextView tvTitle;
 	private TextView tvCaption;
 	
 	static ViewPictureFragment newInstance(int picId) {
@@ -49,6 +49,7 @@ public class ViewPictureFragment extends Fragment {
 		ivPosterPicture = (ImageView) view.findViewById(R.id.fb_picture);
 		tvPosterName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
+		tvTitle = (TextView) view.findViewById(R.id.title);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
 		
 		Bundle args = getArguments();
@@ -85,16 +86,17 @@ public class ViewPictureFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, picture.getImageUrl(), R.drawable.image_placeholder);
+	    	tvTitle.setText(picture.getTitle());
 	    	tvCaption.setText(picture.getCaption());
-			getPosterFbInfo();
+			getTargetFbInfo();
 	        return;
 	    }
 	}
 	
-	private void getPosterFbInfo() {
-		String posterFbId = picture.getPosterFbId();
-		String graphPath = "/" + posterFbId + "/";
-		String graphPathPic = "http://graph.facebook.com/" + posterFbId + "/picture";
+	private void getTargetFbInfo() {
+		String targetFbId = picture.getTargetFbId();
+		String graphPath = "/" + targetFbId + "/";
+		String graphPathPic = "http://graph.facebook.com/" + targetFbId + "/picture";
 		
 		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
 			public void onCompleted(Response response) {

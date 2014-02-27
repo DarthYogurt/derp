@@ -44,6 +44,7 @@ import android.widget.Toast;
 public class TakePictureFragment extends Fragment {
 
 	private static final int REQUEST_PICTURE = 1;
+	private static final String KEY_FILENAME = "filename";
 	
 	private ImageView takenPicture;
 	private String filename;
@@ -54,7 +55,7 @@ public class TakePictureFragment extends Fragment {
 	static TakePictureFragment newInstance(String filename) {
 		TakePictureFragment fragment = new TakePictureFragment();
 		Bundle args = new Bundle();
-		args.putString("filename", filename);
+		args.putString(KEY_FILENAME, filename);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -66,7 +67,7 @@ public class TakePictureFragment extends Fragment {
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		Bundle args = getArguments();
-		filename = args.getString("filename");
+		filename = args.getString(KEY_FILENAME);
 		oldFilename = "";
 		
 		takenPicture = (ImageView) view.findViewById(R.id.taken_picture);
@@ -91,13 +92,16 @@ public class TakePictureFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (hasPicture) {
-					EditText editText = (EditText) view.findViewById(R.id.caption);
-					String caption = editText.getText().toString();
+					EditText etTitle = (EditText) view.findViewById(R.id.enter_title);
+					String title = etTitle.getText().toString();
+					
+					EditText etCaption = (EditText) view.findViewById(R.id.enter_caption);
+					String caption = etCaption.getText().toString();
 					
 					FragmentManager fm = getFragmentManager();
 					FragmentTransaction ft = fm.beginTransaction();
 					ft.hide(TakePictureFragment.this);
-					PickFriendFragment fragment = PickFriendFragment.newInstance(filename, caption);
+					PickFriendFragment fragment = PickFriendFragment.newInstance(filename, title, caption);
 					ft.add(R.id.fragment_container, fragment);
 					ft.addToBackStack(null);
 					ft.commit();
@@ -116,9 +120,13 @@ public class TakePictureFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
-			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
-			getActivity().getFragmentManager().popBackStack();
+			if (hasPicture) {
+				GoBackDialogFrament dialog = new GoBackDialogFrament();
+				dialog.show(getFragmentManager(), "goBack");
+			}
+			else {
+				getActivity().getFragmentManager().popBackStack();
+			}
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

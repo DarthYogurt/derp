@@ -8,7 +8,8 @@
     <string name="action_log_out">Log Out</string>
     <string name="logo">Logo</string>
     <string name="no_friends">No Friends</string>
-    <string name="enter_caption">enter caption</string>
+    <string name="enter_caption">enter funny caption</string>
+    <string name="enter_title">enter title - ie. captain, brother, etc</string>
     <string name="starting_camera">Starting Camera</string>
     <string name="btn_assign_team">Assign To Team</string>
     <string name="desc_fb_picture">Facebook Picture</string>
@@ -28,5 +29,6 @@
     <string name="pick_friend">Assign To Team</string>
     <string name="derp_assigned">Derp assigned!</string>
     <string name="comments">Comments</string>
+    <string name="possessive_form">\'s</string>
 
 </resources>

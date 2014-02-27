@@ -6,10 +6,30 @@
     android:orientation="vertical"
     android:background="#fff" >
     
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#30acff" >
+        
+        <EditText
+			android:id="@+id/enter_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:padding="6dp"
+			android:background="@drawable/edit_text_box"
+			android:hint="@string/enter_title"
+			android:maxLength="30"
+			android:singleLine="true" />
+        
+    </LinearLayout>
+    
     <ImageView 
         android:id="@+id/taken_picture"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="360dp"
         android:scaleType="fitXY"
         android:src="@drawable/image_placeholder"
         android:contentDescription="@string/desc_taken_picture" />
@@ -17,15 +37,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:orientation="vertical"
+        android:padding="10dp"
         android:background="#30acff" >
         
         <EditText
-			android:id="@+id/caption"
+			android:id="@+id/enter_caption"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
-			android:padding="10dp"
+			android:padding="6dp"
 			android:background="@drawable/edit_text_box"
 			android:hint="@string/enter_caption"
 			android:maxLength="30"
@@ -37,6 +58,7 @@
         android:id="@+id/btn_assign_team"
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
 		android:layout_gravity="center_horizontal"
 		android:text="@string/btn_assign_team" />
 

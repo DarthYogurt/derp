@@ -22,6 +22,7 @@ public class JSONReader {
 	private static final String KEY_TARGET_USER_ID = "targetUserId";
 	private static final String KEY_TARGET_FB_ID = "targetFbId";
 	private static final String KEY_IMAGE_URL = "imageUrl";
+	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
 	private static final String KEY_PIC_ID = "picId";
 	private static final String KEY_VIEWS = "views";
@@ -42,12 +43,13 @@ public class JSONReader {
 	    	String targetUserId = jObject.getString(KEY_TARGET_USER_ID);
 	    	String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
 	    	String imageUrl = jObject.getString(KEY_IMAGE_URL);
+	    	String title = jObject.getString(KEY_TITLE);
 	    	String caption = jObject.getString(KEY_CAPTION);
 	    	int picId = jObject.getInt(KEY_PIC_ID);
 	    	int views = jObject.getInt(KEY_VIEWS);
 		
 	    	Picture picture = new Picture(posterUserId, posterFbId, targetUserId, targetFbId, 
-	    			imageUrl, caption, picId, views);
+	    			imageUrl, title, caption, picId, views);
 	    	
 	    	return picture;
 		} 

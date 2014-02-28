@@ -17,14 +17,13 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class GalleryFragment extends Fragment {
 	
 	private GridView gridView;
 	private GalleryAdapter adapter;
-	private List<Picture> picturesArray;
+	private List<Member> membersArray;
 	private int totalPages;
 	
 	static GalleryFragment newInstance() {
@@ -38,11 +37,11 @@ public class GalleryFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		picturesArray = new ArrayList<Picture>();
+		membersArray = new ArrayList<Member>();
 		
 		gridView = (GridView) view.findViewById(R.id.gridview);
 		
-		adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, picturesArray);
+		adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, membersArray);
 		gridView.setAdapter(adapter);
 		
 		gridView.setOnScrollListener(new EndlessScrollListener());
@@ -53,14 +52,14 @@ public class GalleryFragment extends Fragment {
 	    		FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-				ViewPictureFragment fragment = ViewPictureFragment.newInstance(picturesArray.get(position).getPicId());
+				ViewMemberFragment fragment = ViewMemberFragment.newInstance(membersArray.get(position).getPicId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();
 	        }
 	    });
 	    
-	    new GetPicturesTask(1).execute();
+	    new GetMembersTask(1).execute();
 		
 		return view;
 	}
@@ -76,30 +75,30 @@ public class GalleryFragment extends Fragment {
 		}
 	}
 	
-	private class GetPicturesTask extends AsyncTask<Void, Void, List<Picture>> {
+	private class GetMembersTask extends AsyncTask<Void, Void, List<Member>> {
 		private int pageNumber;
 		
-		private GetPicturesTask(int pageNumber) {
+		private GetMembersTask(int pageNumber) {
 			this.pageNumber = pageNumber;
 		}
 		
-	    protected List<Picture> doInBackground(Void... params) {
+	    protected List<Member> doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
 	    	JSONReader reader = new JSONReader(getActivity());
 		    String jsonString = get.getGalleryJsonString(10, pageNumber);
 		    totalPages = reader.getGalleryTotalPages(jsonString);
 		    
-		    if (!picturesArray.isEmpty()) {
-		    	List<Picture> newPictures = reader.getPicturesArray(jsonString);
-		    	picturesArray.addAll(newPictures);
+		    if (!membersArray.isEmpty()) {
+		    	List<Member> newMembers = reader.getMembersArray(jsonString);
+		    	membersArray.addAll(newMembers);
 		    }
 		    else {
-		    	picturesArray = reader.getPicturesArray(jsonString);
+		    	membersArray = reader.getMembersArray(jsonString);
 		    }
-	        return picturesArray;
+	        return membersArray;
 	    }
 
-	    protected void onPostExecute(List<Picture> result) {
+	    protected void onPostExecute(List<Member> result) {
 	    	super.onPostExecute(result);
 	    	adapter.refreshList(result);
 	        return;
@@ -131,7 +130,7 @@ public class GalleryFragment extends Fragment {
 				if (currentPage <= totalPages) {
 					loading = true;
 					Log.i("LOADING", "PAGE " + Integer.toString(currentPage));
-					new GetPicturesTask(currentPage).execute();
+					new GetMembersTask(currentPage).execute();
 				}
 			}
 		}

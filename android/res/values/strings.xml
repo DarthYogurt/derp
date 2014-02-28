@@ -31,5 +31,7 @@
     <string name="derp_assigned">Derp assigned!</string>
     <string name="comments">Comments</string>
     <string name="possessive_form">\'s</string>
+    <string name="team">Team</string>
+    <string name="assigned_by">Assigned By:</string>
 
 </resources>

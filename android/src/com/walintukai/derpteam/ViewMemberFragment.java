@@ -20,11 +20,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ViewPictureFragment extends Fragment {
+public class ViewMemberFragment extends Fragment {
 
 	private static final String KEY_PIC_ID = "picId";
 	
-	public Picture picture;
+	public Member member;
 	private int picId;
 	private ImageView ivPosterPicture;
 	private TextView tvPosterName;
@@ -32,8 +32,8 @@ public class ViewPictureFragment extends Fragment {
 	private TextView tvTitle;
 	private TextView tvCaption;
 	
-	static ViewPictureFragment newInstance(int picId) {
-		ViewPictureFragment fragment = new ViewPictureFragment();
+	static ViewMemberFragment newInstance(int picId) {
+		ViewMemberFragment fragment = new ViewMemberFragment();
 		Bundle args = new Bundle();
 		args.putInt(KEY_PIC_ID, picId);
 		fragment.setArguments(args);
@@ -55,7 +55,7 @@ public class ViewPictureFragment extends Fragment {
 		Bundle args = getArguments();
 		picId = args.getInt(KEY_PIC_ID);
 		
-		new GetPictureTask().execute();
+		new GetMemberTask().execute();
 		
 		return view;
 	}
@@ -71,30 +71,30 @@ public class ViewPictureFragment extends Fragment {
 		}
 	}
 	
-	private class GetPictureTask extends AsyncTask<Void, Void, Void> {
+	private class GetMemberTask extends AsyncTask<Void, Void, Void> {
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getPictureJsonString(picId);
+	    	String jsonString = get.getMemberJsonString(picId);
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
-	    	picture = reader.getPictureObject(jsonString);
+	    	member = reader.getMemberObject(jsonString);
 	    	
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, picture.getImageUrl(), R.drawable.image_placeholder);
-	    	tvTitle.setText(picture.getTitle());
-	    	tvCaption.setText(picture.getCaption());
+	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
+	    	tvTitle.setText(member.getTitle());
+	    	tvCaption.setText(member.getCaption());
 			getTargetFbInfo();
 	        return;
 	    }
 	}
 	
 	private void getTargetFbInfo() {
-		String targetFbId = picture.getTargetFbId();
+		String targetFbId = member.getTargetFbId();
 		String graphPath = "/" + targetFbId + "/";
 		String graphPathPic = "http://graph.facebook.com/" + targetFbId + "/picture";
 		

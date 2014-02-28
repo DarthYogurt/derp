@@ -1,8 +1,6 @@
 package com.walintukai.derpteam;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

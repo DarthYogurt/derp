@@ -1,10 +1,8 @@
 package com.walintukai.derpteam;
 
-public class Picture {
+public class Member {
 
-	private String posterUserId;
 	private String posterFbId; 
-	private String targetUserId;
 	private String targetFbId;
 	private String imageUrl;
 	private String title;
@@ -12,11 +10,9 @@ public class Picture {
 	private int picId;
 	private int views;
 	
-	public Picture(String posterUserId, String posterFbId, String targetUserId, String targetFbId,
-				   String imageUrl, String title, String caption, int picId, int views) {
-		this.posterUserId = posterUserId;
+	public Member(String posterFbId, String targetFbId, String imageUrl, String title, 
+				  String caption, int picId, int views) {
 		this.posterFbId = posterFbId;
-		this.targetUserId = targetUserId;
 		this.targetFbId = targetFbId;
 		this.imageUrl = "http://" + imageUrl;
 		this.title = title;
@@ -25,10 +21,8 @@ public class Picture {
 		this.views = views;
 	}
 	
-	public Picture(String imageUrl, int picId) {
-		this.posterUserId = "";
+	public Member(String imageUrl, int picId) {
 		this.posterFbId = "";
-		this.targetUserId = "";
 		this.targetFbId = "";
 		this.imageUrl = "http://" + imageUrl;
 		this.title = "";
@@ -37,9 +31,7 @@ public class Picture {
 		this.views = 0;
 	}
 	
-	public String getPosterUserId() { return posterUserId; }
 	public String getPosterFbId() { return posterFbId; }
-	public String getTargetUserId() { return targetUserId; }
 	public String getTargetFbId() { return targetFbId; }
 	public String getImageUrl() { return imageUrl; }
 	public String getTitle() { return title; }

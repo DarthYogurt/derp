@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <ImageView 
+	        android:id="@+id/poster_fb_picture"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginRight="8dp"
+	        android:scaleType="fitXY"
+	        android:contentDescription="@string/desc_fb_picture"
+	        android:src="@drawable/fb_pic_placeholder" />
+        
+        <TextView
+            android:id="@+id/poster_name"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentBottom="true"
+        	android:layout_toRightOf="@id/fb_picture"
+        	android:textSize="18sp"
+        	android:textStyle="bold" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/name"
+            android:layout_toRightOf="@id/fb_picture"
+            android:textSize="18sp"
+            android:text="@string/assigned_by" />
+        
+        <TextView 
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentBottom="true"
+        	android:layout_alignParentRight="true"
+        	android:textSize="18sp"
+        	android:textStyle="bold" />
+        
+    </RelativeLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
+        
+        <ImageView 
+	        android:id="@+id/member"
+	        android:layout_width="match_parent"
+	        android:layout_height="360dp"
+	        android:scaleType="fitXY"
+	        android:contentDescription="@string/desc_derp_picture" />
+        
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right" />
+        
+	</FrameLayout>
+
+</LinearLayout>

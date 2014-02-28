@@ -182,7 +182,7 @@ public class PickFriendFragment extends Fragment {
 			targetUserId = get.getUserId(targetFbId);
 	    	
 	    	JSONWriter writer = new JSONWriter(getActivity());
-			writer.createJsonForImage(imgFilename, title, caption, targetFbId, targetUserId);
+			writer.createJsonForMember(imgFilename, title, caption, targetFbId, targetUserId);
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
 			HttpPostRequest post = new HttpPostRequest(getActivity());

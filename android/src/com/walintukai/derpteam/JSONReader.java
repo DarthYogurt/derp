@@ -1,10 +1,5 @@
 package com.walintukai.derpteam;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +29,11 @@ public class JSONReader {
 		this.context = context;
 	}
 	
-	public Picture getPictureObject(String jsonString) {
+	public Member getMemberObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);
 			
-			String posterUserId = jObject.getString(KEY_POSTER_USER_ID);
 			String posterFbId = jObject.getString(KEY_POSTER_FB_ID);
-	    	String targetUserId = jObject.getString(KEY_TARGET_USER_ID);
 	    	String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
 	    	String imageUrl = jObject.getString(KEY_IMAGE_URL);
 	    	String title = jObject.getString(KEY_TITLE);
@@ -48,17 +41,15 @@ public class JSONReader {
 	    	int picId = jObject.getInt(KEY_PIC_ID);
 	    	int views = jObject.getInt(KEY_VIEWS);
 		
-	    	Picture picture = new Picture(posterUserId, posterFbId, targetUserId, targetFbId, 
-	    			imageUrl, title, caption, picId, views);
-	    	
-	    	return picture;
+	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, views);
+	    	return member;
 		} 
 		catch (JSONException e) { e.printStackTrace(); }
 		return null;
 	}
 	
-	public List<Picture> getPicturesArray(String jsonString) {
-		List<Picture> picturesArray = new ArrayList<Picture>();
+	public List<Member> getMembersArray(String jsonString) {
+		List<Member> membersArray = new ArrayList<Member>();
 		
 		try {
             JSONObject jObject = new JSONObject(jsonString);
@@ -68,12 +59,12 @@ public class JSONReader {
             	String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
             	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
                 
-                Picture picture = new Picture(imageUrl, picId);
-                picturesArray.add(picture);
+                Member member = new Member(imageUrl, picId);
+                membersArray.add(member);
             }
         } 
 		catch (Exception e) { e.printStackTrace(); }
-		return picturesArray;
+		return membersArray;
 	}
 	
 	public int getGalleryTotalPages(String jsonString) {
@@ -84,6 +75,31 @@ public class JSONReader {
         } 
 		catch (Exception e) { e.printStackTrace(); }
 		return totalPages;
+	}
+	
+	public List<Member> getTeamMembersArray(String jsonString) {
+		List<Member> teamMembersArray = new ArrayList<Member>();
+		
+		try {
+            JSONObject jObject = new JSONObject(jsonString);
+            JSONArray jArray = jObject.getJSONArray("teamGallery");
+            
+            String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+            
+            for (int i = 0; i < jArray.length(); i++) {
+    			String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
+    	    	String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
+    	    	String title = jArray.getJSONObject(i).getString(KEY_TITLE);
+    	    	String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
+    	    	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
+    	    	int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
+                
+    	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, views);
+    	    	teamMembersArray.add(member);
+            }
+        } 
+		catch (Exception e) { e.printStackTrace(); }
+		return teamMembersArray;
 	}
 	
 //	public String readFromInternal(String filename) throws IOException {

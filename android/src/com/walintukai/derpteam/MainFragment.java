@@ -18,7 +18,8 @@ import android.widget.Toast;
 
 public class MainFragment extends Fragment {
 	
-	ImageView ratePicture;
+	private Preferences prefs;
+	private ImageView rateMember;
 	
 	static MainFragment newInstance() {
 		MainFragment fragment = new MainFragment();
@@ -31,7 +32,9 @@ public class MainFragment extends Fragment {
 		setHasOptionsMenu(false);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
-		ratePicture = (ImageView) view.findViewById(R.id.rate_picture);
+		prefs = new Preferences(getActivity());
+		
+		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		new GetRandomPicTask().execute();
 		
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
@@ -59,10 +62,10 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-//				TakePictureFragment fragment = new TakePictureFragment();
-//				ft.replace(R.id.fragment_container, fragment);
-//				ft.addToBackStack(null);
-//				ft.commit();
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
 			}
 		});
 		
@@ -112,21 +115,21 @@ public class MainFragment extends Fragment {
 	}
 	
 	private class GetRandomPicTask extends AsyncTask<Void, Void, Void> {
-		Picture picture;
+		Member member;
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getPictureJsonString(0);
+	    	String jsonString = get.getMemberJsonString(0);
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
-	    	picture = reader.getPictureObject(jsonString);
+	    	member = reader.getMemberObject(jsonString);
 	    	
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	UrlImageViewHelper.setUrlDrawable(ratePicture, picture.getImageUrl(), R.drawable.image_placeholder);
+	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder);
 	        return;
 	    }
 	}

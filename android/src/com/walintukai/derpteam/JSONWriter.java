@@ -65,7 +65,7 @@ public class JSONWriter {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	public void createJsonForImage(String imgFilename, String title, String caption, 
+	public void createJsonForMember(String imgFilename, String title, String caption, 
 								   String targetFbId, String targetUserId) {
 		try {
 			fos = context.openFileOutput(FILENAME_ASSIGN_TEAM, Context.MODE_PRIVATE);
@@ -83,7 +83,7 @@ public class JSONWriter {
 			writer.close();
 			fos.close();
 			
-			Log.i("JSON FOR IMAGE CREATED", FILENAME_ASSIGN_TEAM);
+			Log.i("JSON FOR MEMBER CREATED", FILENAME_ASSIGN_TEAM);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

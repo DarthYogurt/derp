@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_share">Share</string>
     <string name="action_log_out">Log Out</string>
+    <string name="no_internet">No internet access</string>
     <string name="logo">Logo</string>
     <string name="no_friends">No Friends</string>
     <string name="enter_caption">enter funny caption</string>

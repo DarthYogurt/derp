@@ -185,11 +185,20 @@ public class PickFriendFragment extends Fragment {
 			writer.createJsonForMember(imgFilename, title, caption, targetFbId, targetUserId);
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
-			HttpPostRequest post = new HttpPostRequest(getActivity());
-			post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
-			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
-			post.addPicture(imgFilename);
-			post.sendPost();
+			if (GlobalMethods.isNetworkAvailable(getActivity())) {
+				HttpPostRequest post = new HttpPostRequest(getActivity());
+				post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
+				post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
+				post.addPicture(imgFilename);
+				post.sendPost();
+			}
+			else {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
 			
 	        return null;
 	    }

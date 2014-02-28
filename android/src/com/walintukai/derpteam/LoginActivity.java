@@ -16,6 +16,7 @@ import com.facebook.model.GraphMultiResult;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
+import com.medusa.checkit.android.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	
@@ -150,10 +152,19 @@ public class LoginActivity extends Activity {
 	
 	private class UpdateFriendsThread extends Thread {
 		public void run() {
-			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
-			post.createPost(HttpPostRequest.LOGIN_URL);
-			post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
-			post.sendPost();
+			if (GlobalMethods.isNetworkAvailable(LoginActivity.this)) {
+				HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+				post.createPost(HttpPostRequest.LOGIN_URL);
+				post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
+				post.sendPost();
+			}
+			else {
+				runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
 		}
 	}
 	

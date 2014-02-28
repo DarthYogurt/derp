@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainFragment extends Fragment {
 	
 	private Preferences prefs;
 	private ImageView rateMember;
+	private TextView caption;
 	
 	static MainFragment newInstance() {
 		MainFragment fragment = new MainFragment();
@@ -34,15 +36,16 @@ public class MainFragment extends Fragment {
 		
 		prefs = new Preferences(getActivity());
 		
+		caption = (TextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
-		new GetRandomPicTask().execute();
+		new GetRandomMemberTask().execute();
 		
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				new GetRandomPicTask().execute();
+				new GetRandomMemberTask().execute();
 			}
 		});
 		
@@ -51,7 +54,7 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				new GetRandomPicTask().execute();
+				new GetRandomMemberTask().execute();
 			}
 		});
 		
@@ -62,7 +65,7 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();
@@ -114,7 +117,7 @@ public class MainFragment extends Fragment {
 		return view;
 	}
 	
-	private class GetRandomPicTask extends AsyncTask<Void, Void, Void> {
+	private class GetRandomMemberTask extends AsyncTask<Void, Void, Void> {
 		Member member;
 		
 	    protected Void doInBackground(Void... params) {
@@ -129,6 +132,7 @@ public class MainFragment extends Fragment {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
+	    	caption.setText(member.getCaption());
 	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder);
 	        return;
 	    }

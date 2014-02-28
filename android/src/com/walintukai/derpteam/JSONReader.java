@@ -101,25 +101,5 @@ public class JSONReader {
 		catch (Exception e) { e.printStackTrace(); }
 		return teamMembersArray;
 	}
-	
-//	public String readFromInternal(String filename) throws IOException {
-//		BufferedReader br = null;
-//		String jsonString = "";
-//		
-//		try {
-//			FileInputStream fis = context.openFileInput(filename);
-//			InputStreamReader isr = new InputStreamReader(fis);
-//			br = new BufferedReader(isr);
-//			jsonString = br.readLine();
-//			
-//			Log.i("JSON STRING", jsonString);
-//		} 
-//		catch (FileNotFoundException e) { e.printStackTrace(); } 
-//		finally {
-//			try { if (br != null) { br.close(); } } 
-//			catch (IOException e) { e.printStackTrace(); }
-//		}
-//		return jsonString;
-//	}
 
 }

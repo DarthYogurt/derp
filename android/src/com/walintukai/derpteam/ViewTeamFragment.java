@@ -20,7 +20,6 @@ public class ViewTeamFragment extends Fragment {
 	private ListView listView;
 	private TeamListAdapter adapter;
 	
-	
 	static ViewTeamFragment newInstance(String fbId) {
 		ViewTeamFragment fragment = new ViewTeamFragment();
 		Bundle args = new Bundle();
@@ -38,9 +37,13 @@ public class ViewTeamFragment extends Fragment {
 		Bundle args = getArguments();
 		fbId = args.getString(KEY_FB_ID);
 		
-		listView = (ListView) view.findViewById(R.id.team_listview);
+		View header = inflater.inflate(R.layout.listview_team_header, null);
+		// TODO: set header name
 		
-		new GetMembersTask().execute();
+		listView = (ListView) view.findViewById(R.id.team_listview);
+		listView.addHeaderView(header);
+		
+		new SetListViewTask().execute();
 		
 		return view;
 	}
@@ -56,7 +59,7 @@ public class ViewTeamFragment extends Fragment {
 		}
 	}
 	
-	private class GetMembersTask extends AsyncTask<Void, Void, List<Member>> {
+	private class SetListViewTask extends AsyncTask<Void, Void, List<Member>> {
 		
 	    protected List<Member> doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();

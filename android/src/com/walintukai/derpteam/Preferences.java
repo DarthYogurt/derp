@@ -8,8 +8,8 @@ import android.util.Log;
 public class Preferences {
 	
 	private static final String FILENAME_PREF = "preferences";
-	private static final String KEY_FB_USER_ID = "fbUserId";
-	private static final String KEY_FB_USER_NAME = "fbUserName";
+	private static final String KEY_FB_ID = "fbId";
+	private static final String KEY_FB_NAME = "fbName";
 	private static final String KEY_USER_ID = "userId";
 	
 	private SharedPreferences pref;
@@ -20,27 +20,27 @@ public class Preferences {
 		this.prefEditor = pref.edit();
 	}
 	
-	public void setFbUserId(String s) {
-		prefEditor.putString(KEY_FB_USER_ID, s).commit();
-		Log.i("PREF: SET FB USER ID", s);
+	public void setFbId(String s) {
+		prefEditor.putString(KEY_FB_ID, s).commit();
+		Log.i("PREF: SET FB ID", s);
 	}
 	
-	public String getFbUserId() {
-		return pref.getString(KEY_FB_USER_ID, "");
+	public String getFbId() {
+		return pref.getString(KEY_FB_ID, "");
 	}
 	
-	public void setFbUserName(String s) {
-		prefEditor.putString(KEY_FB_USER_NAME, s).commit();
-		Log.i("PREF: SET FB USER NAME", s);
+	public void setFbName(String s) {
+		prefEditor.putString(KEY_FB_NAME, s).commit();
+		Log.i("PREF: SET FB NAME", s);
 	}
 	
-	public String getFbUserName() {
-		return pref.getString(KEY_FB_USER_NAME, "");
+	public String getFbName() {
+		return pref.getString(KEY_FB_NAME, "");
 	}
 	
 	public void setUserId(String s) {
 		prefEditor.putString(KEY_USER_ID, s).commit();
-		Log.i("PREF: SET FB USER ID", s);
+		Log.i("PREF: SET USER ID", s);
 	}
 	
 	public String getUserId() {

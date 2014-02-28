@@ -40,7 +40,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		private TextView posterName;
 		private TextView title;
 		private ImageView memberPic;
-		private TextView score;
+		private TextView caption;
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder.posterName = (TextView) convertView.findViewById(R.id.poster_name);
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.memberPic = (ImageView) convertView.findViewById(R.id.member);
-            holder.score = (TextView) convertView.findViewById(R.id.score);
+            holder.caption = (TextView) convertView.findViewById(R.id.caption);
 
             convertView.setTag(holder);
         } 
@@ -63,19 +63,10 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-		setFbFields(members.get(position));
+		String graphPathPic = "http://graph.facebook.com/" + members.get(position).getPosterFbId() + "/picture";
+		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, graphPathPic, R.drawable.image_placeholder);
 		
-        holder.title.setText(members.get(position).getTitle());
-        UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl());
-
-        return convertView;
-	}
-	
-	private void setFbFields(Member member) {
-		String posterFbId = member.getPosterFbId();
-		String graphPath = "/" + posterFbId + "/";
-		String graphPathPic = "http://graph.facebook.com/" + posterFbId + "/picture";
-		
+		String graphPath = "/" + members.get(position).getPosterFbId() + "/";
 		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
 			public void onCompleted(Response response) {
 				try {
@@ -87,7 +78,11 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 			}
 		}).executeAsync();
 		
-		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, graphPathPic, R.drawable.image_placeholder);
+        holder.title.setText(members.get(position).getTitle());
+        holder.caption.setText(members.get(position).getCaption());
+        UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), R.drawable.image_placeholder);
+
+        return convertView;
 	}
 
 }

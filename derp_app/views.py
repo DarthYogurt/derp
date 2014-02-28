@@ -148,7 +148,8 @@ def getTeamGallery(request,fbId):
     user = User.objects.get(fbId=fbId)
     pictures = Picture.objects.filter(targetId = user)    
     j={}
-    j['teamId'] = user.id
+    j['targetId'] = user.id
+    j['targetFbId'] = str(user.fbId) 
     j['teamGallery'] =[]
     for p in pictures:
         temp = {}

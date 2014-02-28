@@ -34,5 +34,6 @@
     <string name="possessive_form">\'s</string>
     <string name="team">Team</string>
     <string name="assigned_by">Assigned By:</string>
+    <string name="not_complete">Please fill in all the fields.</string>
 
 </resources>

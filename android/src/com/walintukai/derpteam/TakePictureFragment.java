@@ -88,13 +88,18 @@ public class TakePictureFragment extends Fragment {
 					EditText etCaption = (EditText) view.findViewById(R.id.enter_caption);
 					String caption = etCaption.getText().toString();
 					
-					FragmentManager fm = getFragmentManager();
-					FragmentTransaction ft = fm.beginTransaction();
-					ft.hide(TakePictureFragment.this);
-					PickFriendFragment fragment = PickFriendFragment.newInstance(filename, title, caption);
-					ft.add(R.id.fragment_container, fragment);
-					ft.addToBackStack(null);
-					ft.commit();
+					if (title.isEmpty() || caption.isEmpty()) {
+						Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT).show();
+					}
+					else {
+						FragmentManager fm = getFragmentManager();
+						FragmentTransaction ft = fm.beginTransaction();
+						ft.hide(TakePictureFragment.this);
+						PickFriendFragment fragment = PickFriendFragment.newInstance(filename, title, caption);
+						ft.add(R.id.fragment_container, fragment);
+						ft.addToBackStack(null);
+						ft.commit();
+					}
 				}
 				else {
 					NoPictureDialogFrament dialog = new NoPictureDialogFrament();

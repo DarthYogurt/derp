@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/poster_fb_picture"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text="@string/assigned_by" />
         
         <TextView 

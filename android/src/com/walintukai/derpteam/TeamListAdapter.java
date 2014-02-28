@@ -5,9 +5,12 @@ import java.util.List;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -37,7 +40,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 	}
 	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		
 		if (convertView == null) {
@@ -63,6 +66,19 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
         holder.title.setText(members.get(position).getTitle());
         UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), R.drawable.image_placeholder);
         holder.caption.setText(members.get(position).getCaption());
+        
+        holder.posterFbPic.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FragmentManager fm = ((Activity)context).getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(members.get(position).getPosterFbId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+        });
 
         return convertView;
 	}

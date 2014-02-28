@@ -9,7 +9,10 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,8 +30,8 @@ public class ViewMemberFragment extends Fragment {
 	private static final String KEY_PIC_ID = "picId";
 	
 	private int picId;
-	private ImageView ivPosterFbPic;
-	private TextView tvPosterName;
+	private ImageView ivTargetFbPic;
+	private TextView tvTargetName;
 	private ImageView ivDerpPicture;
 	private TextView tvTitle;
 	private TextView tvCaption;
@@ -46,8 +50,8 @@ public class ViewMemberFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		ivPosterFbPic = (ImageView) view.findViewById(R.id.fb_picture);
-		tvPosterName = (TextView) view.findViewById(R.id.fb_name);
+		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
+		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (TextView) view.findViewById(R.id.title);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
@@ -93,11 +97,24 @@ public class ViewMemberFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	String graphPathPic = "http://graph.facebook.com/" + member.getTargetFbId() + "/picture";
-	    	UrlImageViewHelper.setUrlDrawable(ivPosterFbPic, graphPathPic, R.drawable.image_placeholder);
+	    	UrlImageViewHelper.setUrlDrawable(ivTargetFbPic, graphPathPic, R.drawable.image_placeholder);
 	    	getTargetFbName(member.getTargetFbId());
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
 	    	tvTitle.setText(member.getTitle());
 	    	tvCaption.setText(member.getCaption());
+	    	
+	    	ivTargetFbPic.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					FragmentManager fm = getActivity().getFragmentManager();
+					FragmentTransaction ft = fm.beginTransaction();
+					
+					ViewTeamFragment fragment = ViewTeamFragment.newInstance(member.getTargetFbId());
+					ft.replace(R.id.fragment_container, fragment);
+					ft.addToBackStack(null);
+					ft.commit();
+				}
+			});
 	    	loadingDialog.hide();
 	        return;
 	    }
@@ -110,7 +127,7 @@ public class ViewMemberFragment extends Fragment {
 				try {
 					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
 					String name = jObject.getString("first_name");
-					tvPosterName.setText(name);
+					tvTargetName.setText(name);
 				} 
 				catch (JSONException e) { e.printStackTrace(); }
 			}

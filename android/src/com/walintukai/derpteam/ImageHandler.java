@@ -71,7 +71,7 @@ public class ImageHandler {
 		Preferences prefs = new Preferences(context);
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		String timeStamp = sdf.format(new Date());
-		return timeStamp + "-" + prefs.getFbId() + ".jpg";
+		return timeStamp + "-" + prefs.getFbUserId() + ".jpg";
 	}
 	
 }

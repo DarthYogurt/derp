@@ -65,7 +65,7 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbId());
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();

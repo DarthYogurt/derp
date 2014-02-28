@@ -41,7 +41,7 @@ public class JSONWriter {
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
-			writer.name(KEY_FB_USER_ID).value(prefs.getFbId());
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
 			writer.name(KEY_FB_USER_NAME).value(prefs.getFbName());
 			writer.name(KEY_FB_FRIENDS);
 			writer.beginArray();
@@ -72,7 +72,7 @@ public class JSONWriter {
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
-			writer.name(KEY_FB_USER_ID).value(prefs.getFbId());
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
 			writer.name(KEY_USER_ID).value(prefs.getUserId());
 			writer.name(KEY_IMAGE).value(imgFilename);
 			writer.name(KEY_TITLE).value(title);

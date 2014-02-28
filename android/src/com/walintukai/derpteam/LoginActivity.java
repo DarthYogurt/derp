@@ -87,7 +87,7 @@ public class LoginActivity extends Activity {
 				public void onCompleted(GraphUser user, Response response) {
 					if (user != null) {
 						Log.i("FB LOGIN", user.getName());
-						prefs.setFbId(user.getId());
+						prefs.setFbUserId(user.getId());
 						prefs.setFbName(user.getName());
 						new SetIdThread(user.getId()).start();
 					}
@@ -98,8 +98,8 @@ public class LoginActivity extends Activity {
         	goToMainActivity();
         }
         else if (session.isClosed()) {
-        	Log.i("FB LOGOUT", " ");
-        	prefs.setFbId("");
+        	Log.i("FB LOGOUT", "SUCCESS");
+        	prefs.setFbUserId("");
 			prefs.setFbName("");
 			prefs.setUserId("");
         }

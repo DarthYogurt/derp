@@ -8,7 +8,7 @@ import android.util.Log;
 public class Preferences {
 	
 	private static final String FILENAME_PREF = "preferences";
-	private static final String KEY_FB_ID = "fbId";
+	private static final String KEY_FB_USER_ID = "fbId";
 	private static final String KEY_FB_NAME = "fbName";
 	private static final String KEY_USER_ID = "userId";
 	
@@ -20,13 +20,13 @@ public class Preferences {
 		this.prefEditor = pref.edit();
 	}
 	
-	public void setFbId(String s) {
-		prefEditor.putString(KEY_FB_ID, s).commit();
-		Log.i("PREF: SET FB ID", s);
+	public void setFbUserId(String s) {
+		prefEditor.putString(KEY_FB_USER_ID, s).commit();
+		Log.i("PREF: SET FB USER ID", s);
 	}
 	
-	public String getFbId() {
-		return pref.getString(KEY_FB_ID, "");
+	public String getFbUserId() {
+		return pref.getString(KEY_FB_USER_ID, "");
 	}
 	
 	public void setFbName(String s) {

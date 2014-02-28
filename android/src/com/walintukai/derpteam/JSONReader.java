@@ -7,6 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -78,24 +83,36 @@ public class JSONReader {
 	}
 	
 	public List<Member> getTeamMembersArray(String jsonString) {
-		List<Member> teamMembersArray = new ArrayList<Member>();
+		final List<Member> teamMembersArray = new ArrayList<Member>();
 		
 		try {
             JSONObject jObject = new JSONObject(jsonString);
             JSONArray jArray = jObject.getJSONArray("teamGallery");
             
-            String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+            final String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
             
             for (int i = 0; i < jArray.length(); i++) {
-    			String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
-    	    	String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
-    	    	String title = jArray.getJSONObject(i).getString(KEY_TITLE);
-    	    	String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
-    	    	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
-    	    	int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
-                
-    	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, views);
-    	    	teamMembersArray.add(member);
+    			final String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
+    	    	final String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
+    	    	final String title = jArray.getJSONObject(i).getString(KEY_TITLE);
+    	    	final String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
+    	    	final int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
+    	    	final int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
+    	    	
+    	    	String graphPath = "/" + posterFbId + "/";
+    			new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
+    				public void onCompleted(Response response) {
+    					String firstName = "";
+    					try {
+    						JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
+    						firstName = jObject.getString("first_name");
+    					} 
+    					catch (JSONException e) { e.printStackTrace(); }
+    					
+    					Member member = new Member(posterFbId, firstName, targetFbId, imageUrl, title, caption, picId, views);
+    					teamMembersArray.add(member);
+    				}
+    			}).executeAndWait();
             }
         } 
 		catch (Exception e) { e.printStackTrace(); }

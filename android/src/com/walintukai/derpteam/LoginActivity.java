@@ -16,7 +16,6 @@ import com.facebook.model.GraphMultiResult;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
-import com.medusa.checkit.android.R;
 
 import android.app.Activity;
 import android.content.Intent;

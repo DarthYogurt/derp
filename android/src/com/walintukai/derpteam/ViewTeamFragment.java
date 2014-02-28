@@ -3,6 +3,14 @@ package com.walintukai.derpteam;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ViewTeamFragment extends Fragment {
 	
@@ -19,6 +28,7 @@ public class ViewTeamFragment extends Fragment {
 	private String fbId;
 	private ListView listView;
 	private TeamListAdapter adapter;
+	private TextView teamOwnerName;
 	
 	static ViewTeamFragment newInstance(String fbId) {
 		ViewTeamFragment fragment = new ViewTeamFragment();
@@ -38,7 +48,8 @@ public class ViewTeamFragment extends Fragment {
 		fbId = args.getString(KEY_FB_ID);
 		
 		View header = inflater.inflate(R.layout.listview_team_header, null);
-		// TODO: set header name
+		teamOwnerName = (TextView) header.findViewById(R.id.name);
+		setHeader(fbId);
 		
 		listView = (ListView) view.findViewById(R.id.team_listview);
 		listView.addHeaderView(header);
@@ -77,6 +88,20 @@ public class ViewTeamFragment extends Fragment {
 			listView.setAdapter(adapter);
 	        return;
 	    }
+	}
+	
+	private void setHeader(String fbId) {
+		String graphPath = "/" + fbId + "/";
+		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
+			public void onCompleted(Response response) {
+				try {
+					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
+					String firstName = jObject.getString("first_name");
+					teamOwnerName.setText(firstName);
+				} 
+				catch (JSONException e) { e.printStackTrace(); }
+			}
+		}).executeAsync();
 	}
 
 }

@@ -28,13 +28,11 @@
         	android:layout_alignParentBottom="true"
         	android:layout_toRightOf="@id/poster_fb_picture"
         	android:textSize="18sp"
-        	android:textStyle="bold"
-        	android:text="NAME" />
+        	android:textStyle="bold" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/poster_name"
             android:layout_toRightOf="@id/poster_fb_picture"
             android:textSize="18sp"
             android:text="@string/assigned_by" />
@@ -46,8 +44,7 @@
         	android:layout_alignParentBottom="true"
         	android:layout_alignParentRight="true"
         	android:textSize="18sp"
-        	android:textStyle="bold"
-        	android:text="TITLE" />
+        	android:textStyle="bold" />
         
     </RelativeLayout>
         

@@ -2,13 +2,6 @@ package com.walintukai.derpteam;
 
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -22,11 +15,11 @@ import android.widget.TextView;
 
 public class TeamListAdapter extends ArrayAdapter<Member> {
 	
+	private static final String GRAPH_PATH = "http://graph.facebook.com/";
+	
 	private Context context;
 	private int layoutResourceId;
 	private List<Member> members;
-	private ViewHolder holder;
-	private String name;
 	
 	public TeamListAdapter(Context context, int layoutResourceId, List<Member> members) {
 		super(context, layoutResourceId, members);
@@ -45,6 +38,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder;
 		
 		if (convertView == null) {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
@@ -63,24 +57,12 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-		String graphPathPic = "http://graph.facebook.com/" + members.get(position).getPosterFbId() + "/picture";
+		String graphPathPic = GRAPH_PATH + members.get(position).getPosterFbId() + "/picture";
 		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, graphPathPic, R.drawable.image_placeholder);
-		
-		String graphPath = "/" + members.get(position).getPosterFbId() + "/";
-		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
-			public void onCompleted(Response response) {
-				try {
-					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
-					name = jObject.getString("first_name");
-					holder.posterName.setText(name);
-				} 
-				catch (JSONException e) { e.printStackTrace(); }
-			}
-		}).executeAsync();
-		
+		holder.posterName.setText(members.get(position).getPosterFirstName());
         holder.title.setText(members.get(position).getTitle());
-        holder.caption.setText(members.get(position).getCaption());
         UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), R.drawable.image_placeholder);
+        holder.caption.setText(members.get(position).getCaption());
 
         return convertView;
 	}

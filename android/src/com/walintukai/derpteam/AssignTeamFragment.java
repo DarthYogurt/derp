@@ -34,10 +34,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class PickFriendFragment extends Fragment {
+public class AssignTeamFragment extends Fragment {
 
 	private static final String KEY_IMG_FILENAME = "imgFilename";
 	private static final String KEY_TITLE = "title";
@@ -52,8 +53,8 @@ public class PickFriendFragment extends Fragment {
 	private String targetFbId;
 	private String targetUserId;
 
-	static PickFriendFragment newInstance(String imgFilename, String title, String caption) {
-		PickFriendFragment fragment = new PickFriendFragment();
+	static AssignTeamFragment newInstance(String imgFilename, String title, String caption) {
+		AssignTeamFragment fragment = new AssignTeamFragment();
 		Bundle args = new Bundle();
 		args.putString(KEY_IMG_FILENAME, imgFilename);
 		args.putString(KEY_TITLE, title);
@@ -64,7 +65,7 @@ public class PickFriendFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_pick_friend, container, false);
+		View view = inflater.inflate(R.layout.fragment_pick_team, container, false);
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -72,6 +73,9 @@ public class PickFriendFragment extends Fragment {
 		imgFilename = args.getString(KEY_IMG_FILENAME);
 		title = args.getString(KEY_TITLE);
 		caption = args.getString(KEY_CAPTION);
+		
+		TextView header = (TextView) view.findViewById(R.id.pick_team_header);
+		header.setText(R.string.assign_team);
 		
 		listView = (ListView) view.findViewById(R.id.fb_friend_listview);
 		listView.setOnItemClickListener(new OnItemClickListener() {

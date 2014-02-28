@@ -107,10 +107,10 @@ public class MainFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				
-//				TakePictureFragment fragment = new TakePictureFragment();
-//				ft.replace(R.id.fragment_container, fragment);
-//				ft.addToBackStack(null);
-//				ft.commit();
+				PickTeamFragment fragment = PickTeamFragment.newInstance();
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
 			}
 		});
 		

@@ -7,6 +7,7 @@
     android:background="#fff" >
     
     <TextView
+        android:id="@+id/pick_team_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
@@ -14,8 +15,7 @@
         android:background="#30acff"
         android:gravity="center"
         android:textSize="20sp"
-        android:textColor="#fff"
-        android:text="@string/pick_friend" />
+        android:textColor="#fff" />
 	
 	<ListView
 	    android:id="@+id/fb_friend_listview"

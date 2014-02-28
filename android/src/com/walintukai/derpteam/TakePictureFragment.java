@@ -95,7 +95,7 @@ public class TakePictureFragment extends Fragment {
 						FragmentManager fm = getFragmentManager();
 						FragmentTransaction ft = fm.beginTransaction();
 						ft.hide(TakePictureFragment.this);
-						PickFriendFragment fragment = PickFriendFragment.newInstance(filename, title, caption);
+						AssignTeamFragment fragment = AssignTeamFragment.newInstance(filename, title, caption);
 						ft.add(R.id.fragment_container, fragment);
 						ft.addToBackStack(null);
 						ft.commit();

@@ -28,7 +28,8 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_ok">OK</string>
-    <string name="pick_friend">Assign To Team</string>
+    <string name="assign_team">Assign Team</string>
+    <string name="view_team">View Team</string>
     <string name="derp_assigned">Derp assigned!</string>
     <string name="comments">Comments</string>
     <string name="possessive_form">\'s</string>

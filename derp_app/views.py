@@ -155,7 +155,7 @@ def getTeamGallery(request,fbId):
         temp['pictureId'] = p.id
         #temp['teamId'] = p.posterId.id
         temp['posterId'] = p.posterId.id
-        temp['posterFbId'] = p.posterId.fbId
+        temp['posterFbId'] = str(p.posterId.fbId)
         temp['popularity'] = p.popularity
         temp['upVote'] = p.upVote
         temp['downVote'] = p.downVote

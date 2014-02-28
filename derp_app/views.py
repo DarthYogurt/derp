@@ -153,7 +153,7 @@ def getTeamGallery(request,fbId):
     j['teamGallery'] =[]
     for p in pictures:
         temp = {}
-        temp['pictureId'] = p.id
+        temp['picId'] = p.id
         #temp['teamId'] = p.posterId.id
         temp['posterId'] = p.posterId.id
         temp['posterFbId'] = str(p.posterId.fbId)

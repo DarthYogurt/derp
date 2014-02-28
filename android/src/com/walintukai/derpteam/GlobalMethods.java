@@ -2,10 +2,13 @@ package com.walintukai.derpteam;
 
 import java.io.File;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.WindowManager;
+import android.view.WindowManager.BadTokenException;
 
 public class GlobalMethods {
 	
@@ -36,6 +39,18 @@ public class GlobalMethods {
 		File file = new File(context.getExternalFilesDir(null), filename);
 		boolean deleted = file.delete();
 		if (deleted) { Log.i("FILE DELETED", filename); }
+	}
+	
+	public static ProgressDialog createLoadingDialog(Context context) {
+		ProgressDialog dialog = new ProgressDialog(context);
+		try {
+			dialog.show();
+			dialog.setCancelable(false);
+			dialog.setContentView(R.layout.loading_dialog);
+			dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		}
+		catch (BadTokenException e) { e.printStackTrace(); }
+		return dialog;
 	}
 	
 }

@@ -66,7 +66,8 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="360dp"
 		        android:scaleType="fitXY"
-		        android:contentDescription="@string/desc_derp_picture" />
+		        android:contentDescription="@string/desc_derp_picture"
+		        android:src="@drawable/image_placeholder" />
 	        
 	        <LinearLayout
 	            android:layout_width="match_parent"

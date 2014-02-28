@@ -12,12 +12,15 @@ import com.facebook.Response;
 import com.facebook.Session;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,6 +74,12 @@ public class ViewTeamFragment extends Fragment {
 	}
 	
 	private class SetListViewTask extends AsyncTask<Void, Void, List<Member>> {
+		private ProgressDialog loadingDialog;
+		
+		protected void onPreExecute() {
+			loadingDialog = GlobalMethods.createLoadingDialog(getActivity());
+			loadingDialog.show();
+		}
 		
 	    protected List<Member> doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
@@ -86,6 +95,7 @@ public class ViewTeamFragment extends Fragment {
 	    	super.onPostExecute(result);
 	    	adapter = new TeamListAdapter(getActivity(), R.layout.listview_row_member, result);
 			listView.setAdapter(adapter);
+			loadingDialog.hide();
 	        return;
 	    }
 	}

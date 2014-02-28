@@ -100,6 +100,10 @@ public class PickTeamFragment extends Fragment {
 	}
 	
 	private void requestFacebookFriends(Session session) {
+		final ProgressDialog loadingDialog;
+		loadingDialog = GlobalMethods.createLoadingDialog(getActivity());
+		loadingDialog.show();
+		
 		Request friendsRequest = createRequest(session);
 		friendsRequest.setCallback(new Request.Callback() {
 			@Override
@@ -108,6 +112,7 @@ public class PickTeamFragment extends Fragment {
 				Collections.sort(fbFriends, new GraphUserComparator());
 				FriendsListAdapter adapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
 				listView.setAdapter(adapter);
+				loadingDialog.hide();
 			}
 		});
 		friendsRequest.executeAsync();

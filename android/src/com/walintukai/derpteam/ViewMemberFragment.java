@@ -10,6 +10,7 @@ import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,9 +25,8 @@ public class ViewMemberFragment extends Fragment {
 
 	private static final String KEY_PIC_ID = "picId";
 	
-	public Member member;
 	private int picId;
-	private ImageView ivPosterPicture;
+	private ImageView ivPosterFbPic;
 	private TextView tvPosterName;
 	private ImageView ivDerpPicture;
 	private TextView tvTitle;
@@ -46,7 +46,7 @@ public class ViewMemberFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		ivPosterPicture = (ImageView) view.findViewById(R.id.fb_picture);
+		ivPosterFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvPosterName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (TextView) view.findViewById(R.id.title);
@@ -72,6 +72,13 @@ public class ViewMemberFragment extends Fragment {
 	}
 	
 	private class GetMemberTask extends AsyncTask<Void, Void, Void> {
+		private ProgressDialog loadingDialog;
+		private Member member;
+		
+		protected void onPreExecute() {
+			loadingDialog = GlobalMethods.createLoadingDialog(getActivity());
+			loadingDialog.show();
+		}
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();
@@ -85,19 +92,19 @@ public class ViewMemberFragment extends Fragment {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
+	    	String graphPathPic = "http://graph.facebook.com/" + member.getTargetFbId() + "/picture";
+	    	UrlImageViewHelper.setUrlDrawable(ivPosterFbPic, graphPathPic, R.drawable.image_placeholder);
+	    	getTargetFbName(member.getTargetFbId());
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
 	    	tvTitle.setText(member.getTitle());
 	    	tvCaption.setText(member.getCaption());
-			getTargetFbInfo();
+	    	loadingDialog.hide();
 	        return;
 	    }
 	}
 	
-	private void getTargetFbInfo() {
-		String targetFbId = member.getTargetFbId();
+	private void getTargetFbName(String targetFbId) {
 		String graphPath = "/" + targetFbId + "/";
-		String graphPathPic = "http://graph.facebook.com/" + targetFbId + "/picture";
-		
 		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
 			public void onCompleted(Response response) {
 				try {
@@ -108,8 +115,6 @@ public class ViewMemberFragment extends Fragment {
 				catch (JSONException e) { e.printStackTrace(); }
 			}
 		}).executeAsync();
-		
-		UrlImageViewHelper.setUrlDrawable(ivPosterPicture, graphPathPic, R.drawable.image_placeholder);
 	}
 	
 }

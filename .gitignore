@@ -1,6 +1,5 @@
 *.pyc
 *.class
-*.jar
 *.dex
 *.apk
 *.ap_

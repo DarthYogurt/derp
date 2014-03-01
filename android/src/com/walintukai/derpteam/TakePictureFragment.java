@@ -21,9 +21,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -89,7 +91,9 @@ public class TakePictureFragment extends Fragment {
 					String caption = etCaption.getText().toString();
 					
 					if (title.isEmpty() || caption.isEmpty()) {
-						Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT).show();
+						Toast toast = Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
 					}
 					else {
 						FragmentManager fm = getFragmentManager();
@@ -127,15 +131,6 @@ public class TakePictureFragment extends Fragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if( keyCode == KeyEvent.KEYCODE_BACK ) {
-//	    	if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
-//			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
-//	    	return true;
-//	    }
-//	    return false;
-//	}
 	
 	private void showPicture(File file) {
 		try {

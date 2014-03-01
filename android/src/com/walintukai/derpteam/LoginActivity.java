@@ -1,5 +1,6 @@
 package com.walintukai.derpteam;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -54,6 +55,7 @@ public class LoginActivity extends Activity {
 		prefs = new Preferences(this);
 		
 		getKeyHash();
+		deleteOldImages();
 		
 		if (Session.getActiveSession().isOpened()) {
 			requestFacebookFriends(Session.getActiveSession());
@@ -65,6 +67,18 @@ public class LoginActivity extends Activity {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
+	}
+	
+	private void deleteOldImages() {
+		String path = getExternalFilesDir(null).toString();
+		File file = new File(path);
+		File files[] = file.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].getName().contains(".jpg")) {
+				Log.i("FILE DELETED", files[i].getName());
+				files[i].delete();
+			}
+		}
 	}
 	
 	private void getKeyHash() {

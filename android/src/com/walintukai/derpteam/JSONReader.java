@@ -26,6 +26,8 @@ public class JSONReader {
 	private static final String KEY_CAPTION = "caption";
 	private static final String KEY_PIC_ID = "picId";
 	private static final String KEY_VIEWS = "views";
+	private static final String KEY_UP_VOTE = "upVote";
+	private static final String KEY_DOWN_VOTE = "downVote";
 	private static final String KEY_TOTAL_PAGES = "totalPages";
 
 	private Context context;
@@ -45,8 +47,11 @@ public class JSONReader {
 	    	String caption = jObject.getString(KEY_CAPTION);
 	    	int picId = jObject.getInt(KEY_PIC_ID);
 	    	int views = jObject.getInt(KEY_VIEWS);
+	    	int upVote = jObject.getInt(KEY_UP_VOTE);
+	    	int downVote = jObject.getInt(KEY_DOWN_VOTE);
 		
-	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, views);
+	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, 
+	    							   views, upVote, downVote);
 	    	return member;
 		} 
 		catch (JSONException e) { e.printStackTrace(); }
@@ -98,6 +103,8 @@ public class JSONReader {
     	    	final String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
     	    	final int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
     	    	final int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
+    	    	final int upVote = jArray.getJSONObject(i).getInt(KEY_UP_VOTE);
+    	    	final int downVote = jArray.getJSONObject(i).getInt(KEY_DOWN_VOTE);
     	    	
     	    	String graphPath = "/" + posterFbId + "/";
     			new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
@@ -109,7 +116,8 @@ public class JSONReader {
     					} 
     					catch (JSONException e) { e.printStackTrace(); }
     					
-    					Member member = new Member(posterFbId, firstName, targetFbId, imageUrl, title, caption, picId, views);
+    					Member member = new Member(posterFbId, firstName, targetFbId, imageUrl, title, 
+    											   caption, picId, views, upVote, downVote);
     					teamMembersArray.add(member);
     				}
     			}).executeAndWait();

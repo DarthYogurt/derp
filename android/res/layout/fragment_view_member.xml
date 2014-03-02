@@ -119,6 +119,7 @@
 	            <ImageView
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
+				    android:layout_marginRight="2dp"
 			 		android:src="@drawable/arrow_up_small"
 			 		android:contentDescription="@string/desc_vote_up" />
 		        
@@ -135,6 +136,7 @@
 		        <ImageView
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
+				    android:layout_marginRight="2dp"
 			 		android:src="@drawable/arrow_down_small"
 			 		android:contentDescription="@string/desc_vote_down" />
 		        
@@ -143,7 +145,6 @@
 		            android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
 				    android:layout_gravity="center_vertical"
-				    android:layout_marginRight="10dp"
 				    android:textColor="#cc0000"
 				    android:textSize="16sp"
 				    android:textStyle="bold" />

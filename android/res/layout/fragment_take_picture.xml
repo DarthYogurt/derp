@@ -21,7 +21,7 @@
 			android:padding="6dp"
 			android:background="@drawable/edit_text_box"
 			android:hint="@string/enter_title"
-			android:maxLength="30"
+			android:maxLength="16"
 			android:singleLine="true" />
         
     </LinearLayout>

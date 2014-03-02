@@ -33,8 +33,6 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	
-	private static final String FILENAME_SEEN_PICTURES_ARRAY = "seen_pictures_array";
-	
 	private Preferences prefs;
 	public List<GraphUser> fbFriends;
 	
@@ -86,7 +84,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void initSeenPicturesFile() {
-		File file = new File(getFilesDir(), FILENAME_SEEN_PICTURES_ARRAY);
+		File file = new File(getFilesDir(), GlobalMethods.FILENAME_VOTED_PICTURES_ARRAY);
 		if (!file.exists()) {
 			List<Integer> init = new ArrayList<Integer>();
 			GlobalMethods.writeSeenPicturesArray(this, init);

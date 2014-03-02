@@ -31,8 +31,7 @@
 	        	android:layout_height="wrap_content"
 	        	android:layout_alignParentBottom="true"
 	        	android:layout_toRightOf="@id/fb_picture"
-	        	android:textSize="18sp"
-	        	android:textStyle="bold" />
+	        	android:textSize="18sp" />
 	        
 	        <TextView
 	            android:id="@+id/possessive_form"
@@ -41,7 +40,6 @@
 	        	android:layout_alignParentBottom="true"
 	        	android:layout_toRightOf="@id/fb_name"
 	        	android:textSize="18sp"
-	        	android:textStyle="bold"
 	        	android:text="@string/possessive_form" />
 	        
 	        <TextView 
@@ -51,8 +49,7 @@
 	        	android:layout_marginLeft="4dp"
 	        	android:layout_alignParentBottom="true"
 	        	android:layout_toRightOf="@id/possessive_form"
-	        	android:textSize="18sp"
-	        	android:textStyle="bold" />
+	        	android:textSize="18sp" />
 	        
 	    </RelativeLayout>
 	    
@@ -104,8 +101,7 @@
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
 	        android:gravity="center"
-	        android:textSize="18sp"
-	        android:textStyle="bold" />
+	        android:textAppearance="@style/caption" />
 	    
 	    <RelativeLayout
 	        android:layout_width="match_parent"

@@ -18,7 +18,7 @@ import android.view.WindowManager.BadTokenException;
 
 public class GlobalMethods {
 	
-	private static final String FILENAME_SEEN_PICTURES_ARRAY = "seen_pictures_array";
+	public static final String FILENAME_VOTED_PICTURES_ARRAY = "voted_pictures_array";
 	
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -63,14 +63,14 @@ public class GlobalMethods {
 	
 	public static void writeSeenPicturesArray(Context context, List<Integer> list) {
 		try {
-			FileOutputStream fos = context.openFileOutput(FILENAME_SEEN_PICTURES_ARRAY, Context.MODE_PRIVATE);
+			FileOutputStream fos = context.openFileOutput(FILENAME_VOTED_PICTURES_ARRAY, Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(list);
 			oos.close();
 			
 			String s = "";
 			for (int i = 0; i < list.size(); i++) { s = s + list.get(i).toString() + ", "; }
-			Log.i("SEEN PICTURES ARRAY", s);
+			Log.v("VOTED PICTURES IDS", s);
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}
@@ -78,7 +78,7 @@ public class GlobalMethods {
 	@SuppressWarnings("unchecked")
 	public static List<Integer> readSeenPicturesArray(Context context) {
 		try {
-			FileInputStream fis = context.openFileInput(FILENAME_SEEN_PICTURES_ARRAY);
+			FileInputStream fis = context.openFileInput(FILENAME_VOTED_PICTURES_ARRAY);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			List<Integer> list = (ArrayList<Integer>)ois.readObject();
 			ois.close();

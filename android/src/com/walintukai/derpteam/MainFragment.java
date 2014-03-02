@@ -1,5 +1,8 @@
 package com.walintukai.derpteam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
@@ -22,6 +25,8 @@ public class MainFragment extends Fragment {
 	private Preferences prefs;
 	private ImageView rateMember;
 	private TextView caption;
+	private Member member;
+	private List<Integer> seenPicturesArray;
 	
 	static MainFragment newInstance() {
 		MainFragment fragment = new MainFragment();
@@ -35,6 +40,7 @@ public class MainFragment extends Fragment {
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		prefs = new Preferences(getActivity());
+		seenPicturesArray = GlobalMethods.readSeenPicturesArray(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
@@ -43,8 +49,10 @@ public class MainFragment extends Fragment {
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
+				seenPicturesArray.add(member.getPicId());
+				GlobalMethods.writeSeenPicturesArray(getActivity(), seenPicturesArray);
 				new GetRandomMemberTask().execute();
 			}
 		});
@@ -52,8 +60,10 @@ public class MainFragment extends Fragment {
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		btnVoteUp.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
+				seenPicturesArray.add(member.getPicId());
+				GlobalMethods.writeSeenPicturesArray(getActivity(), seenPicturesArray);
 				new GetRandomMemberTask().execute();
 			}
 		});
@@ -118,7 +128,6 @@ public class MainFragment extends Fragment {
 	}
 	
 	private class GetRandomMemberTask extends AsyncTask<Void, Void, Void> {
-		Member member;
 		
 	    protected Void doInBackground(Void... params) {
 	    	HttpGetRequest get = new HttpGetRequest();

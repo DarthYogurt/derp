@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ViewMemberFragment extends Fragment {
@@ -60,6 +61,21 @@ public class ViewMemberFragment extends Fragment {
 		picId = args.getInt(KEY_PIC_ID);
 		
 		new GetMemberTask().execute();
+		
+		LinearLayout commentContainer = (LinearLayout) view.findViewById(R.id.comment_container);
+		
+		for (int i = 0; i < 10; i++) {
+			TextView name = new TextView(getActivity());
+			name.setText("USERNAME");
+			name.setTextAppearance(getActivity(), R.style.comment_name);
+			commentContainer.addView(name);
+			
+			TextView comment = new TextView(getActivity());
+			comment.setText("This is a comment. This is a comment. This is a comment. This is a comment. ");
+			comment.setTextAppearance(getActivity(), R.style.comment);
+			comment.setPadding(0, 0, 0, 10);
+			commentContainer.addView(comment);
+		}
 		
 		return view;
 	}

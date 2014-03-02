@@ -1,6 +1,12 @@
 package com.walintukai.derpteam;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +17,8 @@ import android.view.WindowManager;
 import android.view.WindowManager.BadTokenException;
 
 public class GlobalMethods {
+	
+	private static final String FILENAME_SEEN_PICTURES_ARRAY = "seen_pictures_array";
 	
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -51,6 +59,33 @@ public class GlobalMethods {
 		}
 		catch (BadTokenException e) { e.printStackTrace(); }
 		return dialog;
+	}
+	
+	public static void writeSeenPicturesArray(Context context, List<Integer> list) {
+		try {
+			FileOutputStream fos = context.openFileOutput(FILENAME_SEEN_PICTURES_ARRAY, Context.MODE_PRIVATE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(list);
+			oos.close();
+			
+			String s = "";
+			for (int i = 0; i < list.size(); i++) { s = s + list.get(i).toString() + ", "; }
+			Log.i("SEEN PICTURES ARRAY", s);
+		}
+		catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Integer> readSeenPicturesArray(Context context) {
+		try {
+			FileInputStream fis = context.openFileInput(FILENAME_SEEN_PICTURES_ARRAY);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			List<Integer> list = (ArrayList<Integer>)ois.readObject();
+			ois.close();
+			return list;
+		}
+		catch (Exception e) { e.printStackTrace(); }
+		return null;
 	}
 	
 }

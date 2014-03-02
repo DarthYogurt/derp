@@ -1,6 +1,6 @@
 package com.walintukai.derpteam;
 
-import java.util.List;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +11,6 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -50,6 +49,7 @@ public class ViewMemberFragment extends Fragment {
 	private ImageView ivDerpPicture;
 	private TextView tvTitle;
 	private TextView tvCaption;
+	private PopupWindow pwAddComment;
 	private EditText etAddComment;
 	
 	static ViewMemberFragment newInstance(int picId) {
@@ -77,7 +77,7 @@ public class ViewMemberFragment extends Fragment {
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		
-		final PopupWindow pwAddComment = new PopupWindow(getActivity());
+		pwAddComment = new PopupWindow(getActivity());
 		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
 		ImageButton btnAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
 		etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
@@ -87,9 +87,9 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
-				votedPicturesArray.add(picId);
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+				votedPicturesSet.add(picId);
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, false).start();
 			}
 		});
@@ -98,14 +98,15 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
-				votedPicturesArray.add(picId);
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+				votedPicturesSet.add(picId);
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, true).start();
 			}
 		});
 		
 		btnAddComment.setOnClickListener(new OnClickListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View view) {
 				pwAddComment.setTouchable(true);
@@ -143,7 +144,8 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				String comment = etAddComment.getText().toString();
-				Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+				if (!comment.isEmpty()) { new SendCommentTask(picId, comment).execute(); }
+				else { Toast.makeText(getActivity(), R.string.empty_comment, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
@@ -265,6 +267,49 @@ public class ViewMemberFragment extends Fragment {
 				});
 			}
 		}
+	}
+	
+	private class SendCommentTask extends AsyncTask<Void, Void, Void> {
+		private int picId;
+		private String comment;
+		
+		private SendCommentTask(int picId, String comment) {
+			this.picId = picId;
+			this.comment = comment;
+		}
+		
+	    protected Void doInBackground(Void... params) {
+	    	JSONWriter writer = new JSONWriter(getActivity());
+			writer.createJsonForComment(picId, comment);
+			
+			if (GlobalMethods.isNetworkAvailable(getActivity())) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
+					}
+				});
+				
+				HttpPostRequest post = new HttpPostRequest(getActivity());
+				post.createPost(HttpPostRequest.COMMENT_URL);
+				post.addJSON(JSONWriter.FILENAME_COMMENT);
+				post.sendPost();
+			}
+			else {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	pwAddComment.dismiss();
+	    	etAddComment.setText("");
+	        return;
+	    }
 	}
 	
 }

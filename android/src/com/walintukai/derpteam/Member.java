@@ -10,6 +10,8 @@ public class Member {
 	private String caption;
 	private int picId;
 	private int views;
+	private int upVotes;
+	private int downVotes;
 	
 	public Member(String posterFbId, String posterFirstName, String targetFbId, String imageUrl, 
 				  String title, String caption, int picId, int views) {
@@ -54,5 +56,7 @@ public class Member {
 	public String getCaption() { return caption; }
 	public int getPicId() { return picId; }
 	public int getViews() { return views; }
+	public int getUpVotes() { return upVotes; }
+	public int getDownVotes() { return downVotes; }
 	
 }

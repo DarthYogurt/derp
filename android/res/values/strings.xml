@@ -38,5 +38,7 @@
     <string name="not_complete">Please fill in all the fields</string>
     <string name="add_comment">Add Comment</string>
     <string name="finished">Finished</string>
+    <string name="empty_comment">Comment is empty</string>
+    <string name="comment_added">Comment Added</string>
 
 </resources>

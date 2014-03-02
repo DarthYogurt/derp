@@ -14,6 +14,7 @@ public class JSONWriter {
 	public static final String FILENAME_FRIENDS_LIST = "friends.json";
 	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	public static final String FILENAME_PIC_VOTE = "vote.json";
+	public static final String FILENAME_COMMENT = "comment.json";
 	private static final String KEY_FB_USER_ID = "fbUserId";
 	private static final String KEY_FB_USER_NAME = "fbUserName";
 	private static final String KEY_FB_FRIENDS = "fbFriends";
@@ -25,9 +26,11 @@ public class JSONWriter {
 	private static final String KEY_CAPTION = "caption";
 	private static final String KEY_TARGET_FB_ID = "targetFbId";
 	private static final String KEY_TARGET_USER_ID = "targetUserId";
+	private static final String KEY_POSTER_FB_ID = "posterFbId";
 	private static final String KEY_PIC_ID = "picId";
 	private static final String KEY_UP_VOTE = "upVote";
 	private static final String KEY_DOWN_VOTE = "downVote";
+	private static final String KEY_COMMENT = "comment";
 	
 	private Context context;
 	private FileOutputStream fos;
@@ -124,6 +127,24 @@ public class JSONWriter {
 			fos.close();
 			
 			Log.i("JSON FOR DOWN VOTE CREATED", FILENAME_PIC_VOTE);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public void createJsonForComment(int picId, String comment) {
+		try {
+			fos = context.openFileOutput(FILENAME_COMMENT, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_PIC_ID).value(picId);
+			writer.name(KEY_POSTER_FB_ID).value(prefs.getFbUserId());
+			writer.name(KEY_COMMENT).value(comment);
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR COMMENT CREATED", FILENAME_COMMENT);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

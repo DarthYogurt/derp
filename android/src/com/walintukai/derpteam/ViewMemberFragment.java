@@ -22,9 +22,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewMemberFragment extends Fragment {
 
@@ -51,14 +53,21 @@ public class ViewMemberFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		Bundle args = getArguments();
+		picId = args.getInt(KEY_PIC_ID);
+		
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (TextView) view.findViewById(R.id.title);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
-		
-		Bundle args = getArguments();
-		picId = args.getInt(KEY_PIC_ID);
+		ImageButton ibAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
+		ibAddComment.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getActivity(), "Add Comment Button Clicked", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		new GetMemberTask().execute();
 		

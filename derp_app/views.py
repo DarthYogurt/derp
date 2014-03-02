@@ -132,6 +132,8 @@ def getPic(request, picId):
     j['imageUrl'] = request.get_host() + str(pic.image)
     j['caption'] = pic.caption
     j['views'] = pic.views
+    j['upVote'] = pic.upVote
+    j['downVote'] = pic.downVote
     j['title'] = pic.title
     j['popularity'] = str(pic.popularity)
     

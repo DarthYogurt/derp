@@ -37,6 +37,8 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		private TextView title;
 		private ImageView memberPic;
 		private TextView caption;
+		private TextView upVote;
+		private TextView downVote;
 	}
 	
 	@Override
@@ -53,7 +55,9 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.memberPic = (ImageView) convertView.findViewById(R.id.member);
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
-
+            holder.upVote = (TextView) convertView.findViewById(R.id.vote_up_count);
+            holder.downVote = (TextView) convertView.findViewById(R.id.vote_down_count);
+            
             convertView.setTag(holder);
         } 
 		else {
@@ -66,6 +70,8 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
         holder.title.setText(members.get(position).getTitle());
         UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), R.drawable.image_placeholder);
         holder.caption.setText(members.get(position).getCaption());
+        holder.upVote.setText(Integer.toString(members.get(position).getUpVote()));
+        holder.downVote.setText(Integer.toString(members.get(position).getDownVote()));
         
         holder.posterFbPic.setOnClickListener(new OnClickListener() {
 			@Override

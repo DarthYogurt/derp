@@ -10,11 +10,12 @@ public class Member {
 	private String caption;
 	private int picId;
 	private int views;
-	private int upVotes;
-	private int downVotes;
-	
+	private int upVote;
+	private int downVote;
+	 
+	// For team page
 	public Member(String posterFbId, String posterFirstName, String targetFbId, String imageUrl, 
-				  String title, String caption, int picId, int views) {
+				  String title, String caption, int picId, int views, int upVote, int downVote) {
 		this.posterFbId = posterFbId;
 		this.posterFirstName = posterFirstName;
 		this.targetFbId = targetFbId;
@@ -23,10 +24,13 @@ public class Member {
 		this.caption = caption;
 		this.picId = picId;
 		this.views = views;
+		this.upVote = upVote;
+		this.downVote = downVote;
 	}
 	
+	// For view member page
 	public Member(String posterFbId, String targetFbId, String imageUrl, String title, 
-				  String caption, int picId, int views) {
+				  String caption, int picId, int views, int upVote, int downVote) {
 		this.posterFbId = posterFbId;
 		this.posterFirstName = "";
 		this.targetFbId = targetFbId;
@@ -35,8 +39,11 @@ public class Member {
 		this.caption = caption;
 		this.picId = picId;
 		this.views = views;
+		this.upVote = upVote;
+		this.downVote = downVote;
 	}
 	
+	// For gallery
 	public Member(String imageUrl, int picId) {
 		this.posterFbId = "";
 		this.posterFirstName = "";
@@ -46,6 +53,8 @@ public class Member {
 		this.caption = "";
 		this.picId = picId;
 		this.views = 0;
+		this.upVote = 0;
+		this.downVote = 0;
 	}
 	
 	public String getPosterFbId() { return posterFbId; }
@@ -56,7 +65,7 @@ public class Member {
 	public String getCaption() { return caption; }
 	public int getPicId() { return picId; }
 	public int getViews() { return views; }
-	public int getUpVotes() { return upVotes; }
-	public int getDownVotes() { return downVotes; }
+	public int getUpVote() { return upVote; }
+	public int getDownVote() { return downVote; }
 	
 }

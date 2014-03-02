@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import com.facebook.Session;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -20,6 +18,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.facebook.Session;
+import com.flurry.android.FlurryAgent;
 
 public class MainActivity extends Activity {
 	
@@ -44,7 +45,24 @@ public class MainActivity extends Activity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
+		
+		
 	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
+
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

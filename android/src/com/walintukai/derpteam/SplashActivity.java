@@ -1,5 +1,7 @@
 package com.walintukai.derpteam;
 
+import com.flurry.android.FlurryAgent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
@@ -39,6 +41,20 @@ public class SplashActivity extends Activity {
 			finish();
 	        return;
 	    }
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 	
 }

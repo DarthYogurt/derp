@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="libs/httpmime-4.3.1.jar"/>
 	<classpathentry kind="lib" path="libs/universal-image-loader-1.9.1.jar"/>
 	<classpathentry kind="lib" path="libs/urlimageviewhelper-1.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/FlurryAnalytics_3.3.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

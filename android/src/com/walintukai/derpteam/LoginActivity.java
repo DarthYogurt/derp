@@ -17,6 +17,7 @@ import com.facebook.model.GraphMultiResult;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
+import com.flurry.android.FlurryAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,6 +63,20 @@ public class LoginActivity extends Activity {
 			requestFacebookFriends(Session.getActiveSession());
 			goToMainActivity();
 		}
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 	
 	private void goToMainActivity() {

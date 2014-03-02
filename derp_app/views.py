@@ -225,12 +225,12 @@ def vote(request):
     
     if data.get("upVote", False):
         pic.upVote += 1
-    elif data.get("downVote". False):
+    elif data.get("downVote", False):
         pic.downVote +=1
     
     pic.save()
     
-    HttpResponse("Vote Added")
+    return HttpResponse("Vote Added")
     
 
 @csrf_exempt

@@ -1,6 +1,6 @@
 package com.walintukai.derpteam;
 
-import java.util.List;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,9 +87,9 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
-				votedPicturesArray.add(picId);
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+				votedPicturesSet.add(picId);
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, false).start();
 			}
 		});
@@ -98,9 +98,9 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
-				votedPicturesArray.add(picId);
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+				votedPicturesSet.add(picId);
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, true).start();
 			}
 		});

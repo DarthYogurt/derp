@@ -1,7 +1,6 @@
 package com.walintukai.derpteam;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -26,7 +25,7 @@ public class MainFragment extends Fragment {
 	private ImageView rateMember;
 	private TextView caption;
 	private Member member;
-	private List<Integer> votedPicturesArray;
+	private Set<Integer> votedPicturesSet;
 	
 	static MainFragment newInstance() {
 		MainFragment fragment = new MainFragment();
@@ -40,7 +39,7 @@ public class MainFragment extends Fragment {
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		prefs = new Preferences(getActivity());
-		votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
+		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
@@ -51,8 +50,8 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				votedPicturesArray.add(member.getPicId());
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				votedPicturesSet.add(member.getPicId());
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(member.getPicId(), false).start();
 				new GetRandomMemberTask().execute();
 			}
@@ -63,8 +62,8 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				votedPicturesArray.add(member.getPicId());
-				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				votedPicturesSet.add(member.getPicId());
+				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(member.getPicId(), true).start();
 				new GetRandomMemberTask().execute();
 			}

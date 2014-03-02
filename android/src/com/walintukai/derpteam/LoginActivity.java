@@ -3,7 +3,6 @@ package com.walintukai.derpteam;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -84,10 +83,10 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void initSeenPicturesFile() {
-		File file = new File(getFilesDir(), GlobalMethods.FILENAME_VOTED_PICTURES_ARRAY);
+		File file = new File(getFilesDir(), GlobalMethods.FILENAME_VOTED_PICTURES);
 		if (!file.exists()) {
-			List<Integer> init = new ArrayList<Integer>();
-			GlobalMethods.writeVotedPicturesArray(this, init);
+			Set<Integer> init = new HashSet<Integer>();
+			GlobalMethods.writeVotedPicturesSet(this, init);
 		}
 	}
 	

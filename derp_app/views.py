@@ -139,9 +139,10 @@ def getPic(request, picId):
     
     for comment in Comment.objects.filter(picture=Picture.objects.get(id=picId)):
         com = {}
-        com['comPoster'] = comment.poster.id
-        com['comText'] = comment.comment
-        com['comTime'] = comment.timeModified
+        com['posterId'] = comment.poster.id
+        com['posterFbId'] = comment.poster.fbId
+        com['comment'] = comment.comment
+        com['commentTime'] = comment.timeModified
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def getTeamGallery(request,fbId):
@@ -167,8 +168,7 @@ def getTeamGallery(request,fbId):
         j['teamGallery'].append(temp)
     return HttpResponse(json.dumps(j), content_type="application/json")
 
-def gallery(request, numPerPage, pageNum):
-     
+def gallery(request, numPerPage, pageNum):     
     picture_list = Picture.objects.order_by("-date")
     paginator = Paginator(picture_list, numPerPage)
     page = pageNum
@@ -200,19 +200,36 @@ def addComment(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    for d in data:
-        print d,data[d]
+    #for d in data:
+    #    print d,data[d]
 
     newComment = Comment(
-                         picture = Picture.objects.get(id = data.get("pictureId", 1)),
-                         poster = User.objects.get(id = data.get("posterId",1)),
+                         picture = Picture.objects.get(id = data.get("picId", 1)),
+                         poster = User.objects.get(id = data.get("posterFbId",1)),
                          comment = data.get("comment","").encode("utf-8"),
                          timeModified = datetime.datetime.today()
                          )
 
     return HttpResponse("done")
 
-
+@csrf_exempt
+def vote(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    pic = Picture.objects.get(id = data.get("picId") )
+    
+    if data.get("upVote", False):
+        pic.upVote += 1
+    elif data.get("downVote". False):
+        pic.downVote +=1
+    
+    pic.save()
+    
+    HttpResponse("Vote Added")
+    
 
 @csrf_exempt
 def uploadError(request):
@@ -226,4 +243,5 @@ def latestError(request):
     #f = open( "E:\\coding_workspace\\medusa_backend\\tempJson", "rb")
     stringReturn = f.read()
     return HttpResponse(stringReturn)
+    
     

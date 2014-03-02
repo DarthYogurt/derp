@@ -49,6 +49,8 @@ public class ViewMemberFragment extends Fragment {
 	private ImageView ivDerpPicture;
 	private TextView tvTitle;
 	private TextView tvCaption;
+	private TextView tvUpVote;
+	private TextView tvDownVote;
 	private PopupWindow pwAddComment;
 	private EditText etAddComment;
 	
@@ -74,6 +76,8 @@ public class ViewMemberFragment extends Fragment {
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (TextView) view.findViewById(R.id.title);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
+		tvUpVote = (TextView) view.findViewById(R.id.vote_up_count);
+		tvDownVote = (TextView) view.findViewById(R.id.vote_down_count);
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		
@@ -207,6 +211,8 @@ public class ViewMemberFragment extends Fragment {
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
 	    	tvTitle.setText(member.getTitle());
 	    	tvCaption.setText(member.getCaption());
+	    	tvUpVote.setText(Integer.toString(member.getUpVote()));
+	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
 	    	
 	    	ivTargetFbPic.setOnClickListener(new OnClickListener() {
 				@Override

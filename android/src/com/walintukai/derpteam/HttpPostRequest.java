@@ -22,6 +22,7 @@ public class HttpPostRequest {
 	
 	public static final String LOGIN_URL = "http://dev.darthyogurt.com:8001/login/";
 	public static final String UPLOAD_PIC_URL = "http://dev.darthyogurt.com:8001/uploadPic/";
+	public static final String VOTE_URL = "http://dev.darthyogurt.com:8001/vote/";
 	private static final String ERROR_URL = "http://dev.darthyogurt.com:8001/uploadError/";
 	private static final String ERROR_FILENAME = "error.txt";
 	private static final int HTTP_RESPONSE_SUCCESS = 200;

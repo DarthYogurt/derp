@@ -26,7 +26,7 @@ public class MainFragment extends Fragment {
 	private ImageView rateMember;
 	private TextView caption;
 	private Member member;
-	private List<Integer> seenPicturesArray;
+	private List<Integer> votedPicturesArray;
 	
 	static MainFragment newInstance() {
 		MainFragment fragment = new MainFragment();
@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		prefs = new Preferences(getActivity());
-		seenPicturesArray = GlobalMethods.readSeenPicturesArray(getActivity());
+		votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
@@ -51,8 +51,9 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				seenPicturesArray.add(member.getPicId());
-				GlobalMethods.writeSeenPicturesArray(getActivity(), seenPicturesArray);
+				votedPicturesArray.add(member.getPicId());
+				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				new SendVoteThread(member.getPicId(), false).start();
 				new GetRandomMemberTask().execute();
 			}
 		});
@@ -62,8 +63,9 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				seenPicturesArray.add(member.getPicId());
-				GlobalMethods.writeSeenPicturesArray(getActivity(), seenPicturesArray);
+				votedPicturesArray.add(member.getPicId());
+				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				new SendVoteThread(member.getPicId(), true).start();
 				new GetRandomMemberTask().execute();
 			}
 		});
@@ -145,6 +147,36 @@ public class MainFragment extends Fragment {
 	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder);
 	        return;
 	    }
+	}
+	
+	private class SendVoteThread extends Thread {
+		private int picId;
+		private boolean vote;
+		
+		private SendVoteThread(int picId, boolean vote) {
+			this.picId = picId;
+			this.vote = vote;
+		}
+		
+		public void run() {
+			JSONWriter writer = new JSONWriter(getActivity());
+			if (vote) { writer.createJsonForUpVote(picId); }
+			else { writer.createJsonForDownVote(picId); }
+			
+			if (GlobalMethods.isNetworkAvailable(getActivity())) {
+				HttpPostRequest post = new HttpPostRequest(getActivity());
+				post.createPost(HttpPostRequest.VOTE_URL);
+				post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
+				post.sendPost();
+			}
+			else {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+		}
 	}
 	
 }

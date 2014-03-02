@@ -37,5 +37,6 @@
     <string name="assigned_by">Assigned By:</string>
     <string name="not_complete">Please fill in all the fields</string>
     <string name="add_comment">Add Comment</string>
+    <string name="finished">Finished</string>
 
 </resources>

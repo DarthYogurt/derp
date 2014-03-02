@@ -87,7 +87,7 @@ public class LoginActivity extends Activity {
 		File file = new File(getFilesDir(), GlobalMethods.FILENAME_VOTED_PICTURES_ARRAY);
 		if (!file.exists()) {
 			List<Integer> init = new ArrayList<Integer>();
-			GlobalMethods.writeSeenPicturesArray(this, init);
+			GlobalMethods.writeVotedPicturesArray(this, init);
 		}
 	}
 	

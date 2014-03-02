@@ -3,6 +3,7 @@ package com.walintukai.derpteam;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,8 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	
+	private static final String FILENAME_SEEN_PICTURES_ARRAY = "seen_pictures_array";
+	
 	private Preferences prefs;
 	public List<GraphUser> fbFriends;
 	
@@ -56,6 +59,7 @@ public class LoginActivity extends Activity {
 		
 		getKeyHash();
 		deleteOldImages();
+		initSeenPicturesFile();
 		
 		if (Session.getActiveSession().isOpened()) {
 			requestFacebookFriends(Session.getActiveSession());
@@ -78,6 +82,14 @@ public class LoginActivity extends Activity {
 				Log.i("FILE DELETED", files[i].getName());
 				files[i].delete();
 			}
+		}
+	}
+	
+	private void initSeenPicturesFile() {
+		File file = new File(getFilesDir(), FILENAME_SEEN_PICTURES_ARRAY);
+		if (!file.exists()) {
+			List<Integer> init = new ArrayList<Integer>();
+			GlobalMethods.writeSeenPicturesArray(this, init);
 		}
 	}
 	

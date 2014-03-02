@@ -14,17 +14,26 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +65,7 @@ public class ViewMemberFragment extends Fragment {
 		Bundle args = getArguments();
 		picId = args.getInt(KEY_PIC_ID);
 		
+		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
@@ -64,8 +74,38 @@ public class ViewMemberFragment extends Fragment {
 		ImageButton ibAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
 		ibAddComment.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				Toast.makeText(getActivity(), "Add Comment Button Clicked", Toast.LENGTH_SHORT).show();
+			public void onClick(View view) {
+				EditText etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
+				
+				final PopupWindow pwAddComment = new PopupWindow(getActivity());
+				pwAddComment.setTouchable(true);
+				pwAddComment.setFocusable(true);
+				pwAddComment.setOutsideTouchable(true);
+				pwAddComment.setTouchInterceptor(new OnTouchListener() {
+			        public boolean onTouch(View v, MotionEvent event) {
+			            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+			            	pwAddComment.dismiss();
+			                return true;
+			            }
+			            return false;
+			        }
+			    });
+				pwAddComment.setWidth(500);
+				pwAddComment.setHeight(400);
+				pwAddComment.setContentView(vAddComment);
+				pwAddComment.setBackgroundDrawable(new BitmapDrawable());
+				pwAddComment.setAnimationStyle(R.style.AddCommentAnimation);
+				pwAddComment.showAtLocation(getActivity().findViewById(R.id.fragment_view_member), Gravity.CENTER, 0, -120);
+				pwAddComment.setOnDismissListener(new PopupWindow.OnDismissListener() {
+					@Override
+					public void onDismiss() { 
+						getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+					}
+				});
+				
+				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		        imm.showSoftInput(etAddComment, InputMethodManager.SHOW_IMPLICIT);
 			}
 		});
 		

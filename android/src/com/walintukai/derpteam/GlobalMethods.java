@@ -61,7 +61,7 @@ public class GlobalMethods {
 		return dialog;
 	}
 	
-	public static void writeSeenPicturesArray(Context context, List<Integer> list) {
+	public static void writeVotedPicturesArray(Context context, List<Integer> list) {
 		try {
 			FileOutputStream fos = context.openFileOutput(FILENAME_VOTED_PICTURES_ARRAY, Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -70,13 +70,13 @@ public class GlobalMethods {
 			
 			String s = "";
 			for (int i = 0; i < list.size(); i++) { s = s + list.get(i).toString() + ", "; }
-			Log.v("VOTED PICTURES IDS", s);
+			Log.v("VOTED PICTURE IDS", s);
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Integer> readSeenPicturesArray(Context context) {
+	public static List<Integer> readVotedPicturesArray(Context context) {
 		try {
 			FileInputStream fis = context.openFileInput(FILENAME_VOTED_PICTURES_ARRAY);
 			ObjectInputStream ois = new ObjectInputStream(fis);

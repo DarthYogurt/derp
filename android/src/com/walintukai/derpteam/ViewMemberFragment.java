@@ -1,5 +1,7 @@
 package com.walintukai.derpteam;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,6 +50,7 @@ public class ViewMemberFragment extends Fragment {
 	private ImageView ivDerpPicture;
 	private TextView tvTitle;
 	private TextView tvCaption;
+	private EditText etAddComment;
 	
 	static ViewMemberFragment newInstance(int picId) {
 		ViewMemberFragment fragment = new ViewMemberFragment();
@@ -65,19 +69,45 @@ public class ViewMemberFragment extends Fragment {
 		Bundle args = getArguments();
 		picId = args.getInt(KEY_PIC_ID);
 		
-		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (TextView) view.findViewById(R.id.title);
 		tvCaption = (TextView) view.findViewById(R.id.caption);
-		ImageButton ibAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
-		ibAddComment.setOnClickListener(new OnClickListener() {
+		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
+		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
+		
+		final PopupWindow pwAddComment = new PopupWindow(getActivity());
+		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
+		ImageButton btnAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
+		etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
+		Button btnFinishComment = (Button) vAddComment.findViewById(R.id.btn_finish_comment);
+		
+		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				EditText etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
-				
-				final PopupWindow pwAddComment = new PopupWindow(getActivity());
+				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
+				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
+				votedPicturesArray.add(picId);
+				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				new SendVoteThread(picId, false).start();
+			}
+		});
+		
+		btnVoteUp.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
+				List<Integer> votedPicturesArray = GlobalMethods.readVotedPicturesArray(getActivity());
+				votedPicturesArray.add(picId);
+				GlobalMethods.writeVotedPicturesArray(getActivity(), votedPicturesArray);
+				new SendVoteThread(picId, true).start();
+			}
+		});
+		
+		btnAddComment.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
 				pwAddComment.setTouchable(true);
 				pwAddComment.setFocusable(true);
 				pwAddComment.setOutsideTouchable(true);
@@ -90,12 +120,12 @@ public class ViewMemberFragment extends Fragment {
 			            return false;
 			        }
 			    });
-				pwAddComment.setWidth(500);
-				pwAddComment.setHeight(400);
+				pwAddComment.setWidth(550);
+				pwAddComment.setHeight(450);
 				pwAddComment.setContentView(vAddComment);
 				pwAddComment.setBackgroundDrawable(new BitmapDrawable());
 				pwAddComment.setAnimationStyle(R.style.AddCommentAnimation);
-				pwAddComment.showAtLocation(getActivity().findViewById(R.id.fragment_view_member), Gravity.CENTER, 0, -120);
+				pwAddComment.showAtLocation(getActivity().findViewById(R.id.fragment_view_member), Gravity.CENTER, 0, -140);
 				pwAddComment.setOnDismissListener(new PopupWindow.OnDismissListener() {
 					@Override
 					public void onDismiss() { 
@@ -106,6 +136,14 @@ public class ViewMemberFragment extends Fragment {
 				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		        imm.showSoftInput(etAddComment, InputMethodManager.SHOW_IMPLICIT);
+			}
+		});
+		
+		btnFinishComment.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String comment = etAddComment.getText().toString();
+				Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -197,6 +235,36 @@ public class ViewMemberFragment extends Fragment {
 				catch (JSONException e) { e.printStackTrace(); }
 			}
 		}).executeAsync();
+	}
+	
+	private class SendVoteThread extends Thread {
+		private int picId;
+		private boolean vote;
+		
+		private SendVoteThread(int picId, boolean vote) {
+			this.picId = picId;
+			this.vote = vote;
+		}
+		
+		public void run() {
+			JSONWriter writer = new JSONWriter(getActivity());
+			if (vote) { writer.createJsonForUpVote(picId); }
+			else { writer.createJsonForDownVote(picId); }
+			
+			if (GlobalMethods.isNetworkAvailable(getActivity())) {
+				HttpPostRequest post = new HttpPostRequest(getActivity());
+				post.createPost(HttpPostRequest.VOTE_URL);
+				post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
+				post.sendPost();
+			}
+			else {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() { 
+						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+		}
 	}
 	
 }

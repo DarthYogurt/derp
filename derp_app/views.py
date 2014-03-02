@@ -207,7 +207,7 @@ def addComment(request):
 
     newComment = Comment(
                          picture = Picture.objects.get(id = data.get("picId", 1)),
-                         poster = User.objects.get(id = data.get("posterFbId",1)),
+                         poster = User.objects.get(fbId = data.get("posterFbId",1)),
                          comment = data.get("comment","").encode("utf-8"),
                          timeModified = datetime.datetime.today()
                          )

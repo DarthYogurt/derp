@@ -19,7 +19,6 @@ urlpatterns = patterns('',
     #url(r'^getRandomPic/(\d*)/$', getRandomPic),
     url(r'^getUserId/(\d*)/$', getUserId),
     url(r'^gallery/(\d*)/(\d*)/$', gallery),
-    url(r'^comment/', addComment),
     url(r'^external/(\d*)/$', externalPicView),
     url(r'^vote/', vote),
 

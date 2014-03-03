@@ -150,8 +150,11 @@ def getPic(request):
 #     print Picture.objects.get(id=pic.id)
 #     print User.objects.get(fbId = userFbId)
     if Vote.objects.filter(user = User.objects.get(fbId= userFbId), picture = Picture.objects.get(id=pic.id)).exists():
-        j['userVoted'] = Vote.objects.get(user = User.objects.get(fbId= data.get("userFbId", 1)), 
+        try:
+            j['userVoted'] = Vote.objects.get(user = User.objects.get(fbId= userFbId), 
                             picture = Picture.objects.get(id=pic.id)).voteUp
+        except:
+            j['userVoted'] = ""
     
     j['comments'] = []
 

@@ -159,9 +159,9 @@ def getPic(request):
        
         com = {}
         com['posterId'] = comment.poster.id
-        com['posterFbId'] = comment.poster.fbId
+        com['posterFbId'] = str(comment.poster.fbId)
         com['comment'] = comment.comment
-        com['commentTime'] = comment.timeModified
+       # com['commentTime'] = comment.timeModified   # has problem cannot json serialize
         j['comments'].append(com)
     return HttpResponse(json.dumps(j), content_type="application/json")
 

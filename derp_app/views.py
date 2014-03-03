@@ -117,7 +117,7 @@ def getPic(request):
     data = json.load(dataString)
     
     picId = data.get("picId", 1)
-    userFbId = data.get("userFbId", 1)
+    userFbId = data.get("fbUserId", 1)
     
     j={}
     pic = None
@@ -247,10 +247,9 @@ def vote(request):
     pic.save()
     
     
-    if not Vote.objects.filter(user = User.objects.get(fbId= data.get("userFbId",1)), picture = Picture.objects.get(id= data.get("picId"), 1)).exists():
-        True
+    if not Vote.objects.filter(user = User.objects.get(fbId= data.get("fbUserId",1)), picture = Picture.objects.get(id= data.get("picId"), 1)).exists():
         print "going to add vote"
-        newVote = Vote(user = User.objects.get(fbId= data.get("userFbId",1)),
+        newVote = Vote(user = User.objects.get(fbId= data.get("fbUserId",1)),
                        picture = Picture.objects.get(id= data.get("picId"), 1),
                        voteUp = data.get("voteUp", "null")
                        )

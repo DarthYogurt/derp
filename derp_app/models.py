@@ -48,6 +48,9 @@ class Comment(models.Model):
     comment = models.TextField(blank=True, null=True)
     timeModified = models.DateTimeField(blank=True,null=True)
     
+    def __unicode__(self):
+        return str(self.picture.id) + " Team: " + str(self.picture.targetId.fbName)
+    
 class Vote(models.Model):
     user = models.ForeignKey("User")
     picture = models.ForeignKey("Picture")

@@ -189,7 +189,21 @@ def getTeamGallery(request,fbId):
         temp['imageUrl'] = str(request.get_host()) + str(p.image)
         temp['caption'] = p.caption
         temp['title'] = p.title
+        
+        temp['comments'] = []
+
+        for comment in Comment.objects.filter(picture=Picture.objects.get(id=p.id)):
+            com = {}
+            com['posterId'] = comment.poster.id
+            com['posterFbId'] = str(comment.poster.fbId)
+            com['comment'] = comment.comment
+            # com['commentTime'] = comment.timeModified   # has problem cannot json serialize
+            temp['comments'].append(com)
+#         
+        
         j['teamGallery'].append(temp)
+        
+        
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def gallery(request, numPerPage, pageNum):     

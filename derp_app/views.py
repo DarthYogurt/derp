@@ -154,13 +154,15 @@ def getPic(request):
                             picture = Picture.objects.get(id=pic.id)).voteUp
     
     j['comments'] = []
-    
+
     for comment in Comment.objects.filter(picture=Picture.objects.get(id=picId)):
+       
         com = {}
         com['posterId'] = comment.poster.id
         com['posterFbId'] = comment.poster.fbId
         com['comment'] = comment.comment
         com['commentTime'] = comment.timeModified
+        j['comments'].append(com)
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def getTeamGallery(request,fbId):

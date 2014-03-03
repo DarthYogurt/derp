@@ -6,8 +6,16 @@
     android:orientation="horizontal"
     android:padding="6dp" >
     
+    <!--  
 	<com.facebook.widget.ProfilePictureView
 		android:id="@+id/friend_picture"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:layout_marginRight="14dp" />
+	-->
+	
+	<ImageView
+	    android:id="@+id/friend_picture"
 		android:layout_width="50dp"
 		android:layout_height="50dp"
 		android:layout_marginRight="14dp" />

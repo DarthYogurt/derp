@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import android.app.ProgressDialog;
@@ -19,6 +19,7 @@ import android.view.WindowManager.BadTokenException;
 public class GlobalMethods {
 	
 	public static final String FILENAME_VOTED_PICTURES = "voted_pictures";
+	public static final String FILENAME_FRIENDS_LIST = "friends_list";
 	
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -85,6 +86,29 @@ public class GlobalMethods {
 			Set<Integer> list = (Set<Integer>)ois.readObject();
 			ois.close();
 			return list;
+		}
+		catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	public static void writeFriendsArray(Context context, List<Friend> friends) {
+		try {
+			FileOutputStream fos = context.openFileOutput(FILENAME_FRIENDS_LIST, Context.MODE_PRIVATE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(friends);
+			oos.close();
+		}
+		catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Friend> readFriendsArray(Context context) {
+		try {
+			FileInputStream fis = context.openFileInput(FILENAME_FRIENDS_LIST);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			List<Friend> friends = (List<Friend>)ois.readObject();
+			ois.close();
+			return friends;
 		}
 		catch (Exception e) { e.printStackTrace(); }
 		return null;

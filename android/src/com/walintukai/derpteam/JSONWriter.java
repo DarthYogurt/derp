@@ -6,12 +6,12 @@ import android.util.Log;
 import java.io.*;
 import java.util.List;
 
-import com.facebook.model.GraphUser;
 import com.google.gson.stream.JsonWriter;
 
 public class JSONWriter {
 
 	public static final String FILENAME_FRIENDS_LIST = "friends.json";
+	public static final String FILENAME_ACTIVE_FRIENDS = "active_friends.json";
 	public static final String FILENAME_GET_PIC = "get_pic.json";
 	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	public static final String FILENAME_PIC_VOTE = "vote.json";
@@ -43,7 +43,7 @@ public class JSONWriter {
 		this.prefs = new Preferences(context);
 	}
 	
-	public void updateFriendsList(List<GraphUser> fbFriends) {	
+	public void updateFriendsList(List<Friend> fbFriends) {	
 		try {
 			fos = context.openFileOutput(FILENAME_FRIENDS_LIST, Context.MODE_PRIVATE);
 			
@@ -55,11 +55,11 @@ public class JSONWriter {
 			writer.beginArray();
 			
 			for (int i = 0; i < fbFriends.size(); i++) {
-				GraphUser friend = fbFriends.get(i);
+				Friend friend = fbFriends.get(i);
 				
 				writer.beginObject();
-				writer.name(KEY_FB_ID).value(friend.getId());
-				writer.name(KEY_FB_NAME).value(friend.getName());
+				writer.name(KEY_FB_ID).value(friend.getFbId());
+				writer.name(KEY_FB_NAME).value(friend.getFbName());
 				writer.endObject();
 			}
 			
@@ -69,6 +69,22 @@ public class JSONWriter {
 			fos.close();
 			
 			Log.i("FRIENDS JSON UPDATED", FILENAME_FRIENDS_LIST);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public void createJsonForActiveFriends() {
+		try {
+			fos = context.openFileOutput(FILENAME_ACTIVE_FRIENDS, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR ACTIVE FRIENDS CREATED", FILENAME_ACTIVE_FRIENDS);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

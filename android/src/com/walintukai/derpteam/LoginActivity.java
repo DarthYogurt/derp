@@ -3,7 +3,10 @@ package com.walintukai.derpteam;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +37,6 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	
 	private Preferences prefs;
-	public List<GraphUser> fbFriends;
-	
 	private UiLifecycleHelper uiHelper;
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -66,15 +67,13 @@ public class LoginActivity extends Activity {
 	}
 	
 	@Override
-	protected void onStart()
-	{
+	protected void onStart() {
 		super.onStart();
 		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
 	}
 	
 	@Override
-	protected void onStop()
-	{
+	protected void onStop() {
 		super.onStop();		
 		FlurryAgent.onEndSession(this);
 	}
@@ -128,6 +127,7 @@ public class LoginActivity extends Activity {
 						Log.i("FB LOGIN", user.getName());
 						prefs.setFbUserId(user.getId());
 						prefs.setFbName(user.getName());
+						prefs.setFbFirstName(user.getFirstName());
 						new SetIdThread(user.getId()).start();
 					}
 				}
@@ -140,6 +140,7 @@ public class LoginActivity extends Activity {
         	Log.i("FB LOGOUT", "SUCCESS");
         	prefs.setFbUserId("");
 			prefs.setFbName("");
+			prefs.setFbFirstName("");
 			prefs.setUserId("");
         }
     }
@@ -155,7 +156,18 @@ public class LoginActivity extends Activity {
 		friendsRequest.setCallback(new Request.Callback() {
 			@Override
 			public void onCompleted(Response response) {
-				fbFriends = getResults(response);
+				List<GraphUser> graphUsers = getResults(response);
+				
+				List<Friend> fbFriends = new ArrayList<Friend>();
+				for (GraphUser user : graphUsers) {
+					String fbId = user.getId();
+					String fbName = user.getName();
+					String fbFirstName = user.getFirstName();
+					Friend friend = new Friend(fbId, fbName, fbFirstName);
+					fbFriends.add(friend);
+				}
+				Collections.sort(fbFriends, new FriendComparator());
+				GlobalMethods.writeFriendsArray(LoginActivity.this, fbFriends);
 				
 				JSONWriter writer = new JSONWriter(LoginActivity.this);
 				writer.updateFriendsList(fbFriends);
@@ -185,6 +197,13 @@ public class LoginActivity extends Activity {
 		GraphMultiResult multiResult = response.getGraphObjectAs(GraphMultiResult.class);
 		GraphObjectList<GraphObject> data = multiResult.getData();
 		return data.castToListOf(GraphUser.class);
+	}
+	
+	private class FriendComparator implements Comparator<Friend> {
+		@Override
+		public int compare(Friend user1, Friend user2) {
+			return user1.getFbName().compareTo(user2.getFbName());
+		}
 	}
 	
 	private class UpdateFriendsThread extends Thread {

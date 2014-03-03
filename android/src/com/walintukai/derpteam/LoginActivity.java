@@ -11,18 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphMultiResult;
-import com.facebook.model.GraphObject;
-import com.facebook.model.GraphObjectList;
-import com.facebook.model.GraphUser;
-import com.flurry.android.FlurryAgent;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -34,7 +22,19 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphMultiResult;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphObjectList;
+import com.facebook.model.GraphUser;
+import com.leanplum.Leanplum;
+import com.leanplum.activities.LeanplumActivity;
+
+public class LoginActivity extends LeanplumActivity {
 	
 	private Preferences prefs;
 	private UiLifecycleHelper uiHelper;
@@ -47,6 +47,17 @@ public class LoginActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        // We've inserted your API keys here for you
+        if (BuildConfig.DEBUG) {
+            Leanplum.setAppIdForDevelopmentMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "FkYfO9Gv6tFY1GkzsEHMNDOPtOnYeSmtpt4zKxBGdFU");
+        } else {
+            Leanplum.setAppIdForProductionMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "kKyZ5kuTs6qLhHU80khwYGjWvN0dXN5xaZIQZHny8io");
+        }
+
+        // This will only run once per session, even if the activity is restarted.
+        Leanplum.start(this);
+
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		getActionBar().setTitle("");
@@ -66,17 +77,7 @@ public class LoginActivity extends Activity {
 		}
 	}
 	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
-	}
 	
-	@Override
-	protected void onStop() {
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
 	
 	private void goToMainActivity() {
 		Intent intent = new Intent(this, MainActivity.class);

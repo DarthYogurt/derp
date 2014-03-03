@@ -19,4 +19,6 @@
 	<classpathentry kind="lib" path="libs/urlimageviewhelper-1.0.4.jar"/>
 	<classpathentry kind="lib" path="libs/FlurryAnalytics_3.3.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
+    <classpathentry exported="true" kind="lib" path="libs/leanplum+actionbarsherlock.jar"/>
+    <classpathentry exported="true" kind="lib" path="libs/Leanplum.jar"/>
 </classpath>

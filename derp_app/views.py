@@ -109,8 +109,16 @@ def getUserId(request,fbUserId):
     except:
         return HttpResponse("User does not exist")
     
-
-def getPic(request, picId):
+@csrf_exempt
+def getPic(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    picId = data.get("picId", 1)
+    userFbId = data.get("userFbId", 1)
+    
     j={}
     pic = None
 
@@ -124,6 +132,8 @@ def getPic(request, picId):
             HttpResponse("no pictures in ")
     else:
         pic = Picture.objects.get(id = picId)
+        
+    
     j['picId'] = pic.id
     j['targetUserId'] = str(pic.targetId.id)
     j['targetFbId'] = str(pic.targetId.fbId)
@@ -136,6 +146,12 @@ def getPic(request, picId):
     j['downVote'] = pic.downVote
     j['title'] = pic.title
     j['popularity'] = str(pic.popularity)
+    
+#     print Picture.objects.get(id=pic.id)
+#     print User.objects.get(fbId = userFbId)
+    if Vote.objects.filter(user = User.objects.get(fbId= userFbId), picture = Picture.objects.get(id=pic.id)).exists():
+        j['userVoted'] = Vote.objects.get(user = User.objects.get(fbId= data.get("userFbId", 1)), 
+                            picture = Picture.objects.get(id=pic.id)).voteUp
     
     j['comments'] = []
     
@@ -229,6 +245,16 @@ def vote(request):
         pic.downVote +=1
     
     pic.save()
+    
+    
+    if not Vote.objects.filter(user = User.objects.get(fbId= data.get("userFbId",1)), picture = Picture.objects.get(id= data.get("picId"), 1)).exists():
+        True
+        print "going to add vote"
+        newVote = Vote(user = User.objects.get(fbId= data.get("userFbId",1)),
+                       picture = Picture.objects.get(id= data.get("picId"), 1),
+                       voteUp = data.get("voteUp", "null")
+                       )
+        
     
     return HttpResponse("Vote Added")
     

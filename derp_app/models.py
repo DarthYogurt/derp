@@ -17,8 +17,6 @@ class User(models.Model):
         return str(self.id) + " " + self.fbName  +" - Active: " + str(self.activated)#str(self.fbName) + "-" +str(self.id) + " Active:" + str(self.activated)
 
 
-
-#        
 class Friend(models.Model):
     parentFriend = models.ForeignKey("User",related_name='parentFriend')
     friendId = models.ForeignKey("User",related_name='friendId')
@@ -28,7 +26,6 @@ class Friend(models.Model):
         
         #return str(self.parentFriend.fbName) + " - " + str(self.friendId.fbName)
         
-
 class Picture(models.Model):
     posterId = models.ForeignKey("User", related_name="poster")
     targetId = models.ForeignKey("User", related_name="targetUser")
@@ -50,3 +47,9 @@ class Comment(models.Model):
     poster = models.ForeignKey("User")
     comment = models.TextField(blank=True, null=True)
     timeModified = models.DateTimeField(blank=True,null=True)
+    
+class Vote(models.Model):
+    user = models.ForeignKey("User")
+    picture = models.ForeignKey("Picture")
+    voteUp = models.NullBooleanField(blank=True, null=True)
+    

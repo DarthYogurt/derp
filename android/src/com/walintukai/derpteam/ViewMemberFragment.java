@@ -1,5 +1,6 @@
 package com.walintukai.derpteam;
 
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONException;
@@ -53,6 +54,7 @@ public class ViewMemberFragment extends Fragment {
 	private TextView tvDownVote;
 	private PopupWindow pwAddComment;
 	private EditText etAddComment;
+	private LinearLayout commentContainer;
 	private Set<Integer> votedPicturesSet;
 	
 	static ViewMemberFragment newInstance(int picId) {
@@ -81,6 +83,7 @@ public class ViewMemberFragment extends Fragment {
 		tvDownVote = (TextView) view.findViewById(R.id.vote_down_count);
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
+		commentContainer = (LinearLayout) view.findViewById(R.id.comment_container);
 		
 		pwAddComment = new PopupWindow(getActivity());
 		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
@@ -159,21 +162,6 @@ public class ViewMemberFragment extends Fragment {
 		
 		new GetMemberTask().execute();
 		
-		LinearLayout commentContainer = (LinearLayout) view.findViewById(R.id.comment_container);
-		
-		for (int i = 0; i < 10; i++) {
-			TextView name = new TextView(getActivity());
-			name.setText("USERNAME");
-			name.setTextAppearance(getActivity(), R.style.comment_name);
-			commentContainer.addView(name);
-			
-			TextView comment = new TextView(getActivity());
-			comment.setText("This is a comment. This is a comment. This is a comment. This is a comment. ");
-			comment.setTextAppearance(getActivity(), R.style.comment);
-			comment.setPadding(0, 0, 0, 10);
-			commentContainer.addView(comment);
-		}
-		
 		return view;
 	}
 	
@@ -191,6 +179,7 @@ public class ViewMemberFragment extends Fragment {
 	private class GetMemberTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog loadingDialog;
 		private Member member;
+		private List<Comment> commentsArray;
 		
 		protected void onPreExecute() {
 			loadingDialog = GlobalMethods.createLoadingDialog(getActivity());
@@ -208,6 +197,7 @@ public class ViewMemberFragment extends Fragment {
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
 	    	member = reader.getMemberObject(jsonString);
+	    	commentsArray = reader.getCommentsArray(jsonString);
 	    	
 	        return null;
 	    }
@@ -222,6 +212,25 @@ public class ViewMemberFragment extends Fragment {
 	    	tvCaption.setText(member.getCaption());
 	    	tvUpVote.setText(Integer.toString(member.getUpVote()));
 	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
+	    	
+	    	for (int i = 0; i < commentsArray.size(); i++) {
+	    		LinearLayout row = new LinearLayout(getActivity());
+	    		row.setOrientation(LinearLayout.HORIZONTAL);
+	    		row.setPadding(0, 0, 0, 10);
+	    		
+				TextView name = new TextView(getActivity());
+				name.setText(commentsArray.get(i).getPosterFirstName().toUpperCase());
+				name.setTextAppearance(getActivity(), R.style.comment_name);
+				name.setPadding(0, 0, 10, 0);
+				row.addView(name);
+				
+				TextView comment = new TextView(getActivity());
+				comment.setText(commentsArray.get(i).getComment());
+				comment.setTextAppearance(getActivity(), R.style.comment);
+				row.addView(comment);
+				
+				commentContainer.addView(row);
+			}
 	    	
 	    	ivTargetFbPic.setOnClickListener(new OnClickListener() {
 				@Override

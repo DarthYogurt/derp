@@ -29,6 +29,7 @@ public class JSONReader {
 	private static final String KEY_UP_VOTE = "upVote";
 	private static final String KEY_DOWN_VOTE = "downVote";
 	private static final String KEY_TOTAL_PAGES = "totalPages";
+	private static final String KEY_COMMENT = "comment";
 
 	private Context context;
 	
@@ -89,7 +90,6 @@ public class JSONReader {
 	
 	public List<Member> getTeamMembersArray(String jsonString) {
 		final List<Member> teamMembersArray = new ArrayList<Member>();
-		
 		try {
             JSONObject jObject = new JSONObject(jsonString);
             JSONArray jArray = jObject.getJSONArray("teamGallery");
@@ -125,6 +125,36 @@ public class JSONReader {
         } 
 		catch (Exception e) { e.printStackTrace(); }
 		return teamMembersArray;
+	}
+	
+	public List<Comment> getCommentsArray(String jsonString) {
+		final List<Comment> commentsArray = new ArrayList<Comment>();
+		try {
+            JSONObject jObject = new JSONObject(jsonString);
+            JSONArray jArray = jObject.getJSONArray("comments");
+            
+            for (int i = 0; i < jArray.length(); i++) {
+    			final String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
+    	    	final String comment = jArray.getJSONObject(i).getString(KEY_COMMENT);
+    	    	
+    	    	String graphPath = "/" + posterFbId + "/";
+    			new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
+    				public void onCompleted(Response response) {
+    					String posterFirstName = "";
+    					try {
+    						JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
+    						posterFirstName = jObject.getString("first_name");
+    					} 
+    					catch (JSONException e) { e.printStackTrace(); }
+    					
+    					Comment c = new Comment(posterFbId, posterFirstName, comment);
+    	    	    	commentsArray.add(c);
+    				}
+    			}).executeAndWait();
+            }
+        }
+		catch (Exception e) { e.printStackTrace(); }
+		return commentsArray;
 	}
 
 }

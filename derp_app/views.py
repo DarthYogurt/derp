@@ -262,9 +262,16 @@ def vote(request):
     return HttpResponse("Vote Added")
     
 
-
+@csrf_exempt
 def getFriends(request):
-    fbId = "606082631"
+    
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    
+    fbId = data.get("fbUserId", 1)
     
     
     user = User.objects.get(fbId= fbId)

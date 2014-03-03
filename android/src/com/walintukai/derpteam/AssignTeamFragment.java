@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,15 +59,22 @@ public class AssignTeamFragment extends Fragment {
 		caption = args.getString(KEY_CAPTION);
 		
 		final List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
-		
-		TextView header = (TextView) view.findViewById(R.id.pick_team_header);
-		header.setText(R.string.assign_team);
+		final List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
 		
 		ListView listView = (ListView) view.findViewById(R.id.fb_friend_listview);
+		
+		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, activeFriends);
+		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity());
+		adapter.addSection("Active Friends", activeFriendsAdapter);
+		adapter.addSection("All Friends", fbFriendsAdapter);
+		listView.setAdapter(adapter);
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
-				Friend friend = fbFriends.get(position);
+				Friend friend = (Friend) parent.getAdapter().getItem(position);
 				targetName = friend.getFbName();
 				targetFbId = friend.getFbId();
 				
@@ -73,9 +82,6 @@ public class AssignTeamFragment extends Fragment {
 				dialog.show(getActivity().getFragmentManager(), "assignTeam");
 			}
 		});
-		
-		FriendsListAdapter adapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
-		listView.setAdapter(adapter);
 		
 		return view;
 	}

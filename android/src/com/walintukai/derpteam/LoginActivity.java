@@ -28,6 +28,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	
 	private Preferences prefs;
+	private List<Friend> fbFriends;
 	private UiLifecycleHelper uiHelper;
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -158,7 +160,7 @@ public class LoginActivity extends Activity {
 			public void onCompleted(Response response) {
 				List<GraphUser> graphUsers = getResults(response);
 				
-				List<Friend> fbFriends = new ArrayList<Friend>();
+				fbFriends = new ArrayList<Friend>();
 				for (GraphUser user : graphUsers) {
 					String fbId = user.getId();
 					String fbName = user.getName();
@@ -172,8 +174,9 @@ public class LoginActivity extends Activity {
 				JSONWriter writer = new JSONWriter(LoginActivity.this);
 				writer.updateFriendsList(fbFriends);
 				writer.logJson(JSONWriter.FILENAME_FRIENDS_LIST);
-				
 				new UpdateFriendsThread().start();
+				
+				new GetActiveFriendsTask().execute();
 			}
 		});
 		friendsRequest.executeAsync();
@@ -222,6 +225,48 @@ public class LoginActivity extends Activity {
 				});
 			}
 		}
+	}
+	
+	private class GetActiveFriendsTask extends AsyncTask<Void, Void, Void> {
+		private String[] activeFriends;
+		
+	    protected Void doInBackground(Void... params) {
+	    	JSONWriter writer = new JSONWriter(LoginActivity.this);
+	    	writer.createJsonForActiveFriends();
+	    	
+			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+			post.createPost(HttpPostRequest.ACTIVE_FRIENDS_URL);
+			post.addJSON(JSONWriter.FILENAME_ACTIVE_FRIENDS);
+			String jsonString = post.sendPostReturnJson();
+			
+			JSONReader reader = new JSONReader(LoginActivity.this);
+			activeFriends = reader.getActiveFriendsArray(jsonString);
+			
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	List<Friend> activeFriendsArray = new ArrayList<Friend>();
+	    	
+	    	// Add each matching friend to active friends list
+	    	for (int i = 0; i < activeFriends.length; i++) {
+	    		String activeFriend = activeFriends[i];
+	    		for (Friend friend : fbFriends) {
+	    			if (friend.getFbId().equals(activeFriend)) { activeFriendsArray.add(friend); }
+	    		}
+	    	}
+	    	Collections.sort(activeFriendsArray, new FriendComparator());
+	    	
+	    	// Remove all active friends from full friends list
+	    	for (Friend friend : activeFriendsArray) { 
+	    		fbFriends.remove(friend);
+	    		Log.v("MATCH", friend.getFbName()); 
+    		}
+	    	GlobalMethods.writeActiveFriendsArray(LoginActivity.this, activeFriendsArray);
+	    	
+	        return;
+	    }
 	}
 	
 	private class SetIdThread extends Thread {

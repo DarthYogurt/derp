@@ -1,6 +1,8 @@
 package com.walintukai.derpteam;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,16 +31,23 @@ public class PickTeamFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		TextView header = (TextView) view.findViewById(R.id.pick_team_header);
-		header.setText(R.string.view_team);
-		
 		final List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
+		final List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
 		
 		ListView listView = (ListView) view.findViewById(R.id.fb_friend_listview);
+		
+		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, activeFriends);
+		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity());
+		adapter.addSection("Active Friends", activeFriendsAdapter);
+		adapter.addSection("All Friends", fbFriendsAdapter);
+		listView.setAdapter(adapter);
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view , int position, long id) {
-				Friend friend = fbFriends.get(position);
+				Friend friend = (Friend) parent.getAdapter().getItem(position);
 				
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
@@ -48,9 +58,6 @@ public class PickTeamFragment extends Fragment {
 				ft.commit();
 			}
 		});
-		
-		FriendsListAdapter adapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
-		listView.setAdapter(adapter);
 		
 		return view;
 	}

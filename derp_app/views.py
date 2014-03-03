@@ -238,7 +238,10 @@ def vote(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    pic = Picture.objects.get(id = data.get("picId") )
+    picId = data.get("picId", 1)
+    userFbId = data.get("fbUserId",1)
+    
+    pic = Picture.objects.get(id = picId )
     
     if data.get("upVote", False):
         pic.upVote += 1
@@ -247,7 +250,13 @@ def vote(request):
     
     pic.save()
     
-
+    if not Vote.objects.filter(user = User.objects.get(fbId= userFbId), 
+                               picture = Picture.objects.get(id = picId)).exists():
+        newVote = Vote(user = User.objects.get(fbId= data.get("fbUserId",1)),
+                       picture = Picture.objects.get(id= data.get("picId"), 1),
+                       voteUp = data.get("voteUp", "null")
+                       )
+        newVote.save()
 
     return HttpResponse("Vote Added")
     

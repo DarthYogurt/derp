@@ -247,13 +247,7 @@ def vote(request):
     
     pic.save()
     
-    
-    if not Vote.objects.filter(user = User.objects.get(fbId= data.get("fbUserId",1)), picture = Picture.objects.get(id= data.get("picId"), 1)).exists():
-        newVote = Vote(user = User.objects.get(fbId= data.get("fbUserId",1)),
-                       picture = Picture.objects.get(id= data.get("picId"), 1),
-                       voteUp = data.get("voteUp", "null")
-                       )
-        newVote.save()
+
 
     return HttpResponse("Vote Added")
     

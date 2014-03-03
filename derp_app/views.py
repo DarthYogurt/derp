@@ -262,6 +262,33 @@ def vote(request):
     return HttpResponse("Vote Added")
     
 
+
+def getFriends(request):
+    fbId = "606082631"
+    
+    
+    user = User.objects.get(fbId= fbId)
+    friends = Friend.objects.filter(parentFriend = user, friendId__activated = True) 
+    
+
+    j={}
+    j['activeFriends'] = []
+    
+    for friend in friends:
+        j['activeFriends'].append(friend.friendId.fbId)
+    
+    j['testingOnly'] = []
+    for friend in friends:
+        temp = {}
+        temp['name'] = friend.friendId.fbName
+        temp['fbId'] = friend.friendId.fbId
+        j['testingOnly'].append(temp)
+    
+    
+    return HttpResponse(json.dumps(j), content_type="application/json")
+    
+    
+
 @csrf_exempt
 def uploadError(request):
     f = open("error.html", "w")

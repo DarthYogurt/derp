@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^gallery/(\d*)/(\d*)/$', gallery),
     url(r'^external/(\d*)/$', externalPicView),
     url(r'^vote/', vote),
+    url(r'^getFriends/', getFriends),
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),

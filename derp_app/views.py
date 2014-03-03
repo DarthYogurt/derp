@@ -250,8 +250,7 @@ def vote(request):
     
     pic.save()
     
-    if not Vote.objects.filter(user = User.objects.get(fbId= userFbId), 
-                               picture = Picture.objects.get(id = picId)).exists():
+    if not Vote.objects.filter(user = User.objects.get(fbId= userFbId), picture = Picture.objects.get(id = picId)).exists():
         newVote = Vote(user = User.objects.get(fbId= userFbId ),
                        picture = Picture.objects.get(id= picId),
                        voteUp = data.get("voteUp", "null")

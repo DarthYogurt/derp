@@ -53,6 +53,7 @@ public class ViewMemberFragment extends Fragment {
 	private TextView tvDownVote;
 	private PopupWindow pwAddComment;
 	private EditText etAddComment;
+	private Set<Integer> votedPicturesSet;
 	
 	static ViewMemberFragment newInstance(int picId) {
 		ViewMemberFragment fragment = new ViewMemberFragment();
@@ -87,11 +88,15 @@ public class ViewMemberFragment extends Fragment {
 		etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
 		Button btnFinishComment = (Button) vAddComment.findViewById(R.id.btn_finish_comment);
 		
+		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+		LinearLayout voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
+		if (votedPicturesSet.contains(picId)) { voteContainer.setVisibility(View.GONE); }
+		
 		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
+				
 				votedPicturesSet.add(picId);
 				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, false).start();
@@ -102,7 +107,6 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				Set<Integer> votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 				votedPicturesSet.add(picId);
 				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, true).start();
@@ -193,9 +197,14 @@ public class ViewMemberFragment extends Fragment {
 			loadingDialog.show();
 		}
 		
-	    protected Void doInBackground(Void... params) {
-	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getMemberJsonString(picId);
+	    protected Void doInBackground(Void... params) {	
+	    	JSONWriter writer = new JSONWriter(getActivity());
+	    	writer.createJsonForGetPic(picId);
+	    	
+	    	HttpPostRequest post = new HttpPostRequest(getActivity());
+	    	post.createPost(HttpPostRequest.GET_PIC_URL);
+	    	post.addJSON(JSONWriter.FILENAME_GET_PIC);
+	    	String jsonString = post.sendPostReturnJson();
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
 	    	member = reader.getMemberObject(jsonString);

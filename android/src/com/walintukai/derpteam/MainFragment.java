@@ -131,8 +131,13 @@ public class MainFragment extends Fragment {
 	private class GetRandomMemberTask extends AsyncTask<Void, Void, Void> {
 		
 	    protected Void doInBackground(Void... params) {
-	    	HttpGetRequest get = new HttpGetRequest();
-	    	String jsonString = get.getMemberJsonString(0);
+	    	JSONWriter writer = new JSONWriter(getActivity());
+	    	writer.createJsonForGetPic(0);
+	    	
+	    	HttpPostRequest post = new HttpPostRequest(getActivity());
+	    	post.createPost(HttpPostRequest.GET_PIC_URL);
+	    	post.addJSON(JSONWriter.FILENAME_GET_PIC);
+	    	String jsonString = post.sendPostReturnJson();
 	    	
 	    	JSONReader reader = new JSONReader(getActivity());
 	    	member = reader.getMemberObject(jsonString);

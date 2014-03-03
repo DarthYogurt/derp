@@ -2,11 +2,13 @@ package com.walintukai.derpteam;
 
 import java.util.Set;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,8 +61,6 @@ public class MainFragment extends Fragment {
 				ft.commit();
 			}
 		});
-		
-		new GetRandomMemberTask().execute();
 		
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteDown.setOnClickListener(new OnClickListener() {
@@ -139,6 +142,8 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
+		new GetRandomMemberTask().execute();
+		
 		return view;
 	}
 	
@@ -162,7 +167,14 @@ public class MainFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	caption.setText(member.getCaption());
-	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder);
+	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder,
+	    			new UrlImageViewCallback() {
+						@Override
+						public void onLoaded(ImageView arg0, Bitmap arg1, String arg2, boolean arg3) {
+							Animation popIn = AnimationUtils.loadAnimation(getActivity(), R.anim.pop_in);
+							rateMember.startAnimation(popIn);
+						}
+	    	});
 	    	picId = member.getPicId();
 	        return;
 	    }

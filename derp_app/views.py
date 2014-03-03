@@ -149,6 +149,7 @@ def getPic(request):
     
 #     print Picture.objects.get(id=pic.id)
 #     print User.objects.get(fbId = userFbId)
+    j['userVoted'] = ""
     if Vote.objects.filter(user = User.objects.get(fbId= userFbId), picture = Picture.objects.get(id=pic.id)).exists():
         try:
             j['userVoted'] = Vote.objects.get(user = User.objects.get(fbId= userFbId), 

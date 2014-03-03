@@ -12,6 +12,7 @@ import com.google.gson.stream.JsonWriter;
 public class JSONWriter {
 
 	public static final String FILENAME_FRIENDS_LIST = "friends.json";
+	public static final String FILENAME_GET_PIC = "get_pic.json";
 	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	public static final String FILENAME_PIC_VOTE = "vote.json";
 	public static final String FILENAME_COMMENT = "comment.json";
@@ -72,6 +73,23 @@ public class JSONWriter {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
+	public void createJsonForGetPic(int picId) {
+		try {
+			fos = context.openFileOutput(FILENAME_GET_PIC, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
+			writer.name(KEY_PIC_ID).value(picId);
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR GET PIC CREATED", FILENAME_GET_PIC);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
+	
 	public void createJsonForMember(String imgFilename, String title, String caption, 
 								   String targetFbId, String targetUserId) {
 		try {
@@ -101,6 +119,7 @@ public class JSONWriter {
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
 			writer.name(KEY_PIC_ID).value(picId);
 			writer.name(KEY_UP_VOTE).value(true);
 			writer.name(KEY_DOWN_VOTE).value(false);
@@ -119,6 +138,7 @@ public class JSONWriter {
 			
 			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
 			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
 			writer.name(KEY_PIC_ID).value(picId);
 			writer.name(KEY_UP_VOTE).value(false);
 			writer.name(KEY_DOWN_VOTE).value(true);

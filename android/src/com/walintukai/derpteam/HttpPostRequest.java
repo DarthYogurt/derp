@@ -21,6 +21,7 @@ import android.util.Log;
 public class HttpPostRequest {
 	
 	public static final String LOGIN_URL = "http://dev.darthyogurt.com:8001/login/";
+	public static final String GET_PIC_URL = "http://dev.darthyogurt.com:8001/getPic/";
 	public static final String UPLOAD_PIC_URL = "http://dev.darthyogurt.com:8001/uploadPic/";
 	public static final String VOTE_URL = "http://dev.darthyogurt.com:8001/vote/";
 	public static final String COMMENT_URL = "http://dev.darthyogurt.com:8001/addComment/";
@@ -55,10 +56,10 @@ public class HttpPostRequest {
 			HttpResponse response = client.execute(post);
 			
 			int responseCode = response.getStatusLine().getStatusCode();
-			Log.i("POST RESPONSE CODE", Integer.toString(responseCode));
+			Log.v("POST RESPONSE CODE", Integer.toString(responseCode));
 			
 			responseBody = EntityUtils.toString(response.getEntity());
-			Log.i("POST RESPONSE BODY", responseBody);
+			Log.v("POST RESPONSE BODY", responseBody);
 
 			if (responseCode == HTTP_RESPONSE_SUCCESS) { 
 				Log.i("POST TO SERVER", "SUCCESS"); 
@@ -70,6 +71,32 @@ public class HttpPostRequest {
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public String sendPostReturnJson() {
+		post.setEntity(multipartEntity.build());
+		
+		try {
+			HttpResponse response = client.execute(post);
+			
+			int responseCode = response.getStatusLine().getStatusCode();
+			Log.v("POST RESPONSE CODE", Integer.toString(responseCode));
+			
+			responseBody = EntityUtils.toString(response.getEntity());
+			Log.v("POST RESPONSE JSON", responseBody);
+
+			if (responseCode == HTTP_RESPONSE_SUCCESS) { 
+				Log.i("POST TO SERVER", "SUCCESS"); 
+			}
+	    	else { 
+	    		Log.e("POST TO SERVER", "ERROR"); 
+	    		sendErrorPost();
+	    	}
+			return responseBody;
+		} 
+		catch (ClientProtocolException e) { e.printStackTrace(); } 
+		catch (IOException e) { e.printStackTrace(); }
+		return "";
 	}
 	
 	public void addJSON(String filename) {
@@ -105,10 +132,10 @@ public class HttpPostRequest {
 			HttpResponse errorResponse = errorClient.execute(errorPost);
 			
 			int errorResponseCode = errorResponse.getStatusLine().getStatusCode();
-			Log.i("ERROR RESPONSE CODE", Integer.toString(errorResponseCode));
+			Log.e("ERROR RESPONSE CODE", Integer.toString(errorResponseCode));
 			
 			String errorResponseBody = EntityUtils.toString(errorResponse.getEntity());
-			Log.i("ERROR RESPONSE BODY", errorResponseBody);
+			Log.e("ERROR RESPONSE BODY", errorResponseBody);
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }

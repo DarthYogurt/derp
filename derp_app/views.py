@@ -149,13 +149,13 @@ def getPic(request):
     
 #     print Picture.objects.get(id=pic.id)
 #     print User.objects.get(fbId = userFbId)
-    j['userVoted'] = ""
+    j['userVotedUp'] = ""
     if Vote.objects.filter(user = User.objects.get(fbId= userFbId), picture = Picture.objects.get(id=pic.id)).exists():
         try:
-            j['userVoted'] = Vote.objects.get(user = User.objects.get(fbId= userFbId), 
-                            picture = Picture.objects.get(id=pic.id)).voteUp
+            j['userVotedUp'] = str(Vote.objects.get(user = User.objects.get(fbId= userFbId), 
+                            picture = Picture.objects.get(id=pic.id)).voteUp)
         except:
-            j['userVoted'] = ""
+            j['userVotedUp'] = ""
     
     j['comments'] = []
 

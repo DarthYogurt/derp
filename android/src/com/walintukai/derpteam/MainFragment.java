@@ -25,6 +25,7 @@ public class MainFragment extends Fragment {
 	private ImageView rateMember;
 	private TextView caption;
 	private Member member;
+	private int picId;
 	private Set<Integer> votedPicturesSet;
 	
 	static MainFragment newInstance() {
@@ -43,6 +44,19 @@ public class MainFragment extends Fragment {
 		
 		caption = (TextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
+		rateMember.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				
+				ViewMemberFragment fragment = ViewMemberFragment.newInstance(picId);
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
+		
 		new GetRandomMemberTask().execute();
 		
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
@@ -149,6 +163,7 @@ public class MainFragment extends Fragment {
 	    	super.onPostExecute(result);
 	    	caption.setText(member.getCaption());
 	    	UrlImageViewHelper.setUrlDrawable(rateMember, member.getImageUrl(), R.drawable.image_placeholder);
+	    	picId = member.getPicId();
 	        return;
 	    }
 	}

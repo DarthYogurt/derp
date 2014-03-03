@@ -94,7 +94,7 @@ public class ViewMemberFragment extends Fragment {
 		Button btnFinishComment = (Button) vAddComment.findViewById(R.id.btn_finish_comment);
 		
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
-		LinearLayout voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
+		final LinearLayout voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
 		if (votedPicturesSet.contains(picId)) { voteContainer.setVisibility(View.GONE); }
 		
 		btnVoteDown.setOnClickListener(new OnClickListener() {
@@ -105,6 +105,7 @@ public class ViewMemberFragment extends Fragment {
 				votedPicturesSet.add(picId);
 				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, false).start();
+				voteContainer.setVisibility(View.GONE);
 			}
 		});
 		
@@ -115,6 +116,7 @@ public class ViewMemberFragment extends Fragment {
 				votedPicturesSet.add(picId);
 				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
 				new SendVoteThread(picId, true).start();
+				voteContainer.setVisibility(View.GONE);
 			}
 		});
 		

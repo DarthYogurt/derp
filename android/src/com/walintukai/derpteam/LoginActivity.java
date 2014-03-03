@@ -79,8 +79,6 @@ public class LoginActivity extends LeanplumActivity {
 		}
 	}
 	
-	
-	
 	private void goToMainActivity() {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
@@ -171,13 +169,12 @@ public class LoginActivity extends LeanplumActivity {
 				}
 				Collections.sort(fbFriends, new FriendComparator());
 				GlobalMethods.writeFriendsArray(LoginActivity.this, fbFriends);
+				new GetActiveFriendsTask().execute();
 				
 				JSONWriter writer = new JSONWriter(LoginActivity.this);
 				writer.updateFriendsList(fbFriends);
 				writer.logJson(JSONWriter.FILENAME_FRIENDS_LIST);
-				new UpdateFriendsThread().start();
-				
-				new GetActiveFriendsTask().execute();
+				new UpdateFriendsThread().start();	
 			}
 		});
 		friendsRequest.executeAsync();
@@ -258,12 +255,6 @@ public class LoginActivity extends LeanplumActivity {
 	    		}
 	    	}
 	    	Collections.sort(activeFriendsArray, new FriendComparator());
-	    	
-	    	// Remove all active friends from full friends list
-	    	for (Friend friend : activeFriendsArray) { 
-	    		fbFriends.remove(friend);
-	    		Log.v("MATCH", friend.getFbName()); 
-    		}
 	    	GlobalMethods.writeActiveFriendsArray(LoginActivity.this, activeFriendsArray);
 	    	
 	        return;

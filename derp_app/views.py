@@ -270,14 +270,11 @@ def getFriends(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    
     fbId = data.get("fbUserId", 1)
-    
     
     user = User.objects.get(fbId= fbId)
     friends = Friend.objects.filter(parentFriend = user, friendId__activated = True) 
     
-
     j={}
     j['activeFriends'] = []
     
@@ -290,7 +287,6 @@ def getFriends(request):
         temp['name'] = friend.friendId.fbName
         temp['fbId'] = friend.friendId.fbId
         j['testingOnly'].append(temp)
-    
     
     return HttpResponse(json.dumps(j), content_type="application/json")
     

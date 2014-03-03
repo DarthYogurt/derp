@@ -10,6 +10,7 @@ public class Preferences {
 	private static final String FILENAME_PREF = "preferences";
 	private static final String KEY_FB_USER_ID = "fbId";
 	private static final String KEY_FB_NAME = "fbName";
+	private static final String KEY_FB_FIRST_NAME = "fbFirstName";
 	private static final String KEY_USER_ID = "userId";
 	
 	private SharedPreferences pref;
@@ -36,6 +37,15 @@ public class Preferences {
 	
 	public String getFbName() {
 		return pref.getString(KEY_FB_NAME, "");
+	}
+	
+	public void setFbFirstName(String s) {
+		prefEditor.putString(KEY_FB_FIRST_NAME, s).commit();
+		Log.i("PREF: SET FB FIRST NAME", s);
+	}
+	
+	public String getFbFirstName() {
+		return pref.getString(KEY_FB_FIRST_NAME, "");
 	}
 	
 	public void setUserId(String s) {

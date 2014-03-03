@@ -8,18 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
-public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
+public class FriendsListAdapter extends ArrayAdapter<Friend> {
 	
 	private Context context;
 	private int layoutResourceId;
-	private List<GraphUser> friends;
+	private List<Friend> friends;
 	
-	public FriendsListAdapter(Context context, int layoutResourceId, List<GraphUser> friends) {
+	public FriendsListAdapter(Context context, int layoutResourceId, List<Friend> friends) {
 		super(context, layoutResourceId, friends);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
@@ -27,7 +27,7 @@ public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
 	}
 	
 	private static class ViewHolder {
-		private ProfilePictureView picture;
+		private ImageView picture;
 		private TextView name;
 	}
 	
@@ -40,7 +40,7 @@ public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
 			convertView = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ViewHolder();
-            holder.picture = (ProfilePictureView) convertView.findViewById(R.id.friend_picture);
+            holder.picture = (ImageView) convertView.findViewById(R.id.friend_picture);
             holder.name = (TextView) convertView.findViewById(R.id.friend_name);
 
             convertView.setTag(holder);
@@ -49,8 +49,8 @@ public class FriendsListAdapter extends ArrayAdapter<GraphUser> {
             holder = (ViewHolder)convertView.getTag();
         }
 		
-		holder.picture.setProfileId(friends.get(position).getId());
-        holder.name.setText(friends.get(position).getName());
+		UrlImageViewHelper.setUrlDrawable(holder.picture, friends.get(position).getFbPicUrl());
+        holder.name.setText(friends.get(position).getFbName());
 
         return convertView;
 	}

@@ -44,6 +44,7 @@ public class ViewMemberFragment extends Fragment {
 
 	private static final String KEY_PIC_ID = "picId";
 	
+	private Preferences prefs;
 	private int picId;
 	private ImageView ivTargetFbPic;
 	private TextView tvTargetName;
@@ -73,6 +74,7 @@ public class ViewMemberFragment extends Fragment {
 		
 		Bundle args = getArguments();
 		picId = args.getInt(KEY_PIC_ID);
+		prefs = new Preferences(getActivity());
 		
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
@@ -214,22 +216,7 @@ public class ViewMemberFragment extends Fragment {
 	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
 	    	
 	    	for (int i = 0; i < commentsArray.size(); i++) {
-	    		LinearLayout row = new LinearLayout(getActivity());
-	    		row.setOrientation(LinearLayout.HORIZONTAL);
-	    		row.setPadding(0, 0, 0, 10);
-	    		
-				TextView name = new TextView(getActivity());
-				name.setText(commentsArray.get(i).getPosterFirstName().toUpperCase());
-				name.setTextAppearance(getActivity(), R.style.comment_name);
-				name.setPadding(0, 0, 10, 0);
-				row.addView(name);
-				
-				TextView comment = new TextView(getActivity());
-				comment.setText(commentsArray.get(i).getComment());
-				comment.setTextAppearance(getActivity(), R.style.comment);
-				row.addView(comment);
-				
-				commentContainer.addView(row);
+	    		addComment(commentsArray.get(i).getPosterFirstName(), commentsArray.get(i).getComment());
 			}
 	    	
 	    	ivTargetFbPic.setOnClickListener(new OnClickListener() {
@@ -310,6 +297,7 @@ public class ViewMemberFragment extends Fragment {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() { 
 						Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
+						addComment(prefs.getFbFirstName(), comment);
 					}
 				});
 				
@@ -334,6 +322,25 @@ public class ViewMemberFragment extends Fragment {
 	    	etAddComment.setText("");
 	        return;
 	    }
+	}
+	
+	private void addComment(String firstName, String comment) {
+		LinearLayout row = new LinearLayout(getActivity());
+		row.setOrientation(LinearLayout.HORIZONTAL);
+		row.setPadding(0, 0, 0, 10);
+		
+		TextView tvName = new TextView(getActivity());
+		tvName.setText(firstName.toUpperCase());
+		tvName.setTextAppearance(getActivity(), R.style.comment_name);
+		tvName.setPadding(0, 0, 10, 0);
+		row.addView(tvName);
+		
+		TextView tvComment = new TextView(getActivity());
+		tvComment.setText(comment);
+		tvComment.setTextAppearance(getActivity(), R.style.comment);
+		row.addView(tvComment);
+		
+		commentContainer.addView(row);
 	}
 	
 }

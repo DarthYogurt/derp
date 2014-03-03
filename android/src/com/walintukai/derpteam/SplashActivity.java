@@ -44,15 +44,13 @@ public class SplashActivity extends Activity {
 	}
 	
 	@Override
-	protected void onStart()
-	{
+	protected void onStart() {
 		super.onStart();
 		FlurryAgent.onStartSession(this, "8Q5JHWCYR8BY35Z7FVMW");
 	}
 	
 	@Override
-	protected void onStop()
-	{
+	protected void onStop() {
 		super.onStop();		
 		FlurryAgent.onEndSession(this);
 	}

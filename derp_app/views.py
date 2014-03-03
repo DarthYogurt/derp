@@ -55,11 +55,11 @@ def login(request):
    
         if not Friend.objects.filter(parentFriend = User.objects.get(fbId=data.get('fbUserId',0)), 
                                  friendId = user).exists():
-             newFriendModel = Friend(
-                                    parentFriend = User.objects.get(fbId=data.get('fbUserId',1)),
-                                    friendId = user
-                                    )
-             newFriendModel.save()
+            newFriendModel = Friend(
+                                   parentFriend = User.objects.get(fbId=data.get('fbUserId',1)),
+                                   friendId = user
+                                   )
+            newFriendModel.save()
     
     userId = User.objects.get(fbId=data.get("fbUserId",1))
     return HttpResponse(userId.id)
@@ -222,11 +222,12 @@ def addComment(request):
     #    print d,data[d]
 
     newComment = Comment(
-                         picture = Picture.objects.get(id = data.get("picId", 1)),
-                         poster = User.objects.get(fbId = data.get("posterFbId",1)),
-                         comment = data.get("comment","").encode("utf-8"),
-                         timeModified = datetime.datetime.today()
-                         )
+                     picture = Picture.objects.get(id = data.get("picId", 1)),
+                     poster = User.objects.get(fbId = data.get("posterFbId",1)),
+                     comment = data.get("comment","").encode("utf-8"),
+                     timeModified = datetime.datetime.today()
+                     )
+    newComment.save()
 
     return HttpResponse("done")
 

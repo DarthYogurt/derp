@@ -20,6 +20,7 @@ public class GlobalMethods {
 	
 	public static final String FILENAME_VOTED_PICTURES = "voted_pictures";
 	public static final String FILENAME_FRIENDS_LIST = "friends_list";
+	public static final String FILENAME_ACTIVE_FRIENDS_LIST = "active_friends_list";
 	
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -109,6 +110,29 @@ public class GlobalMethods {
 			List<Friend> friends = (List<Friend>)ois.readObject();
 			ois.close();
 			return friends;
+		}
+		catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	public static void writeActiveFriendsArray(Context context, List<Friend> activeFriends) {
+		try {
+			FileOutputStream fos = context.openFileOutput(FILENAME_ACTIVE_FRIENDS_LIST, Context.MODE_PRIVATE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(activeFriends);
+			oos.close();
+		}
+		catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Friend> readActiveFriendsArray(Context context) {
+		try {
+			FileInputStream fis = context.openFileInput(FILENAME_ACTIVE_FRIENDS_LIST);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			List<Friend> activeFriends = (List<Friend>)ois.readObject();
+			ois.close();
+			return activeFriends;
 		}
 		catch (Exception e) { e.printStackTrace(); }
 		return null;

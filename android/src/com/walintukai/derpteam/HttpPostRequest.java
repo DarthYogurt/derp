@@ -21,6 +21,7 @@ import android.util.Log;
 public class HttpPostRequest {
 	
 	public static final String LOGIN_URL = "http://dev.darthyogurt.com:8001/login/";
+	public static final String ACTIVE_FRIENDS_URL = "http://dev.darthyogurt.com:8001/getFriends/";
 	public static final String GET_PIC_URL = "http://dev.darthyogurt.com:8001/getPic/";
 	public static final String UPLOAD_PIC_URL = "http://dev.darthyogurt.com:8001/uploadPic/";
 	public static final String VOTE_URL = "http://dev.darthyogurt.com:8001/vote/";
@@ -39,6 +40,7 @@ public class HttpPostRequest {
 		this.context = context;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void createPost(String url) {
 		client = new DefaultHttpClient();
 		post = new HttpPost(url);
@@ -109,6 +111,7 @@ public class HttpPostRequest {
 		multipartEntity.addPart("image", new FileBody(file));
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void sendErrorPost() {
 		File errorFile = new File(context.getFilesDir() + File.separator + ERROR_FILENAME);
 		

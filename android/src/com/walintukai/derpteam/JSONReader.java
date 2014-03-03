@@ -37,6 +37,25 @@ public class JSONReader {
 		this.context = context;
 	}
 	
+	public String[] getActiveFriendsArray(String jsonString) {
+		try {
+			JSONObject jObject = new JSONObject(jsonString);
+			JSONArray jArray = jObject.getJSONArray("activeFriends");
+			
+			int length = jArray.length();
+			String[] activeFriends = new String[length];
+			if (length > 0) {
+				for (int i = 0; i < length; i++) { 
+					activeFriends[i] = jArray.getString(i); 
+					Log.v("ACTIVE FRIEND", activeFriends[i]);
+				}
+			}
+			return activeFriends;
+		} 
+		catch (JSONException e) { e.printStackTrace(); }
+		return null;
+	}
+	
 	public Member getMemberObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);

@@ -54,5 +54,5 @@ public class FriendsListAdapter extends ArrayAdapter<Friend> {
 
         return convertView;
 	}
-
+	
 }

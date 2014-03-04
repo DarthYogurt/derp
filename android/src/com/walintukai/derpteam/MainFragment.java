@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +47,8 @@ public class MainFragment extends Fragment {
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
+		
+		
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		rateMember.setOnClickListener(new OnClickListener() {
 			@Override

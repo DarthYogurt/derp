@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="#fff" >
     
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/derpteam_logo"
@@ -28,7 +28,6 @@
 	        android:layout_width="320dp"
 	        android:layout_height="320dp"
 	        android:scaleType="fitXY"
-	        android:background="@drawable/image_border"
 	        android:contentDescription="@string/desc_rate_image" />
         
         <LinearLayout
@@ -37,9 +36,6 @@
         	android:layout_gravity="bottom"
         	android:paddingTop="4dp"
         	android:paddingBottom="4dp"
-        	android:layout_marginBottom="5dp"
-        	android:layout_marginLeft="5dp"
-        	android:layout_marginRight="5dp"
         	android:orientation="horizontal"
         	android:background="@drawable/transparent_gradient" >
         	
@@ -76,35 +72,36 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:padding="10dp"
         android:orientation="horizontal" >
         
         <Button
             android:id="@+id/btn_your_team"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Your Team" />
+            android:background="@drawable/btn_your_team" />
         
         <Button
             android:id="@+id/btn_take_picture"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Take Picture" />
+            android:background="@drawable/btn_take_pic" />
         
         <Button
             android:id="@+id/btn_gallery"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Gallery" />
+            android:background="@drawable/btn_gallery" />
         
         <Button
             android:id="@+id/btn_friends_team"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Friends Teams" />
+            android:background="@drawable/btn_friends_team"/>
 
     </LinearLayout>
 

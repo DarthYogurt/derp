@@ -48,7 +48,6 @@ public class MainFragment extends Fragment {
 		
 		caption = (TextView) view.findViewById(R.id.caption);
 		
-		
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		rateMember.setOnClickListener(new OnClickListener() {
 			@Override

@@ -208,9 +208,8 @@ public class ViewMemberFragment extends Fragment {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	String graphPathPic = "http://graph.facebook.com/" + member.getTargetFbId() + "/picture";
-	    	UrlImageViewHelper.setUrlDrawable(ivTargetFbPic, graphPathPic, R.drawable.image_placeholder);
-	    	getTargetFbName(member.getTargetFbId());
+	    	UrlImageViewHelper.setUrlDrawable(ivTargetFbPic, member.getTargetFbPicUrl(), R.drawable.image_placeholder);
+	    	tvTargetName.setText(member.getTargetFirstName());
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
 	    	tvTitle.setText(member.getTitle());
 	    	tvCaption.setText(member.getCaption());
@@ -218,7 +217,7 @@ public class ViewMemberFragment extends Fragment {
 	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
 	    	
 	    	for (int i = 0; i < commentsArray.size(); i++) {
-	    		addComment(commentsArray.get(i).getPosterFirstName(), commentsArray.get(i).getComment());
+	    		addCommentRow(commentsArray.get(i).getPosterFirstName(), commentsArray.get(i).getComment());
 			}
 	    	
 	    	ivTargetFbPic.setOnClickListener(new OnClickListener() {
@@ -236,20 +235,6 @@ public class ViewMemberFragment extends Fragment {
 	    	loadingDialog.hide();
 	        return;
 	    }
-	}
-	
-	private void getTargetFbName(String targetFbId) {
-		String graphPath = "/" + targetFbId + "/";
-		new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
-			public void onCompleted(Response response) {
-				try {
-					JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
-					String name = jObject.getString("first_name");
-					tvTargetName.setText(name);
-				} 
-				catch (JSONException e) { e.printStackTrace(); }
-			}
-		}).executeAsync();
 	}
 	
 	private class SendVoteThread extends Thread {
@@ -299,7 +284,7 @@ public class ViewMemberFragment extends Fragment {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() { 
 						Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
-						addComment(prefs.getFbFirstName(), comment);
+						addCommentRow(prefs.getFbFirstName(), comment);
 					}
 				});
 				
@@ -326,7 +311,7 @@ public class ViewMemberFragment extends Fragment {
 	    }
 	}
 	
-	private void addComment(String firstName, String comment) {
+	private void addCommentRow(String firstName, String comment) {
 		LinearLayout row = new LinearLayout(getActivity());
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		row.setPadding(0, 0, 0, 10);

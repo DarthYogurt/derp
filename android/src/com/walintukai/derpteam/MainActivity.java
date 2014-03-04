@@ -6,13 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.Calendar;
 
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +49,15 @@ public class MainActivity extends LeanplumActivity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
+		
+		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		Intent intent2 = new Intent(this, MyAlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
+		Calendar time = Calendar.getInstance();
+		time.setTimeInMillis(System.currentTimeMillis());
+		time.add(Calendar.SECOND, 30);
+//		alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), 5000, pendingIntent);
 	}
 	
 	

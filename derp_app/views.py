@@ -196,6 +196,7 @@ def getTeamGallery(request,fbId):
             com = {}
             com['posterId'] = comment.poster.id
             com['posterFbId'] = str(comment.poster.fbId)
+            com['posterFbName'] = str(comment.poster.fbName)
             com['comment'] = comment.comment
             # com['commentTime'] = comment.timeModified   # has problem cannot json serialize
             temp['comments'].append(com)

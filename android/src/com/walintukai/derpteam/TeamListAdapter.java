@@ -75,6 +75,19 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
         holder.upVote.setText(Integer.toString(members.get(position).getUpVote()));
         holder.downVote.setText(Integer.toString(members.get(position).getDownVote()));
         
+        holder.memberPic.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FragmentManager fm = ((Activity)context).getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				
+				ViewMemberFragment fragment = ViewMemberFragment.newInstance(members.get(position).getPicId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+        });
+        
         holder.posterFbPic.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -88,27 +101,27 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 			}
         });
         
-        List<Comment> comments = members.get(position).getComments();
-        for (int i = 0; i < comments.size(); i++) {
-        	Comment comment = comments.get(i);
-        	
-        	LinearLayout row = new LinearLayout(context);
-    		row.setOrientation(LinearLayout.HORIZONTAL);
-    		row.setPadding(0, 0, 0, 10);
-    		
-    		TextView tvName = new TextView(context);
-    		tvName.setText(comment.getPosterFirstName().toUpperCase());
-    		tvName.setTextAppearance(context, R.style.comment_name);
-    		tvName.setPadding(0, 0, 10, 0);
-    		row.addView(tvName);
-    		
-    		TextView tvComment = new TextView(context);
-    		tvComment.setText(comment.getComment());
-    		tvComment.setTextAppearance(context, R.style.comment);
-    		row.addView(tvComment);
-    		
-    		holder.commentContainer.addView(row);
-        }
+//        List<Comment> comments = members.get(position).getComments();
+//        for (int i = 0; i < comments.size(); i++) {
+//        	Comment comment = comments.get(i);
+//        	
+//        	LinearLayout row = new LinearLayout(context);
+//    		row.setOrientation(LinearLayout.HORIZONTAL);
+//    		row.setPadding(0, 0, 0, 10);
+//    		
+//    		TextView tvName = new TextView(context);
+//    		tvName.setText(comment.getPosterFirstName().toUpperCase());
+//    		tvName.setTextAppearance(context, R.style.comment_name);
+//    		tvName.setPadding(0, 0, 10, 0);
+//    		row.addView(tvName);
+//    		
+//    		TextView tvComment = new TextView(context);
+//    		tvComment.setText(comment.getComment());
+//    		tvComment.setTextAppearance(context, R.style.comment);
+//    		row.addView(tvComment);
+//    		
+//    		holder.commentContainer.addView(row);
+//        }
 
         return convertView;
 	}

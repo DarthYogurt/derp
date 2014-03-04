@@ -21,6 +21,7 @@
     <string name="desc_show_gallery">Show Gallery Button</string>
     <string name="desc_vote_up">Vote Up Button</string>
     <string name="desc_vote_down">Vote Down Button</string>
+    <string name="desc_next_picture">Next Picture Button</string>
     <string name="desc_comment_icon">Comments</string>
     <string name="dialog_no_picture">No picture to assign to team. Find something funny and take one!</string>
     <string name="dialog_go_back">Going back will lose the current picture. Are you sure you want to go back?</string>

@@ -35,7 +35,8 @@ import android.widget.Toast;
 
 public class TakePictureFragment extends Fragment {
 
-	private static final int REQUEST_PICTURE = 1;
+	private static final int REQUEST_PICTURE = 100;
+	private static final int REQUEST_CROP = 200;
 	private static final String KEY_FILENAME = "filename";
 	
 	private ImageView takenPicture;
@@ -184,8 +185,21 @@ public class TakePictureFragment extends Fragment {
 			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
 			
 			Log.i("PICTURE SAVED", filename);
-
-			ImageHandler.compressAndRotateImage(getActivity(), filename);
+//			ImageHandler.compressAndRotateImage(getActivity(), filename);
+			
+			Intent intent = new Intent("com.android.camera.action.CROP");
+		    intent.setDataAndType(Uri.fromFile(file), "image/*");
+		    intent.putExtra("outputX", 400);
+		    intent.putExtra("outputY", 400);
+		    intent.putExtra("aspectX", 1);
+		    intent.putExtra("aspectY", 1);
+		    intent.putExtra("scale", true);
+		    intent.putExtra("noFaceDetection", true);
+		    intent.putExtra("output", Uri.fromFile(file));
+		    startActivityForResult(intent, REQUEST_CROP);
+		}
+		
+		if (requestCode == REQUEST_CROP && resultCode == Activity.RESULT_OK) {
 			showPicture(file);
 		}
 	}

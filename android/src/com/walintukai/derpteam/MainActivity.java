@@ -46,8 +46,6 @@ public class MainActivity extends LeanplumActivity {
 		}
 	}
 	
-	
-	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -85,9 +83,9 @@ public class MainActivity extends LeanplumActivity {
 			File file = new File(getExternalFilesDir(null), filename);
 			copyFile(extFile, file);
 			Log.i("PICTURE COPIED TO INTERNAL", filename);
-		
-			ImageHandler.compressAndRotateImage(this, filename);
 			
+			sendFileForCropping(file);
+		
 			FragmentManager fm = getFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 			
@@ -97,6 +95,19 @@ public class MainActivity extends LeanplumActivity {
 			ft.commit();
 		}
 		else { Log.e("RECEIVED IMAGE", "NULL"); }
+	}
+	
+	private void sendFileForCropping(File file) {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+	    intent.setDataAndType(Uri.fromFile(file), "image/*");
+	    intent.putExtra("outputX", 400);
+	    intent.putExtra("outputY", 400);
+	    intent.putExtra("aspectX", 1);
+	    intent.putExtra("aspectY", 1);
+	    intent.putExtra("scale", true);
+	    intent.putExtra("noFaceDetection", true);
+	    intent.putExtra("output", Uri.fromFile(file));
+	    startActivityForResult(intent, 200);
 	}
 	
 	public String getRealPathFromUri (Uri contentUri) {

@@ -14,11 +14,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TeamListAdapter extends ArrayAdapter<Member> {
-	
-	private static final String GRAPH_PATH = "http://graph.facebook.com/";
 	
 	private Context context;
 	private int layoutResourceId;
@@ -39,6 +38,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		private TextView caption;
 		private TextView upVote;
 		private TextView downVote;
+		private LinearLayout commentContainer;
 	}
 	
 	@Override
@@ -57,6 +57,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
             holder.upVote = (TextView) convertView.findViewById(R.id.vote_up_count);
             holder.downVote = (TextView) convertView.findViewById(R.id.vote_down_count);
+    		holder.commentContainer = (LinearLayout) convertView.findViewById(R.id.comment_container);
             
             convertView.setTag(holder);
         } 
@@ -64,11 +65,12 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-		String graphPathPic = GRAPH_PATH + members.get(position).getPosterFbId() + "/picture";
-		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, graphPathPic, R.drawable.image_placeholder);
+		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, members.get(position).getPosterFbPicUrl(), 
+										  R.drawable.image_placeholder);
 		holder.posterName.setText(members.get(position).getPosterFirstName());
         holder.title.setText(members.get(position).getTitle());
-        UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), R.drawable.image_placeholder);
+        UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), 
+        								  R.drawable.image_placeholder);
         holder.caption.setText(members.get(position).getCaption());
         holder.upVote.setText(Integer.toString(members.get(position).getUpVote()));
         holder.downVote.setText(Integer.toString(members.get(position).getDownVote()));
@@ -85,8 +87,30 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 				ft.commit();
 			}
         });
+        
+        List<Comment> comments = members.get(position).getComments();
+        for (int i = 0; i < comments.size(); i++) {
+        	Comment comment = comments.get(i);
+        	
+        	LinearLayout row = new LinearLayout(context);
+    		row.setOrientation(LinearLayout.HORIZONTAL);
+    		row.setPadding(0, 0, 0, 10);
+    		
+    		TextView tvName = new TextView(context);
+    		tvName.setText(comment.getPosterFirstName().toUpperCase());
+    		tvName.setTextAppearance(context, R.style.comment_name);
+    		tvName.setPadding(0, 0, 10, 0);
+    		row.addView(tvName);
+    		
+    		TextView tvComment = new TextView(context);
+    		tvComment.setText(comment.getComment());
+    		tvComment.setTextAppearance(context, R.style.comment);
+    		row.addView(tvComment);
+    		
+    		holder.commentContainer.addView(row);
+        }
 
         return convertView;
 	}
-
+	
 }

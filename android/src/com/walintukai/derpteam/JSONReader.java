@@ -19,8 +19,10 @@ public class JSONReader {
 	
 	private static final String KEY_POSTER_USER_ID = "posterUserId";
 	private static final String KEY_POSTER_FB_ID = "posterFbId";
+	private static final String KEY_POSTER_FB_NAME = "posterFbName";
 	private static final String KEY_TARGET_USER_ID = "targetUserId";
 	private static final String KEY_TARGET_FB_ID = "targetFbId";
+	private static final String KEY_TARGET_FB_NAME = "targetFbName";
 	private static final String KEY_IMAGE_URL = "imageUrl";
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
@@ -28,8 +30,10 @@ public class JSONReader {
 	private static final String KEY_VIEWS = "views";
 	private static final String KEY_UP_VOTE = "upVote";
 	private static final String KEY_DOWN_VOTE = "downVote";
+	private static final String KEY_USER_VOTED = "userVotedUp";
 	private static final String KEY_TOTAL_PAGES = "totalPages";
 	private static final String KEY_COMMENT = "comment";
+	
 
 	private Context context;
 	
@@ -62,6 +66,7 @@ public class JSONReader {
 			
 			String posterFbId = jObject.getString(KEY_POSTER_FB_ID);
 	    	String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+	    	String targetFbName = jObject.getString(KEY_TARGET_FB_NAME);
 	    	String imageUrl = jObject.getString(KEY_IMAGE_URL);
 	    	String title = jObject.getString(KEY_TITLE);
 	    	String caption = jObject.getString(KEY_CAPTION);
@@ -69,9 +74,12 @@ public class JSONReader {
 	    	int views = jObject.getInt(KEY_VIEWS);
 	    	int upVote = jObject.getInt(KEY_UP_VOTE);
 	    	int downVote = jObject.getInt(KEY_DOWN_VOTE);
+	    	String userVoted = jObject.getString(KEY_USER_VOTED);
+	    	
+	    	String targetFirstName = targetFbName.substring(0, targetFbName.indexOf(" "));
 		
-	    	Member member = new Member(posterFbId, targetFbId, imageUrl, title, caption, picId, 
-	    							   views, upVote, downVote);
+	    	Member member = new Member(posterFbId, targetFbId, targetFirstName, imageUrl, title, caption, picId, 
+	    							   views, upVote, downVote, userVoted);
 	    	return member;
 		} 
 		catch (JSONException e) { e.printStackTrace(); }
@@ -116,30 +124,34 @@ public class JSONReader {
             final String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
             
             for (int i = 0; i < jArray.length(); i++) {
-    			final String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
-    	    	final String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
-    	    	final String title = jArray.getJSONObject(i).getString(KEY_TITLE);
-    	    	final String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
-    	    	final int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
-    	    	final int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
-    	    	final int upVote = jArray.getJSONObject(i).getInt(KEY_UP_VOTE);
-    	    	final int downVote = jArray.getJSONObject(i).getInt(KEY_DOWN_VOTE);
+    			String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
+    			String posterFbName = jArray.getJSONObject(i).getString(KEY_POSTER_FB_NAME);
+    	    	String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
+    	    	String title = jArray.getJSONObject(i).getString(KEY_TITLE);
+    	    	String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
+    	    	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
+    	    	int views = jArray.getJSONObject(i).getInt(KEY_VIEWS);
+    	    	int upVote = jArray.getJSONObject(i).getInt(KEY_UP_VOTE);
+    	    	int downVote = jArray.getJSONObject(i).getInt(KEY_DOWN_VOTE);
     	    	
-    	    	String graphPath = "/" + posterFbId + "/";
-    			new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
-    				public void onCompleted(Response response) {
-    					String firstName = "";
-    					try {
-    						JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
-    						firstName = jObject.getString("first_name");
-    					} 
-    					catch (JSONException e) { e.printStackTrace(); }
-    					
-    					Member member = new Member(posterFbId, firstName, targetFbId, imageUrl, title, 
-    											   caption, picId, views, upVote, downVote);
-    					teamMembersArray.add(member);
-    				}
-    			}).executeAndWait();
+    	    	String posterFirstName = posterFbName.substring(0, posterFbName.indexOf(" "));
+    	    	
+    	    	List<Comment> commentsArray = new ArrayList<Comment>();
+    	    	JSONArray jArrayComment = jArray.getJSONObject(i).getJSONArray("comments");
+    	    	for (int c = 0; c < jArrayComment.length(); c++) {
+    	    		String commentFbId = jArrayComment.getJSONObject(c).getString(KEY_POSTER_FB_ID);
+    	    		String commentFbName = jArrayComment.getJSONObject(c).getString(KEY_POSTER_FB_NAME);
+        	    	String commentString = jArrayComment.getJSONObject(c).getString(KEY_COMMENT);
+        	    	
+        	    	String commentFirstName = commentFbName.substring(0, commentFbName.indexOf(" "));
+        	    	
+        	    	Comment comment = new Comment(commentFbId, commentFirstName, commentString);
+	    	    	commentsArray.add(comment);
+    	    	}
+    	    	
+    	    	Member member = new Member(posterFbId, posterFirstName, targetFbId, imageUrl, title, caption, 
+    	    							   picId, views, upVote, downVote, commentsArray);
+    	    	teamMembersArray.add(member);
             }
         } 
 		catch (Exception e) { e.printStackTrace(); }
@@ -153,23 +165,14 @@ public class JSONReader {
             JSONArray jArray = jObject.getJSONArray("comments");
             
             for (int i = 0; i < jArray.length(); i++) {
-    			final String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
-    	    	final String comment = jArray.getJSONObject(i).getString(KEY_COMMENT);
+    			String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
+    			String posterFbName = jArray.getJSONObject(i).getString(KEY_POSTER_FB_NAME);
+    	    	String comment = jArray.getJSONObject(i).getString(KEY_COMMENT);
     	    	
-    	    	String graphPath = "/" + posterFbId + "/";
-    			new Request(Session.getActiveSession(), graphPath, null, HttpMethod.GET, new Request.Callback() {
-    				public void onCompleted(Response response) {
-    					String posterFirstName = "";
-    					try {
-    						JSONObject jObject = new JSONObject(response.getGraphObject().getInnerJSONObject().toString());
-    						posterFirstName = jObject.getString("first_name");
-    					} 
-    					catch (JSONException e) { e.printStackTrace(); }
-    					
-    					Comment c = new Comment(posterFbId, posterFirstName, comment);
-    	    	    	commentsArray.add(c);
-    				}
-    			}).executeAndWait();
+    	    	String posterFirstName = posterFbName.substring(0, posterFbName.indexOf(" "));
+    	    	
+    	    	Comment c = new Comment(posterFbId, posterFirstName, comment);
+    	    	commentsArray.add(c);
             }
         }
 		catch (Exception e) { e.printStackTrace(); }

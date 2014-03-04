@@ -30,6 +30,9 @@ public class MainFragment extends Fragment {
 	private TextView caption;
 	private Member member;
 	private int picId;
+	private ImageView btnVoteDown;
+	private ImageView btnVoteUp;
+	private ImageView btnNextPic;
 	private Set<Integer> votedPicturesSet;
 	
 	static MainFragment newInstance() {
@@ -47,6 +50,15 @@ public class MainFragment extends Fragment {
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
+		btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
+		btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
+		btnNextPic = (ImageView) view.findViewById(R.id.btn_next_pic);
+		btnNextPic.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new GetRandomMemberTask().execute();
+			}
+		});
 		
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		rateMember.setOnClickListener(new OnClickListener() {
@@ -147,6 +159,10 @@ public class MainFragment extends Fragment {
 		return view;
 	}
 	
+	private boolean hasAlreadyVoted() {
+		return member.getUserVoted().equalsIgnoreCase("true") || member.getUserVoted().equalsIgnoreCase("false");
+	}
+	
 	private class GetRandomMemberTask extends AsyncTask<Void, Void, Void> {
 		
 	    protected Void doInBackground(Void... params) {
@@ -176,6 +192,13 @@ public class MainFragment extends Fragment {
 						}
 	    	});
 	    	picId = member.getPicId();
+	    	if (hasAlreadyVoted()) { 
+	    		btnNextPic.setVisibility(View.VISIBLE);
+    		}
+	    	else {
+	    		btnVoteDown.setVisibility(View.VISIBLE);
+	    		btnVoteUp.setVisibility(View.VISIBLE);
+	    	}
 	        return;
 	    }
 	}

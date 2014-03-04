@@ -30,7 +30,7 @@
 	        android:scaleType="fitXY"
 	        android:contentDescription="@string/desc_rate_image" />
         
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:layout_gravity="bottom"
@@ -38,24 +38,37 @@
         	android:paddingBottom="4dp"
         	android:orientation="horizontal"
         	android:background="@drawable/transparent_gradient" >
-        	
+            
             <ImageView
                 android:id="@+id/btn_vote_down"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="80dp"
+                android:layout_alignParentLeft="true"
+                android:visibility="gone"
                 android:src="@drawable/arrow_down"
                 android:contentDescription="@string/desc_vote_down" />
             
             <ImageView
                 android:id="@+id/btn_vote_up"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginRight="80dp"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
                 android:src="@drawable/arrow_up"
                 android:contentDescription="@string/desc_vote_up" />
+            
+			<ImageView
+                android:id="@+id/btn_next_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:src="@drawable/arrow_next" />
         	
-		</LinearLayout>
+		</RelativeLayout>
+
     </FrameLayout>
     
     <TextView

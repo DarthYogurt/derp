@@ -137,8 +137,10 @@ def getPic(request):
     j['picId'] = pic.id
     j['targetUserId'] = str(pic.targetId.id)
     j['targetFbId'] = str(pic.targetId.fbId)
+    j['targetFbName'] = str(pic.targetId.fbName)
     j['posterUserId'] = str(pic.posterId.id)
     j['posterFbId'] = str(pic.posterId.fbId)
+    j['posterFbName'] = str(pic.posterId.fbName)
     j['imageUrl'] = request.get_host() + str(pic.image)
     j['caption'] = pic.caption
     j['views'] = pic.views

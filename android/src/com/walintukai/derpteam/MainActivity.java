@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -22,6 +23,10 @@ import com.facebook.Session;
 import com.leanplum.activities.LeanplumActivity;
 
 public class MainActivity extends LeanplumActivity {
+	
+	private static final int REQUEST_CROP_SHARED_IMAGE = 300;
+	
+	private String imgFilename;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,16 @@ public class MainActivity extends LeanplumActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == REQUEST_CROP_SHARED_IMAGE && resultCode == Activity.RESULT_OK) {
+			FragmentManager fm = getFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			
+			TakePictureFragment fragment = TakePictureFragment.newInstance(imgFilename);
+			ft.replace(R.id.fragment_container, fragment);
+			ft.addToBackStack(null);
+			ft.commit();
+		}
 	}
 
 	@Override
@@ -75,29 +90,22 @@ public class MainActivity extends LeanplumActivity {
 	}
 	
 	private void handleSentImage(Intent intent) {
-		Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-		if (imageUri != null) {
-			String realPath = getRealPathFromUri(imageUri);
-			File extFile = new File(realPath);
-			String filename = ImageHandler.getImageFilename(this);
-			File file = new File(getExternalFilesDir(null), filename);
-			copyFile(extFile, file);
-			Log.i("PICTURE COPIED TO INTERNAL", filename);
+		Uri sharedImgUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+		if (sharedImgUri != null) {
+			String realPath = getRealPathFromUri(sharedImgUri);
+			File galleryFile = new File(realPath);
 			
-			sendFileForCropping(file);
-		
-			FragmentManager fm = getFragmentManager();
-			FragmentTransaction ft = fm.beginTransaction();
+			imgFilename = ImageHandler.getImageFilename(this);
+			File file = new File(getExternalFilesDir(null), imgFilename);
+			copyFile(galleryFile, file);
+			Log.i("IMAGE COPIED TO INTERNAL", imgFilename);
 			
-			TakePictureFragment fragment = TakePictureFragment.newInstance(filename);
-			ft.replace(R.id.fragment_container, fragment);
-			ft.addToBackStack(null);
-			ft.commit();
+			startCrop(file);
 		}
 		else { Log.e("RECEIVED IMAGE", "NULL"); }
 	}
 	
-	private void sendFileForCropping(File file) {
+	private void startCrop(File file) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 	    intent.setDataAndType(Uri.fromFile(file), "image/*");
 	    intent.putExtra("outputX", 400);
@@ -107,7 +115,7 @@ public class MainActivity extends LeanplumActivity {
 	    intent.putExtra("scale", true);
 	    intent.putExtra("noFaceDetection", true);
 	    intent.putExtra("output", Uri.fromFile(file));
-	    startActivityForResult(intent, 200);
+	    startActivityForResult(intent, REQUEST_CROP_SHARED_IMAGE);
 	}
 	
 	public String getRealPathFromUri (Uri contentUri) {

@@ -7,11 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -33,7 +28,7 @@ public class JSONReader {
 	private static final String KEY_USER_VOTED = "userVotedUp";
 	private static final String KEY_TOTAL_PAGES = "totalPages";
 	private static final String KEY_COMMENT = "comment";
-	
+	private static final String KEY_PIC_CAPTION = "picCaption";
 
 	private Context context;
 	
@@ -177,6 +172,22 @@ public class JSONReader {
         }
 		catch (Exception e) { e.printStackTrace(); }
 		return commentsArray;
+	}
+	
+	public Notification getNotificationObject(String jsonString) {
+		try {
+			JSONObject jObject = new JSONObject(jsonString);
+			
+			String posterFbName = jObject.getString(KEY_POSTER_FB_NAME);
+	    	String targetFbName = jObject.getString(KEY_TARGET_FB_NAME);
+	    	int picId = jObject.getInt(KEY_PIC_ID);
+	    	String picCaption = jObject.getString(KEY_PIC_CAPTION);
+		
+	    	Notification notification = new Notification(posterFbName, targetFbName, picId, picCaption);
+	    	return notification;
+		} 
+		catch (JSONException e) { e.printStackTrace(); }
+		return null;
 	}
 
 }

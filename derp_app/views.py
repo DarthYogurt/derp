@@ -87,10 +87,8 @@ def uploadPic(request):
     newPicture.save()
     
     
-    try:
-        print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1)))
-        
-    except: 
+    
+    if not Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists():
         newNotification = Notification(
                                        targetUser = User.objects.get(fbId=data.get("targetFbId", 1)),
                                        poster = User.objects.get(fbId=data.get("fbUserId",1)),

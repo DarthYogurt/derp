@@ -335,8 +335,8 @@ def getNotification(request):
     j={}
     try:
         notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
-        j['targetUserName'] = notification.targetUser.fbName
-        j['posterName'] = notification.poster.fbName
+        j['targetFbName'] = notification.targetUser.fbName
+        j['posterFbName'] = notification.poster.fbName
         j['picCaption'] = notification.picture.caption
         j['picId'] = notification.picture.id
         #j['date'] = notification.date

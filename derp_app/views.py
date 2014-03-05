@@ -174,7 +174,7 @@ def getPic(request):
 
 def getTeamGallery(request,fbId):
     user = User.objects.get(fbId=fbId)
-    pictures = Picture.objects.filter(targetId = user)    
+    pictures = Picture.objects.filter(targetId = user).order_by("-date")
     j={}
     j['targetId'] = user.id
     j['targetFbId'] = str(user.fbId) 

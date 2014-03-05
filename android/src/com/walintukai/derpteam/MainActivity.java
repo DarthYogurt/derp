@@ -7,11 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-<<<<<<< HEAD
 import android.app.Activity;
-=======
 import android.app.AlarmManager;
->>>>>>> alarm
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;

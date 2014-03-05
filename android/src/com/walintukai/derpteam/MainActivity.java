@@ -64,21 +64,6 @@ public class MainActivity extends LeanplumActivity {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
 		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), 1000 * 10, pendingIntent);
 	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (requestCode == REQUEST_CROP_SHARED_IMAGE && resultCode == Activity.RESULT_OK) {
-			FragmentManager fm = getFragmentManager();
-			FragmentTransaction ft = fm.beginTransaction();
-			
-			TakePictureFragment fragment = TakePictureFragment.newInstance(imgFilename);
-			ft.replace(R.id.fragment_container, fragment);
-			ft.addToBackStack(null);
-			ft.commit();
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,19 +104,6 @@ public class MainActivity extends LeanplumActivity {
 		else { Log.e("RECEIVED IMAGE", "NULL"); }
 	}
 	
-	private void startCrop(File file) {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-	    intent.setDataAndType(Uri.fromFile(file), "image/*");
-	    intent.putExtra("outputX", 400);
-	    intent.putExtra("outputY", 400);
-	    intent.putExtra("aspectX", 1);
-	    intent.putExtra("aspectY", 1);
-	    intent.putExtra("scale", true);
-	    intent.putExtra("noFaceDetection", true);
-	    intent.putExtra("output", Uri.fromFile(file));
-	    startActivityForResult(intent, REQUEST_CROP_SHARED_IMAGE);
-	}
-	
 	public String getRealPathFromUri (Uri contentUri) {
 		Cursor cursor = null;
 		try { 
@@ -146,7 +118,7 @@ public class MainActivity extends LeanplumActivity {
 		}
 	}
 	
-	public static void copyFile(File src, File dst) {
+	private static void copyFile(File src, File dst) {
 	    FileChannel inChannel = null;
 		try { inChannel = new FileInputStream(src).getChannel(); } 
 		catch (FileNotFoundException e) { e.printStackTrace(); }
@@ -168,6 +140,34 @@ public class MainActivity extends LeanplumActivity {
 	        	catch (IOException e) { e.printStackTrace(); }
 	        }	
 	    }
+	}
+	
+	private void startCrop(File file) {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+	    intent.setDataAndType(Uri.fromFile(file), "image/*");
+	    intent.putExtra("outputX", 400);
+	    intent.putExtra("outputY", 400);
+	    intent.putExtra("aspectX", 1);
+	    intent.putExtra("aspectY", 1);
+	    intent.putExtra("scale", true);
+	    intent.putExtra("noFaceDetection", true);
+	    intent.putExtra("output", Uri.fromFile(file));
+	    startActivityForResult(intent, REQUEST_CROP_SHARED_IMAGE);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == REQUEST_CROP_SHARED_IMAGE && resultCode == Activity.RESULT_OK) {
+			FragmentManager fm = getFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			
+			TakePictureFragment fragment = TakePictureFragment.newInstance(imgFilename);
+			ft.replace(R.id.fragment_container, fragment);
+			ft.addToBackStack(null);
+			ft.commit();
+		}
 	}
 
 }

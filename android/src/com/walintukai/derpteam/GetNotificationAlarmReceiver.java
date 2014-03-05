@@ -8,17 +8,11 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
-import android.widget.Toast;
 
 public class GetNotificationAlarmReceiver extends BroadcastReceiver{
 	
-	Notification notification;
-	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        Log.v("testing", "WORKING ALARM");
-
-        // Calling notification server here
         new GetNotificationThread(context).start();        
     }
 	
@@ -43,7 +37,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver{
 	    	}
 	    	else {
 	    		JSONReader reader = new JSONReader(context);
-		    	notification = reader.getNotificationObject(jsonString);
+	    		Notification notification = reader.getNotificationObject(jsonString);
 		    	sendNotification(context, notification);
 	    	}
 		}

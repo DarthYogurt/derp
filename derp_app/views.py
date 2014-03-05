@@ -87,7 +87,7 @@ def uploadPic(request):
     newPicture.save()
     
     
-    
+    print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists()
     if not Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists():
         newNotification = Notification(
                                        targetUser = User.objects.get(fbId=data.get("targetFbId", 1)),
@@ -323,9 +323,14 @@ def getFriends(request):
     
     return HttpResponse(json.dumps(j), content_type="application/json")
 
+@csrf_exempt
 def getNotification(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
     
-    fbId = "606082631"
+    fbId = data.get("fbId",1)
     
     j={}
     try:
@@ -335,10 +340,7 @@ def getNotification(request):
         j['picCaption'] = notification.picture.caption
         j['picId'] = notification.picture.id
         #j['date'] = notification.date
-        
         notification.delete()
-        
-        
     except:
         pass
     return HttpResponse(json.dumps(j), content_type="application/json")

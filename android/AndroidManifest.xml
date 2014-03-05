@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application android:name="com.leanplum.LeanplumApplication"
@@ -20,16 +21,15 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
+        
+        <receiver android:name=".GetNotificationAlarmReceiver" />
 
         <!--
         <activity
             android:name="com.walintukai.derpteam.SplashActivity"
             android:label="@string/app_name" >
-        </activity>
+        </activity>
         -->
-		
-		<receiver android:name=".GetNotificationAlarmReceiver" />
-		
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
@@ -60,5 +60,5 @@
         </activity>
     </application>
 
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
 </manifest>

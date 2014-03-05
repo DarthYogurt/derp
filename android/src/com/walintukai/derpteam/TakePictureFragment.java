@@ -185,7 +185,6 @@ public class TakePictureFragment extends Fragment {
 			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
 			
 			Log.i("PICTURE SAVED", filename);
-//			ImageHandler.compressAndRotateImage(getActivity(), filename);
 			
 			Intent intent = new Intent("com.android.camera.action.CROP");
 		    intent.setDataAndType(Uri.fromFile(file), "image/*");

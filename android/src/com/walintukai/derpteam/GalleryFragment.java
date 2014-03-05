@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class GalleryFragment extends Fragment {
@@ -43,15 +44,12 @@ public class GalleryFragment extends Fragment {
 		
 		adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, membersArray);
 		gridView.setAdapter(adapter);
-		
 		gridView.setOnScrollListener(new EndlessScrollListener());
-
 	    gridView.setOnItemClickListener(new OnItemClickListener() {
 	    	@Override
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	    		FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				ViewMemberFragment fragment = ViewMemberFragment.newInstance(membersArray.get(position).getPicId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -59,7 +57,8 @@ public class GalleryFragment extends Fragment {
 	        }
 	    });
 	    
-	    new GetMembersTask(1).execute();
+	    if (GlobalMethods.isNetworkAvailable(getActivity())) { new GetMembersTask(1).execute(); }
+	    else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
 	}

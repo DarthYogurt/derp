@@ -64,6 +64,8 @@ public class TakePictureFragment extends Fragment {
 		oldFilename = "";
 		
 		takenPicture = (ImageView) view.findViewById(R.id.taken_picture);
+		ImageButton btnAssignTeam = (ImageButton) view.findViewById(R.id.btn_assign_team);
+		
 		takenPicture.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -77,10 +79,8 @@ public class TakePictureFragment extends Fragment {
 			File file = new File(getActivity().getExternalFilesDir(null), filename);
 			showPicture(file);
 		}
+		else { new NewPictureThread().start(); }
 		
-		if (filename.isEmpty()) { new NewPictureThread().start(); }
-		
-		ImageButton btnAssignTeam = (ImageButton) view.findViewById(R.id.btn_assign_team);
 		btnAssignTeam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

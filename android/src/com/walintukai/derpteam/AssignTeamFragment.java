@@ -6,8 +6,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -58,13 +55,15 @@ public class AssignTeamFragment extends Fragment {
 		title = args.getString(KEY_TITLE);
 		caption = args.getString(KEY_CAPTION);
 		
-		final List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
-		final List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
+		List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
+		List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
 		
 		ListView listView = (ListView) view.findViewById(R.id.fb_friend_listview);
 		
-		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, activeFriends);
-		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
+		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), 
+				R.layout.listview_row_friend, activeFriends);
+		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), 
+				R.layout.listview_row_friend, fbFriends);
 		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity());
 		adapter.addSection("Active Friends", activeFriendsAdapter);
@@ -105,7 +104,8 @@ public class AssignTeamFragment extends Fragment {
 	        builder.setMessage("Assign to " + targetName + "'s Team?")
 	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
 	        		public void onClick(DialogInterface dialog, int id) {
-	        			new SendImageTask().execute();
+	        			if (GlobalMethods.isNetworkAvailable(getActivity())) { new SendImageTask().execute(); }
+	        			else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 	        		}
 	        	})
 	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
@@ -139,20 +139,11 @@ public class AssignTeamFragment extends Fragment {
 			writer.createJsonForMember(imgFilename, title, caption, targetFbId, targetUserId);
 			writer.logJson(JSONWriter.FILENAME_ASSIGN_TEAM);
 			
-			if (GlobalMethods.isNetworkAvailable(getActivity())) {
-				HttpPostRequest post = new HttpPostRequest(getActivity());
-				post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
-				post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
-				post.addPicture(imgFilename);
-				post.sendPost();
-			}
-			else {
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+			HttpPostRequest post = new HttpPostRequest(getActivity());
+			post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
+			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
+			post.addPicture(imgFilename);
+			post.sendPost();
 			
 	        return null;
 	    }

@@ -11,7 +11,6 @@ import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,23 +49,20 @@ public class MainFragment extends Fragment {
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
 		caption = (TextView) view.findViewById(R.id.caption);
+		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		btnNextPic = (ImageView) view.findViewById(R.id.btn_next_pic);
-		btnNextPic.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				new GetRandomMemberTask().execute();
-			}
-		});
+		Button btnYourTeam = (Button) view.findViewById(R.id.btn_your_team);
+		Button btnTakePicture = (Button) view.findViewById(R.id.btn_take_picture);
+		Button btnGallery = (Button) view.findViewById(R.id.btn_gallery);
+		Button btnFriendsTeam = (Button) view.findViewById(R.id.btn_friends_team);
 		
-		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		rateMember.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				ViewMemberFragment fragment = ViewMemberFragment.newInstance(picId);
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -74,37 +70,47 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
+		btnNextPic.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (GlobalMethods.isNetworkAvailable(getActivity())) { new GetRandomMemberTask().execute(); }
+				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
+			}
+		});
+		
 		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				votedPicturesSet.add(member.getPicId());
-				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
-				new SendVoteThread(member.getPicId(), false).start();
-				new GetRandomMemberTask().execute();
+				if (GlobalMethods.isNetworkAvailable(getActivity())) { 
+					Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
+					votedPicturesSet.add(member.getPicId());
+					GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
+					new SendVoteThread(member.getPicId(), false).start();
+					new GetRandomMemberTask().execute();
+				}
+				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
-		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		btnVoteUp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				votedPicturesSet.add(member.getPicId());
-				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
-				new SendVoteThread(member.getPicId(), true).start();
-				new GetRandomMemberTask().execute();
+				if (GlobalMethods.isNetworkAvailable(getActivity())) { 
+					Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
+					votedPicturesSet.add(member.getPicId());
+					GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
+					new SendVoteThread(member.getPicId(), true).start();
+					new GetRandomMemberTask().execute();
+				}
+				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
-		Button btnYourTeam = (Button) view.findViewById(R.id.btn_your_team);
 		btnYourTeam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -112,13 +118,11 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		Button btnTakePicture = (Button) view.findViewById(R.id.btn_take_picture);
 		btnTakePicture.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				TakePictureFragment fragment = TakePictureFragment.newInstance("");
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -126,13 +130,11 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		Button btnGallery = (Button) view.findViewById(R.id.btn_gallery);
 		btnGallery.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				GalleryFragment fragment = GalleryFragment.newInstance();
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -140,13 +142,11 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		Button btnFriendsTeam = (Button) view.findViewById(R.id.btn_friends_team);
 		btnFriendsTeam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				PickTeamFragment fragment = PickTeamFragment.newInstance();
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
@@ -154,7 +154,8 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		new GetRandomMemberTask().execute();
+		if (GlobalMethods.isNetworkAvailable(getActivity())) { new GetRandomMemberTask().execute(); }
+		else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
 	}
@@ -217,19 +218,10 @@ public class MainFragment extends Fragment {
 			if (vote) { writer.createJsonForUpVote(picId); }
 			else { writer.createJsonForDownVote(picId); }
 			
-			if (GlobalMethods.isNetworkAvailable(getActivity())) {
-				HttpPostRequest post = new HttpPostRequest(getActivity());
-				post.createPost(HttpPostRequest.VOTE_URL);
-				post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
-				post.sendPost();
-			}
-			else {
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+			HttpPostRequest post = new HttpPostRequest(getActivity());
+			post.createPost(HttpPostRequest.VOTE_URL);
+			post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
+			post.sendPost();
 		}
 	}
 	

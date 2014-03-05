@@ -1,8 +1,6 @@
 package com.walintukai.derpteam;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,9 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PickTeamFragment extends Fragment {
@@ -31,13 +27,15 @@ public class PickTeamFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		final List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
-		final List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
+		List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
+		List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
 		
 		ListView listView = (ListView) view.findViewById(R.id.fb_friend_listview);
 		
-		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, activeFriends);
-		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), R.layout.listview_row_friend, fbFriends);
+		FriendsListAdapter activeFriendsAdapter = new FriendsListAdapter(getActivity(), 
+				R.layout.listview_row_friend, activeFriends);
+		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), 
+				R.layout.listview_row_friend, fbFriends);
 		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity());
 		adapter.addSection("Active Friends", activeFriendsAdapter);
@@ -51,7 +49,6 @@ public class PickTeamFragment extends Fragment {
 				
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				
 				ViewTeamFragment fragment = ViewTeamFragment.newInstance(friend.getFbId());
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);

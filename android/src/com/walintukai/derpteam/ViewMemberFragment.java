@@ -3,13 +3,6 @@ package com.walintukai.derpteam;
 import java.util.List;
 import java.util.Set;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
@@ -20,7 +13,6 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,6 +38,7 @@ public class ViewMemberFragment extends Fragment {
 	
 	private Preferences prefs;
 	private int picId;
+	private Member member;
 	private ImageView ivTargetFbPic;
 	private TextView tvTargetName;
 	private ImageView ivDerpPicture;
@@ -53,6 +46,7 @@ public class ViewMemberFragment extends Fragment {
 	private TextView tvCaption;
 	private TextView tvUpVote;
 	private TextView tvDownVote;
+	private LinearLayout voteContainer;
 	private PopupWindow pwAddComment;
 	private EditText etAddComment;
 	private LinearLayout commentContainer;
@@ -85,6 +79,7 @@ public class ViewMemberFragment extends Fragment {
 		tvDownVote = (TextView) view.findViewById(R.id.vote_down_count);
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
+		voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
 		commentContainer = (LinearLayout) view.findViewById(R.id.comment_container);
 		
 		pwAddComment = new PopupWindow(getActivity());
@@ -94,29 +89,32 @@ public class ViewMemberFragment extends Fragment {
 		Button btnFinishComment = (Button) vAddComment.findViewById(R.id.btn_finish_comment);
 		
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
-		final LinearLayout voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
-		if (votedPicturesSet.contains(picId)) { voteContainer.setVisibility(View.GONE); }
 		
 		btnVoteDown.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
-				
-				votedPicturesSet.add(picId);
-				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
-				new SendVoteThread(picId, false).start();
-				voteContainer.setVisibility(View.GONE);
+				if (GlobalMethods.isNetworkAvailable(getActivity())) {
+					Toast.makeText(getActivity(), "Voted Down", Toast.LENGTH_SHORT).show();
+					votedPicturesSet.add(picId);
+					GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
+					new SendVoteThread(picId, false).start();
+					voteContainer.setVisibility(View.GONE);
+				}
+				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
 		btnVoteUp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
-				votedPicturesSet.add(picId);
-				GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
-				new SendVoteThread(picId, true).start();
-				voteContainer.setVisibility(View.GONE);
+				if (GlobalMethods.isNetworkAvailable(getActivity())) {
+					Toast.makeText(getActivity(), "Voted Up", Toast.LENGTH_SHORT).show();
+					votedPicturesSet.add(picId);
+					GlobalMethods.writeVotedPicturesSet(getActivity(), votedPicturesSet);
+					new SendVoteThread(picId, true).start();
+					voteContainer.setVisibility(View.GONE);
+				}
+				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
@@ -159,12 +157,18 @@ public class ViewMemberFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				String comment = etAddComment.getText().toString();
-				if (!comment.isEmpty()) { new SendCommentTask(picId, comment).execute(); }
+				if (!comment.isEmpty()) { 
+					if (GlobalMethods.isNetworkAvailable(getActivity())) {
+						new SendCommentTask(picId, comment).execute(); 
+					}
+					else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
+				}
 				else { Toast.makeText(getActivity(), R.string.empty_comment, Toast.LENGTH_SHORT).show(); }
 			}
 		});
 		
-		new GetMemberTask().execute();
+		if (GlobalMethods.isNetworkAvailable(getActivity())) { new GetMemberTask().execute(); }
+		else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
 	}
@@ -180,9 +184,12 @@ public class ViewMemberFragment extends Fragment {
 		}
 	}
 	
+	private boolean hasAlreadyVoted() {
+		return member.getUserVoted().equalsIgnoreCase("true") || member.getUserVoted().equalsIgnoreCase("false");
+	}
+	
 	private class GetMemberTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog loadingDialog;
-		private Member member;
 		private List<Comment> commentsArray;
 		
 		protected void onPreExecute() {
@@ -215,6 +222,7 @@ public class ViewMemberFragment extends Fragment {
 	    	tvCaption.setText(member.getCaption());
 	    	tvUpVote.setText(Integer.toString(member.getUpVote()));
 	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
+	    	if (!hasAlreadyVoted()) { voteContainer.setVisibility(View.VISIBLE); }
 	    	
 	    	for (int i = 0; i < commentsArray.size(); i++) {
 	    		addCommentRow(commentsArray.get(i).getPosterFirstName(), commentsArray.get(i).getComment());
@@ -225,7 +233,6 @@ public class ViewMemberFragment extends Fragment {
 				public void onClick(View view) {
 					FragmentManager fm = getActivity().getFragmentManager();
 					FragmentTransaction ft = fm.beginTransaction();
-					
 					ViewTeamFragment fragment = ViewTeamFragment.newInstance(member.getTargetFbId());
 					ft.replace(R.id.fragment_container, fragment);
 					ft.addToBackStack(null);
@@ -250,20 +257,11 @@ public class ViewMemberFragment extends Fragment {
 			JSONWriter writer = new JSONWriter(getActivity());
 			if (vote) { writer.createJsonForUpVote(picId); }
 			else { writer.createJsonForDownVote(picId); }
-			
-			if (GlobalMethods.isNetworkAvailable(getActivity())) {
-				HttpPostRequest post = new HttpPostRequest(getActivity());
-				post.createPost(HttpPostRequest.VOTE_URL);
-				post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
-				post.sendPost();
-			}
-			else {
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+
+			HttpPostRequest post = new HttpPostRequest(getActivity());
+			post.createPost(HttpPostRequest.VOTE_URL);
+			post.addJSON(JSONWriter.FILENAME_PIC_VOTE);
+			post.sendPost();
 		}
 	}
 	
@@ -280,26 +278,18 @@ public class ViewMemberFragment extends Fragment {
 	    	JSONWriter writer = new JSONWriter(getActivity());
 			writer.createJsonForComment(picId, comment);
 			
-			if (GlobalMethods.isNetworkAvailable(getActivity())) {
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
-						addCommentRow(prefs.getFbFirstName(), comment);
-					}
-				});
-				
-				HttpPostRequest post = new HttpPostRequest(getActivity());
-				post.createPost(HttpPostRequest.COMMENT_URL);
-				post.addJSON(JSONWriter.FILENAME_COMMENT);
-				post.sendPost();
-			}
-			else {
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+			getActivity().runOnUiThread(new Runnable() {
+				public void run() { 
+					Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
+					addCommentRow(prefs.getFbFirstName(), comment);
+				}
+			});
+			
+			HttpPostRequest post = new HttpPostRequest(getActivity());
+			post.createPost(HttpPostRequest.COMMENT_URL);
+			post.addJSON(JSONWriter.FILENAME_COMMENT);
+			post.sendPost();
+
 	        return null;
 	    }
 

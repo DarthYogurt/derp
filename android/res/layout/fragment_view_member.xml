@@ -75,6 +75,7 @@
 	        	android:paddingTop="4dp"
 	        	android:paddingBottom="4dp"
 	        	android:orientation="horizontal"
+	        	android:visibility="gone"
 	        	android:background="@drawable/transparent_gradient" >
 	        	
 	            <ImageView

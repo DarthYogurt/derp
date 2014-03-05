@@ -52,13 +52,13 @@ public class LoginActivity extends LeanplumActivity {
         // We've inserted your API keys here for you
         if (BuildConfig.DEBUG) {
             Leanplum.setAppIdForDevelopmentMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "FkYfO9Gv6tFY1GkzsEHMNDOPtOnYeSmtpt4zKxBGdFU");
-        } else {
+        } 
+        else {
             Leanplum.setAppIdForProductionMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "kKyZ5kuTs6qLhHU80khwYGjWvN0dXN5xaZIQZHny8io");
         }
 
         // This will only run once per session, even if the activity is restarted.
         Leanplum.start(this);
-
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
@@ -169,12 +169,9 @@ public class LoginActivity extends LeanplumActivity {
 				}
 				Collections.sort(fbFriends, new FriendComparator());
 				GlobalMethods.writeFriendsArray(LoginActivity.this, fbFriends);
-				new GetActiveFriendsTask().execute();
 				
-				JSONWriter writer = new JSONWriter(LoginActivity.this);
-				writer.updateFriendsList(fbFriends);
-				writer.logJson(JSONWriter.FILENAME_FRIENDS_LIST);
-				new UpdateFriendsThread().start();	
+				new GetActiveFriendsTask().execute();
+				new UpdateFriendsThread().start();
 			}
 		});
 		friendsRequest.executeAsync();
@@ -209,19 +206,13 @@ public class LoginActivity extends LeanplumActivity {
 	
 	private class UpdateFriendsThread extends Thread {
 		public void run() {
-			if (GlobalMethods.isNetworkAvailable(LoginActivity.this)) {
-				HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
-				post.createPost(HttpPostRequest.LOGIN_URL);
-				post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
-				post.sendPost();
-			}
-			else {
-				runOnUiThread(new Runnable() {
-					public void run() { 
-						Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+			JSONWriter writer = new JSONWriter(LoginActivity.this);
+			writer.updateFriendsList(fbFriends);
+			
+			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+			post.createPost(HttpPostRequest.LOGIN_URL);
+			post.addJSON(JSONWriter.FILENAME_FRIENDS_LIST);
+			post.sendPost();
 		}
 	}
 	

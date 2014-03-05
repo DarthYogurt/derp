@@ -44,7 +44,7 @@ public class MainActivity extends LeanplumActivity {
 		
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		MainFragment mainFragment = new MainFragment();
+		MainFragment mainFragment = MainFragment.newInstance();
 		ft.add(R.id.fragment_container, mainFragment);
 		ft.commit();
 		
@@ -183,7 +183,6 @@ public class MainActivity extends LeanplumActivity {
 		if (requestCode == REQUEST_CROP_SHARED_IMAGE && resultCode == Activity.RESULT_OK) {
 			FragmentManager fm = getFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
-			
 			TakePictureFragment fragment = TakePictureFragment.newInstance(imgFilename);
 			ft.replace(R.id.fragment_container, fragment);
 			ft.addToBackStack(null);

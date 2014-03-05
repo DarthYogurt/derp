@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewTeamFragment extends Fragment {
 	
@@ -50,12 +51,14 @@ public class ViewTeamFragment extends Fragment {
 		
 		View header = inflater.inflate(R.layout.listview_team_header, null);
 		teamOwnerName = (TextView) header.findViewById(R.id.name);
-		setHeader(fbId);
-		
 		listView = (ListView) view.findViewById(R.id.team_listview);
-		listView.addHeaderView(header);
 		
-		new SetListViewTask().execute();
+		if (GlobalMethods.isNetworkAvailable(getActivity())) {
+			setHeader(fbId);
+			listView.addHeaderView(header);
+			new SetListViewTask().execute();
+		}
+		else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
 	}

@@ -13,7 +13,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        new GetNotificationThread(context).start();       
+		if (GlobalMethods.isNetworkAvailable(context)) { new GetNotificationThread(context).start(); }       
     }
 	
 	private class GetNotificationThread extends Thread {

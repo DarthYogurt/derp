@@ -72,12 +72,7 @@ public class MainActivity extends LeanplumActivity {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
 		
-		// Periodically checks for notifications
-		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
-		int checkTime = (1000 * 60) * (60 + getRandomNumber());
-		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), checkTime, pendingIntent);
+	
 	}
 
 	@Override

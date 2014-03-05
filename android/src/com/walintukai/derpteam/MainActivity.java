@@ -40,23 +40,24 @@ public class MainActivity extends LeanplumActivity {
 		getActionBar().setTitle("");
 		
 		prefs = new Preferences(this);
+		
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
+		MainFragment mainFragment = new MainFragment();
+		ft.add(R.id.fragment_container, mainFragment);
+		ft.commit();
 		
 		Bundle notificationExtra = getIntent().getExtras();
-		if (notificationExtra == null) {
-			MainFragment mainFragment = new MainFragment();
-			ft.add(R.id.fragment_container, mainFragment);
-			ft.commit();
-		}
-		else {
+		if (notificationExtra != null) {
 			boolean startYourTeamFragment = false;
 			startYourTeamFragment = notificationExtra.getBoolean("viewYourTeam");
 			if (startYourTeamFragment) {
+				FragmentManager fm2 = getFragmentManager();
+				FragmentTransaction ft2 = fm2.beginTransaction();
 				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
-				ft.replace(R.id.fragment_container, fragment);
-				ft.addToBackStack(null);
-				ft.commit();
+				ft2.replace(R.id.fragment_container, fragment);
+				ft2.addToBackStack(null);
+				ft2.commit();
 			}
 		}
 		

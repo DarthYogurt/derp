@@ -56,3 +56,10 @@ class Vote(models.Model):
     picture = models.ForeignKey("Picture")
     voteUp = models.NullBooleanField(blank=True, null=True)
     
+class Notification(models.Model):
+    targetUser = models.ForeignKey("User", related_name="userNotification")
+    poster = models.ForeignKey("User", related_name="posterNotification")
+    picture = models.ForeignKey("Picture")
+    date = models.DateTimeField(blank=True, null=True)
+    
+    

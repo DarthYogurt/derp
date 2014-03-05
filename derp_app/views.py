@@ -85,6 +85,18 @@ def uploadPic(request):
                          date = datetime.datetime.now()
                          )
     newPicture.save()
+    
+    
+    try:
+        print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1)))
+        
+    except: 
+        newNotification = Notification(
+                                       targetUser = User.objects.get(fbId=data.get("targetFbId", 1)),
+                                       poster = User.objects.get(fbId=data.get("fbUserId",1)),
+                                       picture = newPicture
+                                       )
+        newNotification.save()
     return HttpResponse("")
 
 def externalPicView(request,picId):
@@ -312,7 +324,26 @@ def getFriends(request):
         j['testingOnly'].append(temp)
     
     return HttpResponse(json.dumps(j), content_type="application/json")
+
+def getNotification(request):
     
+    fbId = "606082631"
+    
+    j={}
+    try:
+        notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
+        j['targetUserName'] = notification.targetUser.fbName
+        j['posterName'] = notification.poster.fbName
+        j['picCaption'] = notification.picture.caption
+        j['picId'] = notification.picture.id
+        #j['date'] = notification.date
+        
+        notification.delete()
+        
+        
+    except:
+        pass
+    return HttpResponse(json.dumps(j), content_type="application/json")
     
 
 @csrf_exempt

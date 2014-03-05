@@ -19,14 +19,15 @@ import android.content.Context;
 import android.util.Log;
 
 public class HttpPostRequest {
-	
-	public static final String LOGIN_URL = "http://dev.darthyogurt.com:8001/login/";
-	public static final String ACTIVE_FRIENDS_URL = "http://dev.darthyogurt.com:8001/getFriends/";
-	public static final String GET_PIC_URL = "http://dev.darthyogurt.com:8001/getPic/";
-	public static final String UPLOAD_PIC_URL = "http://dev.darthyogurt.com:8001/uploadPic/";
-	public static final String VOTE_URL = "http://dev.darthyogurt.com:8001/vote/";
-	public static final String COMMENT_URL = "http://dev.darthyogurt.com:8001/addComment/";
-	private static final String ERROR_URL = "http://dev.darthyogurt.com:8001/uploadError/";
+	public static final String BASE_URL ="http://dev.darthyogurt.com:8001";
+	public static final String LOGIN_URL = BASE_URL + "/login/";
+	public static final String ACTIVE_FRIENDS_URL = BASE_URL + "/getFriends/";
+	public static final String GET_PIC_URL = BASE_URL + "/getPic/";
+	public static final STring GET_NOTIFICATION = BASE_URL + "/getNotification/";
+	public static final String UPLOAD_PIC_URL = BASE_URL + "/uploadPic/";
+	public static final String VOTE_URL = BASE_URL + "/vote/";
+	public static final String COMMENT_URL = BASE_URL + "/addComment/";
+	private static final String ERROR_URL = BASE_URL + "/uploadError/";
 	private static final String ERROR_FILENAME = "error.txt";
 	private static final int HTTP_RESPONSE_SUCCESS = 200;
 	

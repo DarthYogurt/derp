@@ -18,6 +18,20 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver{
         
         //Call notification server here
         
+        JSONWriter writer = new JSONWriter(getActivity());
+    	writer.createJsonForActiveFriends();
+    	
+    	HttpPostRequest post = new HttpPostRequest(getActivity());
+    	post.createPost(HttpPostRequest.GET_PIC_URL);
+    	post.addJSON(JSONWriter.FILENAME_GET_PIC);
+    	String jsonString = post.sendPostReturnJson();
+    	
+    	JSONReader reader = new JSONReader(getActivity());
+    	member = reader.getMemberObject(jsonString);
+    	
+    	
+    	
+    	
         NotificationCompat.Builder mBuilder =
 		        new NotificationCompat.Builder(context)
 		        .setSmallIcon(R.drawable.derpteam_logo)

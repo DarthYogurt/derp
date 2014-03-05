@@ -330,7 +330,7 @@ def getNotification(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    fbId = data.get("fbId",1)
+    fbId = data.get("fbUserId",1)
     
     j={}
     try:

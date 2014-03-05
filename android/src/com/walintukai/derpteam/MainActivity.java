@@ -7,11 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-<<<<<<< HEAD
 import android.app.Activity;
-=======
 import android.app.AlarmManager;
->>>>>>> alarm
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -33,6 +30,7 @@ public class MainActivity extends LeanplumActivity {
 	
 	private static final int REQUEST_CROP_SHARED_IMAGE = 300;
 	
+	private Preferences prefs;
 	private String imgFilename;
 	
 	@Override
@@ -41,12 +39,26 @@ public class MainActivity extends LeanplumActivity {
 		setContentView(R.layout.activity_main);
 		getActionBar().setTitle("");
 		
+		prefs = new Preferences(this);
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		
-		MainFragment mainFragment = new MainFragment();
-		ft.add(R.id.fragment_container, mainFragment);
-		ft.commit();
+		Bundle notificationExtra = getIntent().getExtras();
+		if (notificationExtra == null) {
+			MainFragment mainFragment = new MainFragment();
+			ft.add(R.id.fragment_container, mainFragment);
+			ft.commit();
+		}
+		else {
+			boolean startYourTeamFragment = false;
+			startYourTeamFragment = notificationExtra.getBoolean("viewYourTeam");
+			if (startYourTeamFragment) {
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		}
 		
 		// Handles image being sent from other application
 		Intent intent = getIntent();
@@ -56,9 +68,8 @@ public class MainActivity extends LeanplumActivity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
-		
-		
-		//alarm manager on
+
+		// alarm manager on
 		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);

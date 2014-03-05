@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -70,12 +71,13 @@ public class MainActivity extends LeanplumActivity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
-
+		
 		// Periodically checks for notifications
 		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
-		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), 1000 * 10, pendingIntent);
+		int checkTime = (1000 * 60) * (60 + getRandomNumber());
+		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), checkTime, pendingIntent);
 	}
 
 	@Override
@@ -99,6 +101,12 @@ public class MainActivity extends LeanplumActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	private int getRandomNumber() {
+		Random random = new Random();
+		int i = random.nextInt(30);
+		return i;
 	}
 	
 	private void handleSentImage(Intent intent) {

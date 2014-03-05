@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-public class GetNotificationAlarmReceiver extends BroadcastReceiver{
+public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
     public void onReceive(Context context, Intent intent) {

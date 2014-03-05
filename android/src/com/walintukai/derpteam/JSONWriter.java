@@ -13,6 +13,7 @@ public class JSONWriter {
 	public static final String FILENAME_FRIENDS_LIST = "friends.json";
 	public static final String FILENAME_ACTIVE_FRIENDS = "active_friends.json";
 	public static final String FILENAME_GET_PIC = "get_pic.json";
+	public static final String FILENAME_GET_NOTIFICATION = "get_notification.json";
 	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	public static final String FILENAME_PIC_VOTE = "vote.json";
 	public static final String FILENAME_COMMENT = "comment.json";
@@ -102,6 +103,22 @@ public class JSONWriter {
 			fos.close();
 			
 			Log.i("JSON FOR GET PIC CREATED", FILENAME_GET_PIC);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public void createJsonForGetNotification() {
+		try {
+			fos = context.openFileOutput(FILENAME_GET_NOTIFICATION, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR GET NOTIFICATION CREATED", FILENAME_GET_NOTIFICATION);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

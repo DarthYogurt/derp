@@ -6,14 +6,6 @@
     android:orientation="vertical"
     android:background="#fff" >
     
-    <ImageView 
-        android:id="@+id/taken_picture"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/image_placeholder"
-        android:contentDescription="@string/desc_taken_picture" />
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,6 +37,14 @@
 			android:singleLine="true" />
         
     </LinearLayout>
+    
+    <ImageView 
+        android:id="@+id/taken_picture"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_placeholder"
+        android:contentDescription="@string/desc_taken_picture" />
     
     <ImageButton
         android:id="@+id/btn_assign_team"

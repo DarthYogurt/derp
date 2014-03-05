@@ -41,5 +41,6 @@
     <string name="finished">Finished</string>
     <string name="empty_comment">Comment is empty</string>
     <string name="comment_added">Comment Added</string>
+    <string name="loading">Loading</string>
 
 </resources>

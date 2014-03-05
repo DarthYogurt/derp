@@ -92,9 +92,7 @@ public class TakePictureFragment extends Fragment {
 					String caption = etCaption.getText().toString();
 					
 					if (title.isEmpty() || caption.isEmpty()) {
-						Toast toast = Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT);
-						toast.setGravity(Gravity.CENTER, 0, 0);
-						toast.show();
+						Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT).show();
 					}
 					else {
 						FragmentManager fm = getFragmentManager();

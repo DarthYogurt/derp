@@ -13,6 +13,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.view.WindowManager.BadTokenException;
 
@@ -56,7 +57,22 @@ public class GlobalMethods {
 		try {
 			dialog.show();
 			dialog.setCancelable(false);
-			dialog.setContentView(R.layout.loading_dialog);
+			dialog.setContentView(R.layout.dialog_loading);
+			dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		}
+		catch (BadTokenException e) { e.printStackTrace(); }
+		return dialog;
+	}
+	
+	public static ProgressDialog createLoadingDialogForGallery(Context context) {
+		ProgressDialog dialog = new ProgressDialog(context);
+		try {
+			dialog.show();
+			dialog.setCancelable(false);
+			dialog.setContentView(R.layout.dialog_gallery_load);
+			WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+			lp.gravity = Gravity.BOTTOM;
+			dialog.getWindow().setAttributes(lp);
 			dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		}
 		catch (BadTokenException e) { e.printStackTrace(); }

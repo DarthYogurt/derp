@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -42,7 +43,6 @@ public class GalleryFragment extends Fragment {
 		membersArray = new ArrayList<Member>();
 		
 		gridView = (GridView) view.findViewById(R.id.gridview);
-		
 		adapter = new GalleryAdapter(getActivity(), R.layout.gridview_image, membersArray);
 		gridView.setAdapter(adapter);
 		gridView.setOnScrollListener(new EndlessScrollListener());
@@ -77,9 +77,15 @@ public class GalleryFragment extends Fragment {
 	
 	private class GetMembersTask extends AsyncTask<Void, Void, List<Member>> {
 		private int pageNumber;
+		private ProgressDialog loadingDialog;
 		
 		private GetMembersTask(int pageNumber) {
 			this.pageNumber = pageNumber;
+		}
+		
+		protected void onPreExecute() {
+			loadingDialog = GlobalMethods.createLoadingDialogForGallery(getActivity());
+			loadingDialog.show();
 		}
 		
 	    protected List<Member> doInBackground(Void... params) {
@@ -100,6 +106,7 @@ public class GalleryFragment extends Fragment {
 
 	    protected void onPostExecute(List<Member> result) {
 	    	super.onPostExecute(result);
+	    	loadingDialog.hide();
 	    	adapter.refreshList(result);
 	        return;
 	    }

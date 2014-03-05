@@ -6,19 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.util.Random;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -71,8 +66,6 @@ public class MainActivity extends LeanplumActivity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
-		
-	
 	}
 
 	@Override
@@ -96,12 +89,6 @@ public class MainActivity extends LeanplumActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	private int getRandomNumber() {
-		Random random = new Random();
-		int i = random.nextInt(30);
-		return i;
 	}
 	
 	private void handleSentImage(Intent intent) {

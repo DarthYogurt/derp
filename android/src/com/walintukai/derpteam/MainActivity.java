@@ -47,6 +47,7 @@ public class MainActivity extends LeanplumActivity {
 		ft.add(R.id.fragment_container, mainFragment);
 		ft.commit();
 		
+		// If clicked from notification, load your team page
 		Bundle notificationExtra = getIntent().getExtras();
 		if (notificationExtra != null) {
 			boolean startYourTeamFragment = false;
@@ -70,7 +71,7 @@ public class MainActivity extends LeanplumActivity {
 			if (type.startsWith("image/")) { handleSentImage(intent); }
 		}
 
-		// alarm manager on
+		// Periodically checks for notifications
 		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);

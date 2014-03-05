@@ -6,26 +6,6 @@
     android:orientation="vertical"
     android:background="#fff" >
     
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:background="#30acff" >
-        
-        <EditText
-			android:id="@+id/enter_title"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:padding="6dp"
-			android:background="@drawable/edittext_bg"
-			android:hint="@string/enter_title"
-			android:maxLength="16"
-			android:singleLine="true" />
-        
-    </LinearLayout>
-    
     <ImageView 
         android:id="@+id/taken_picture"
         android:layout_width="match_parent"
@@ -40,6 +20,18 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:background="#30acff" >
+        
+        <EditText
+			android:id="@+id/enter_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="6dp"
+			android:gravity="center"
+			android:padding="6dp"
+			android:background="@drawable/edittext_bg"
+			android:hint="@string/enter_title"
+			android:maxLength="16"
+			android:singleLine="true" />
         
         <EditText
 			android:id="@+id/enter_caption"

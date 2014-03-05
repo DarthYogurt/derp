@@ -342,7 +342,7 @@ def getNotification(request):
         #j['date'] = notification.date
         notification.delete()
     except:
-        pass
+        return HttpResponse("no notifications")
     return HttpResponse(json.dumps(j), content_type="application/json")
     
 

@@ -13,7 +13,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        new GetNotificationThread(context).start();        
+        new GetNotificationThread(context).start();       
     }
 	
 	private class GetNotificationThread extends Thread {
@@ -49,7 +49,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 		
 		NotificationCompat.Builder mBuilder =
         		new NotificationCompat.Builder(context)
-		        .setSmallIcon(R.drawable.derpteam_logo)
+		        .setSmallIcon(R.drawable.notification_logo)
 		        .setContentTitle("DerpTeam")
 		        .setContentText(content);
         

@@ -28,8 +28,8 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -80,7 +80,7 @@ public class TakePictureFragment extends Fragment {
 		
 		if (filename.isEmpty()) { new NewPictureThread().start(); }
 		
-		Button btnAssignTeam = (Button) view.findViewById(R.id.btn_assign_team);
+		ImageButton btnAssignTeam = (ImageButton) view.findViewById(R.id.btn_assign_team);
 		btnAssignTeam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

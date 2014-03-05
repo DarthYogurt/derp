@@ -23,7 +23,7 @@ public class HttpPostRequest {
 	public static final String LOGIN_URL = BASE_URL + "/login/";
 	public static final String ACTIVE_FRIENDS_URL = BASE_URL + "/getFriends/";
 	public static final String GET_PIC_URL = BASE_URL + "/getPic/";
-	public static final STring GET_NOTIFICATION = BASE_URL + "/getNotification/";
+	public static final String GET_NOTIFICATION = BASE_URL + "/getNotification/";
 	public static final String UPLOAD_PIC_URL = BASE_URL + "/uploadPic/";
 	public static final String VOTE_URL = BASE_URL + "/vote/";
 	public static final String COMMENT_URL = BASE_URL + "/addComment/";

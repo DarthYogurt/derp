@@ -54,7 +54,7 @@ public class MainActivity extends LeanplumActivity {
 		AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
-		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), 1000 * 60 *60, pendingIntent);
+		alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), 1000 * 10, pendingIntent);
 	}
 	
 	

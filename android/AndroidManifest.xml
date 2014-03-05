@@ -3,6 +3,8 @@
     package="com.walintukai.derpteam"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -12,7 +14,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	
+	
+	
+	
     <application android:name="com.leanplum.LeanplumApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -21,6 +27,25 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
+        
+        <service android:name=".GetNotificationAlarmReceiver" android:label="DerpTeamNotification">
+		    <intent-filter>
+		        <action android:name="com.myapp.MyService" />
+		    </intent-filter>
+		</service>
+		<receiver
+		    android:name=".StartupNotificationBroadcastReceiver"
+		    android:enabled="true"
+		    android:exported="true"
+		    android:label="StartupNotificationBroadcastReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>
+		</receiver>
+		
+		
+		
+        
         
         <receiver android:name=".GetNotificationAlarmReceiver" />
 

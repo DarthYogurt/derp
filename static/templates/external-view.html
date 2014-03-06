@@ -1,4 +1,4 @@
-<meta property="og:image" content="http://{{ imageUrl}}"/>
+
 <header>
     {% load staticfiles %}
 	<link href="{% static "bootstrap-3.1.1-dist/css/bootstrap.css" %}" rel="stylesheet" />
@@ -10,15 +10,25 @@
 		div.jumbotron {
 			padding-top: 48px;
 			padding-bottom: 48px;
+			background-color:
 		}
 	</style>
 </header>
 <body>
+
+
+
+
 <div class="container">
     <div class="jumbotron">
-        <h1>Derp Team</h1>
-        <p >Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</p>
-        <img class="img-thumbnail" src="http://{{ imageUrl}}" />
+    	
+        <h1 >Derp Team</h1>
+        <h2> <small> Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</small></h2>
+        <div class="span12 pagination-centered"><img class="img-thumbnail" src="http://{{ imageUrl}}" /></div>
+        
+        <h2>	{{title}}</h2>
+		<h2> <small> {{caption}} </small></h2>
+
   	</div>
 
 

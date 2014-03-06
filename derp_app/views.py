@@ -95,7 +95,7 @@ def uploadPic(request):
                                        picture = newPicture
                                        )
         newNotification.save()
-    return HttpResponse("")
+    return HttpResponse(newPicture.image)
 
 def externalPicView(request,picId):
     

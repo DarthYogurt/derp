@@ -54,7 +54,8 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
         		new NotificationCompat.Builder(context)
 		        .setSmallIcon(R.drawable.notification_logo)
 		        .setContentTitle("DerpTeam")
-		        .setContentText(content);
+		        .setContentText(content)
+		        .setAutoCancel(true);
         
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.putExtra("viewYourTeam", true);

@@ -4,13 +4,15 @@
 	<link href="{% static "bootstrap-3.1.1-dist/css/bootstrap.css" %}" rel="stylesheet" />
     
     <style>
-		div.container{
+		.container{
 			padding-top: 50px;
+			margin:auto;
+			
 		}
-		div.jumbotron {
-			padding-top: 48px;
-			padding-bottom: 48px;
-			background-color:
+		
+		.im-centered{
+			margin: auto; 
+			max-width: 600px;
 		}
 	</style>
 </header>
@@ -20,26 +22,41 @@
 
 
 <div class="container">
-    <div class="jumbotron">
-        <img src="{% static "images/derpteam_logo.png" %}"/>
-        <h3>  Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</h3>
-        <div class="span12 pagination-centered"><img class="img-thumbnail" src="http://{{ imageUrl}}" /></div>
+	<div class ="im-centered">
+        <div class="row">
+            <img class="img-responsive" src="{% static "images/derpteam_logo.png" %}"/>
+        </div>
+    </div>
+    <div class="im-centered">
+        <div class="row"> <h3>  Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</h3></row>
+	</div>
+    <div class="im-centered"><div class="row">
+    
+        <img class="img-responsive img-thumbnail" src="http://{{ imageUrl}}" />
+    </div></div>
+    <div class="im-centered"><div class="row">
         <h2>	{{title}}</h2>
+    </div></div> 
+    <div class="im-centered"><div class="row">
 		<h2> <small> {{caption}} </small></h2>
-  	</div>
+    </div></div>
+  	
 </div>
 
 <div class="container">
-	<div class="row">
-	    <h3>Want to join the Alpha?</h3>
-    </div>
-    <div class="row">
-        <form class="form" role="form">   
-				<div class="col-md-3">
-                    <input type="email" class="form-control" id = "inputEmail" placeholder="joe.doe@email.com" />
-				</div>
+	<div class="im-centered"><div class="row">
+
+        <div class="col-sm-4">
+		    <h3>Join The Alpha!</h3>
+        </div>
+    </div></div>
+    <div class="im-centered"><div class="row">
+        <form class="form" role="form">
+        	<div class="col-sm-4">
+				<input type="email" class="form-control" id = "inputEmail" placeholder="joe.doe@email.com" />
+            </div>
         </form>
-	</div>   
+	</div></div>   
 </div>
 
    <!-- Main component for a primary marketing message or call to action -->

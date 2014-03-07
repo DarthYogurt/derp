@@ -108,7 +108,7 @@ def externalPicView(request,picId):
     
     variables = {}
     variables['friend'] = pic.posterId.fbName
-    variables['you'] = pic.posterId.fbName
+    variables['you'] = pic.targetId.fbName
     variables['caption'] = pic.caption
     variables['title'] = pic.title
     variables['imageUrl'] = str(request.get_host()) + str(pic.image) 
@@ -349,7 +349,10 @@ def getNotification(request):
     except:
         return HttpResponse("none")
     return HttpResponse(json.dumps(j), content_type="application/json")
+
+def signup(request):
     
+    return HttpResponse()
 
 @csrf_exempt
 def uploadError(request):

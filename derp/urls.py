@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^getFriends/', getFriends),
     
     url(r'^getNotification/', getNotification),
+    url(r'^signup/', signup),
     
 
     url(r'^uploadError/$', uploadError),

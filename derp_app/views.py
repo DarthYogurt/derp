@@ -95,7 +95,12 @@ def uploadPic(request):
                                        picture = newPicture
                                        )
         newNotification.save()
-    return HttpResponse(newPicture.image)
+    
+    j={}
+    j['imageUrl'] = str(newPicture.image)
+    j['picId'] = str(newPicture.id)
+    
+    return HttpResponse(json.dumps(j), content_type="application/json")
 
 def externalPicView(request,picId):
     

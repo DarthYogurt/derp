@@ -4,7 +4,7 @@
     <string name="app_name">DerpTeam</string>
     <string name="app_id">1417999875114121</string>
     <string name="action_settings">Settings</string>
-    <string name="action_share">Share</string>
+    <string name="action_fb_share">Share</string>
     <string name="action_log_out">Log Out</string>
     <string name="no_internet">No Internet Access</string>
     <string name="logo">Logo</string>
@@ -42,5 +42,7 @@
     <string name="empty_comment">Comment is empty</string>
     <string name="comment_added">Comment Added</string>
     <string name="loading">Loading</string>
+    <string name="posted_to_wall">Posted to friend\'s wall</string>
+    <string name="posted_to_wall_error">Error posting to friend\'s wall</string>
 
 </resources>

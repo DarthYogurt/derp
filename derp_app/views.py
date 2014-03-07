@@ -192,7 +192,8 @@ def getTeamGallery(request,fbId):
     pictures = Picture.objects.filter(targetId = user).order_by("-date")
     j={}
     j['targetId'] = user.id
-    j['targetFbId'] = str(user.fbId) 
+    j['targetFbId'] = str(user.fbId)
+    j['targetFbName'] = str(user.fbName) 
     j['teamGallery'] =[]
     for p in pictures:
         temp = {}
@@ -356,6 +357,25 @@ def signup(request):
         print request.GET['email']
     return HttpResponse()
 
+'''
+def emailUser(logBoolNotify):
+    to = logBoolNotify.user.email
+    gmail_user = 'soplogmedusa@gmail.com'
+    gmail_pwd = 'supermanfly821'
+    smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+    header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject: ' + logBoolNotify.logBool.step.name +" id:"+ str(logBoolNotify.id) +'\n'
+    header = header.encode("ascii", 'ignore')
+    msg = header + "\n\n" + logBoolNotify.logBool.step.name + " on: " + str(logBoolNotify.completeBy) + " : regarding - " +logBoolNotify.logBool.addText
+    msg = msg.encode("ascii", "ignore")
+    smtpserver.sendmail(gmail_user, to, msg)
+
+    smtpserver.close()
+
+'''
 @csrf_exempt
 def uploadError(request):
     f = open("error.html", "w")

@@ -6,13 +6,16 @@
     <style>
 		.container{
 			padding-top: 50px;
-			margin:auto;
-			
+			margin:auto;	
 		}
 		
 		.im-centered{
 			margin: auto; 
 			max-width: 600px;
+		}
+
+		#logo {
+			margin: 0 auto;
 		}
 	</style>
 </header>
@@ -24,22 +27,33 @@
 <div class="container">
 	<div class ="im-centered">
         <div class="row">
-            <img class="img-responsive" src="{% static "images/derpteam_logo.png" %}"/>
+	  <div class="col-md-2"></div>
+	  <div class="col-md-8"><img class="img-responsive logo" src="{% static "images/derpteam_logo.png" %}"/></div>
+	  <div class="col-md-2"></div>
         </div>
     </div>
+
     <div class="im-centered">
-        <div class="row"> <h3>  Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</h3></row>
+        <div class="row text-center"><h3>Hey <b>{{ you }}</b>, your friend <b>{{ friend }}</b> has added someone to be on your team! Lucky you!</h3></div>
+    </div>
+
+	<br />
+
+	<div class="im-centered">
+		<div class="row text-center"><h2>Your {{title}}</h2></div>
 	</div>
-    <div class="im-centered"><div class="row">
-    
-        <img class="img-responsive img-thumbnail" src="http://{{ imageUrl}}" />
-    </div></div>
-    <div class="im-centered"><div class="row">
-        <h2>	{{title}}</h2>
-    </div></div> 
-    <div class="im-centered"><div class="row">
-		<h2> <small> {{caption}} </small></h2>
-    </div></div>
+
+	<div class="im-centered">
+		<div class="row">
+			<div class="col-md-2"></div>
+	  		<div class="col-md-8"><img class="img-responsive img-thumbnail" src="http://{{ imageUrl}}" /></div>
+	  		<div class="col-md-2"></div>
+    		</div>
+	</div>
+ 
+    	<div class="im-centered">
+		<div class="row text-center"><h2><small> {{caption}} </small></h2></div>
+	</div>
   	
 </div>
 

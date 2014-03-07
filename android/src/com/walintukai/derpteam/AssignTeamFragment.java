@@ -2,6 +2,12 @@ package com.walintukai.derpteam;
 
 import java.util.List;
 
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Session;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -11,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,12 +34,15 @@ public class AssignTeamFragment extends Fragment {
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
 	
+	private Preferences prefs;
 	private String imgFilename;
 	private String title;
 	private String caption;
 	private String targetName;
 	private String targetFbId;
 	private String targetUserId;
+	private String fbPostImageUrl;
+	private String fbPostLinkUrl;
 
 	static AssignTeamFragment newInstance(String imgFilename, String title, String caption) {
 		AssignTeamFragment fragment = new AssignTeamFragment();
@@ -49,6 +59,8 @@ public class AssignTeamFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_pick_team, container, false);
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		prefs = new Preferences(getActivity());
 		
 		Bundle args = getArguments();
 		imgFilename = args.getString(KEY_IMG_FILENAME);
@@ -96,6 +108,12 @@ public class AssignTeamFragment extends Fragment {
 		}
 	}
 	
+	private void goToMainPage() {
+		Intent intent = new Intent(getActivity(), MainActivity.class);
+    	startActivity(intent);
+    	getActivity().finish();
+	}
+	
 	private class AssignTeamDialogFrament extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -119,8 +137,32 @@ public class AssignTeamFragment extends Fragment {
 		}
 	}
 	
+	private class PostToWallDialogFrament extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage("Post to " + targetName + "'s Facebook Wall?")
+	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			postToWallDialog();
+	        		}
+	        	})
+	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dismiss();
+	        			goToMainPage();
+	        		}
+	        	});
+	        
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+		}
+	}
+	
 	private class SendImageTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog progressDialog;
+		private String postReturnJson;
 		
 		protected void onPreExecute() {
 			progressDialog = new ProgressDialog(getActivity());
@@ -143,7 +185,7 @@ public class AssignTeamFragment extends Fragment {
 			post.createPost(HttpPostRequest.UPLOAD_PIC_URL);
 			post.addJSON(JSONWriter.FILENAME_ASSIGN_TEAM);
 			post.addPicture(imgFilename);
-			post.sendPost();
+			postReturnJson = post.sendPostReturnJson();
 			
 	        return null;
 	    }
@@ -151,14 +193,59 @@ public class AssignTeamFragment extends Fragment {
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	progressDialog.dismiss();
+	    	
+	    	JSONReader reader = new JSONReader(getActivity());
+	    	fbPostImageUrl = reader.getImageUrlForFbPost(postReturnJson);
+	    	fbPostLinkUrl = reader.getLinkUrlForFbPost(postReturnJson);
+	    	
 	    	Toast.makeText(getActivity(), R.string.derp_assigned, Toast.LENGTH_SHORT).show();
 	    	
-	    	Intent intent = new Intent(getActivity(), MainActivity.class);
-	    	startActivity(intent);
-	    	getActivity().finish();
+	    	PostToWallDialogFrament dialog = new PostToWallDialogFrament();
+			dialog.show(getActivity().getFragmentManager(), "postToWall");
 	    	
 	        return;
 	    }
+	}
+	
+	private void postToWallDialog() {
+		Bundle params = new Bundle();
+	    params.putString("name", "DerpTeam for Android");
+	    params.putString("caption", "DERP!");
+	    params.putString("description", prefs.getFbFirstName() + " has put someone on your team!");
+	    params.putString("link", fbPostLinkUrl);
+	    params.putString("picture", fbPostImageUrl);
+	    params.putString("to", targetFbId);
+
+	    WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(getActivity(), Session.getActiveSession(), params))
+	        .setOnCompleteListener(new OnCompleteListener() {
+				@Override
+				public void onComplete(Bundle values, FacebookException error) {
+					if (error == null) {
+	                	// When the story is posted, echo the success
+	                    final String postId = values.getString("post_id");
+	                    if (postId != null) {
+	                    	Toast.makeText(getActivity(), R.string.posted_to_wall, Toast.LENGTH_SHORT).show();
+	                    	goToMainPage();
+	                    } 
+	                    else {
+	                    	// User clicked the Cancel button
+	                    	Log.i("FB POST", "CANCELLED");
+	                    	goToMainPage();
+	                    }
+	            	} 
+	            	else if (error instanceof FacebookOperationCanceledException) {
+	            		// User clicked the "x" button
+	            		Log.i("FB POST", "CANCELLED");
+	            		goToMainPage();
+	            	} 
+	            	else {
+	            		// Generic, exception: network error
+	            		Toast.makeText(getActivity(), R.string.posted_to_wall_error, Toast.LENGTH_SHORT).show();
+	            		goToMainPage();
+	            	}
+				}
+	        }).build();
+	    feedDialog.show();
 	}
 	
 }

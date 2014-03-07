@@ -74,6 +74,21 @@ public class LoginActivity extends LeanplumActivity {
 		initSeenPicturesFile();
 		
 		if (Session.getActiveSession().isOpened()) {
+			// If preferences are empty, fill them in
+			if (prefs.getFbUserId().isEmpty()) {
+				Request.newMeRequest(Session.getActiveSession(), new Request.GraphUserCallback() {
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						if (user != null) {
+							prefs.setFbUserId(user.getId());
+							prefs.setFbName(user.getName());
+							prefs.setFbFirstName(user.getFirstName());
+							new SetIdThread(user.getId()).start();
+						}
+					}
+				}).executeAsync();
+			}
+			
 			requestFacebookFriends(Session.getActiveSession());
 			goToMainActivity();
 		}

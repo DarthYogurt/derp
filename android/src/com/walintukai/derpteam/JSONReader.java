@@ -189,5 +189,25 @@ public class JSONReader {
 		catch (JSONException e) { e.printStackTrace(); }
 		return null;
 	}
+	
+	public String getImageUrlForFbPost(String jsonString) {
+		try {
+			JSONObject jObject = new JSONObject(jsonString);
+			String imageUrl = jObject.getString(KEY_IMAGE_URL);
+	    	return "http://dev.darthyogurt.com:8001" + imageUrl;
+		} 
+		catch (JSONException e) { e.printStackTrace(); }
+		return "";
+	}
+	
+	public String getLinkUrlForFbPost(String jsonString) {
+		try {
+			JSONObject jObject = new JSONObject(jsonString);
+			String picId = jObject.getString(KEY_PIC_ID);
+	    	return "http://dev.darthyogurt.com:8001/external/" + picId;
+		} 
+		catch (JSONException e) { e.printStackTrace(); }
+		return "";
+	}
 
 }

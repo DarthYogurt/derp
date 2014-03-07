@@ -71,10 +71,10 @@ def uploadPic(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
-    for d in data:
-        print d,data[d]
+    #for d in data:
+    #    print d,data[d]
     
-    print request.FILES['image']
+    #print request.FILES['image']
     
     newPicture = Picture(
                          targetId = User.objects.get(fbId=data.get("targetFbId", 1)),
@@ -87,7 +87,7 @@ def uploadPic(request):
     newPicture.save()
     
     
-    print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists()
+    #print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists()
     if not Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists():
         newNotification = Notification(
                                        targetUser = User.objects.get(fbId=data.get("targetFbId", 1)),

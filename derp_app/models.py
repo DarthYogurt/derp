@@ -62,4 +62,8 @@ class Notification(models.Model):
     picture = models.ForeignKey("Picture")
     date = models.DateTimeField(blank=True, null=True)
     
+class Signup(models.Model):
+    email = models.EmailField()
+    date = models.DateTimeField(blank=True, null=True)
+    
     

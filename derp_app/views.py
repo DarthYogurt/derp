@@ -352,6 +352,8 @@ def getNotification(request):
 
 def signup(request):
     
+    if "email" in request.GET:
+        print request.GET['email']
     return HttpResponse()
 
 @csrf_exempt

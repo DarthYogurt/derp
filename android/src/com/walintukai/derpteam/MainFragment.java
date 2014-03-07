@@ -8,12 +8,14 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -165,6 +167,12 @@ public class MainFragment extends Fragment {
 	}
 	
 	private class GetRandomMemberTask extends AsyncTask<Void, Void, Void> {
+		
+		protected void onPreExecute() {
+			btnVoteDown.setVisibility(View.GONE);
+    		btnVoteUp.setVisibility(View.GONE);
+			btnNextPic.setVisibility(View.GONE);
+		}
 		
 	    protected Void doInBackground(Void... params) {
 	    	JSONWriter writer = new JSONWriter(getActivity());

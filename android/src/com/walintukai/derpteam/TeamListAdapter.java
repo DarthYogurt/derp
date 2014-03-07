@@ -33,6 +33,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 	private static class ViewHolder {
 		private ImageView posterFbPic;
 		private TextView posterName;
+		private TextView targetName;
 		private TextView title;
 		private ImageView memberPic;
 		private TextView caption;
@@ -52,6 +53,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder = new ViewHolder();
             holder.posterFbPic = (ImageView) convertView.findViewById(R.id.poster_fb_picture);
             holder.posterName = (TextView) convertView.findViewById(R.id.poster_name);
+            holder.targetName = (TextView) convertView.findViewById(R.id.target_name);
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.memberPic = (ImageView) convertView.findViewById(R.id.member);
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
@@ -68,6 +70,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		UrlImageViewHelper.setUrlDrawable(holder.posterFbPic, members.get(position).getPosterFbPicUrl(), 
 										  R.drawable.image_placeholder);
 		holder.posterName.setText(members.get(position).getPosterFirstName());
+		holder.targetName.setText(members.get(position).getTargetFirstName());
         holder.title.setText(members.get(position).getTitle());
         UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), 
         								  R.drawable.image_placeholder);

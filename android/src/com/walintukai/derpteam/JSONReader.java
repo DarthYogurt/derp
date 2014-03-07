@@ -116,7 +116,9 @@ public class JSONReader {
             JSONObject jObject = new JSONObject(jsonString);
             JSONArray jArray = jObject.getJSONArray("teamGallery");
             
-            final String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+            String targetFbId = jObject.getString(KEY_TARGET_FB_ID);
+            String targetFbName = jObject.getString(KEY_TARGET_FB_NAME);
+            String targetFirstName = targetFbName.substring(0, targetFbName.indexOf(" "));
             
             for (int i = 0; i < jArray.length(); i++) {
     			String posterFbId = jArray.getJSONObject(i).getString(KEY_POSTER_FB_ID);
@@ -144,8 +146,8 @@ public class JSONReader {
 	    	    	commentsArray.add(comment);
     	    	}
     	    	
-    	    	Member member = new Member(posterFbId, posterFirstName, targetFbId, imageUrl, title, caption, 
-    	    							   picId, views, upVote, downVote, commentsArray);
+    	    	Member member = new Member(posterFbId, posterFirstName, targetFbId, targetFirstName, imageUrl, 
+    	    							   title, caption, picId, views, upVote, downVote, commentsArray);
     	    	teamMembersArray.add(member);
             }
         } 

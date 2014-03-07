@@ -37,7 +37,7 @@
         	android:paddingTop="4dp"
         	android:paddingBottom="4dp"
         	android:orientation="horizontal"
-        	android:background="@drawable/transparent_gradient" >
+        	android:background="@drawable/transparent_gradient_footer" >
             
             <ImageView
                 android:id="@+id/btn_vote_down"

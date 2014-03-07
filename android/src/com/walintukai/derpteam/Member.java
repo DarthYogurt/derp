@@ -23,12 +23,14 @@ public class Member {
 	private List<Comment> comments;
 	 
 	// For team page
-	public Member(String posterFbId, String posterFirstName, String targetFbId, String imageUrl, String title, 
-				  String caption, int picId, int views, int upVote, int downVote, List<Comment> comments) {
+	public Member(String posterFbId, String posterFirstName, String targetFbId, String targetFirstName, 
+				  String imageUrl, String title, String caption, int picId, int views, int upVote, 
+				  int downVote, List<Comment> comments) {
 		this.posterFbId = posterFbId;
 		this.posterFbPicUrl = "http://graph.facebook.com/" + posterFbId + "/picture";
 		this.posterFirstName = posterFirstName;
 		this.targetFbId = targetFbId;
+		this.targetFirstName = targetFirstName;
 		this.imageUrl = "http://" + imageUrl;
 		this.title = title;
 		this.caption = caption;

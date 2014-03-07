@@ -35,7 +35,7 @@
     <string name="comments">Comments</string>
     <string name="possessive_form">\'s</string>
     <string name="team">Team</string>
-    <string name="assigned_by">Assigned By:</string>
+    <string name="derped_by">Derped By:</string>
     <string name="not_complete">Please fill in all the fields</string>
     <string name="add_comment">Add Comment</string>
     <string name="finished">Finished</string>

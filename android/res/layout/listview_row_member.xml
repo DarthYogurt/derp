@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="20dp" >
+    android:paddingBottom="30dp" >
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,30 +35,101 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/poster_fb_picture"
             android:textSize="14sp"
-            android:text="@string/assigned_by" />
+            android:text="@string/derped_by" />
         
-        <TextView 
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentBottom="true"
-        	android:layout_alignParentRight="true"
-        	android:textSize="18sp"
-        	android:textStyle="bold"
-        	android:paddingTop="7dp"
-        	android:paddingBottom="7dp"
-        	android:paddingLeft="10dp"
-        	android:paddingRight="10dp"
-        	android:background="@drawable/title_plaque" />
+        <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:orientation="horizontal" >
+	        
+	        <ImageView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginRight="2dp"
+		 		android:src="@drawable/arrow_up_small"
+		 		android:contentDescription="@string/desc_vote_up" />
+	        
+	        <TextView
+	            android:id="@+id/vote_up_count"
+	            android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_vertical"
+			    android:layout_marginRight="10dp"
+			    android:textColor="#00b200"
+			    android:textSize="16sp"
+			    android:textStyle="bold" />
+	        
+	        <ImageView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginRight="2dp"
+		 		android:src="@drawable/arrow_down_small"
+		 		android:contentDescription="@string/desc_vote_down" />
+	        
+	        <TextView
+	            android:id="@+id/vote_down_count"
+	            android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_vertical"
+			    android:textColor="#cc0000"
+			    android:textSize="16sp"
+			    android:textStyle="bold" />
+	        
+	    </LinearLayout>
         
     </RelativeLayout>
-        
-    <ImageView 
-		android:id="@+id/member"
-		android:layout_width="match_parent"
-		android:layout_height="360dp"
-		android:scaleType="fitXY"
-		android:contentDescription="@string/desc_derp_picture" />
+    
+    <FrameLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal" >
+	        
+	        <ImageView 
+				android:id="@+id/member"
+				android:layout_width="match_parent"
+				android:layout_height="360dp"
+				android:scaleType="fitXY"
+				android:contentDescription="@string/desc_derp_picture" />
+	        
+	        <LinearLayout
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="top"
+		        android:paddingTop="2dp"
+		        android:paddingBottom="2dp"
+		        android:orientation="horizontal"
+		        android:background="#80808080" >
+	        
+	        	<TextView
+					android:id="@+id/target_name"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingLeft="10dp"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:textColor="#fff" />
+			 
+				<TextView
+				  	android:layout_width="wrap_content"
+				  	android:layout_height="wrap_content"
+				  	android:textSize="18sp"
+				  	android:textStyle="bold"
+				  	android:textColor="#fff"
+				  	android:text="@string/possessive_form" />
+	        	
+	            <TextView 
+		            android:id="@+id/title"
+		            android:layout_width="match_parent"
+		        	android:layout_height="wrap_content"
+		        	android:layout_marginLeft="5dp"
+		        	android:textSize="18sp"
+		        	android:textStyle="bold"
+		        	android:textColor="#fff" />
+	            
+            </LinearLayout>
+	    </FrameLayout>
     
     <TextView
         android:id="@+id/caption"
@@ -67,47 +138,6 @@
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:textAppearance="@style/caption" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
-        
-        <ImageView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginRight="2dp"
-	 		android:src="@drawable/arrow_up_small"
-	 		android:contentDescription="@string/desc_vote_up" />
-        
-        <TextView
-            android:id="@+id/vote_up_count"
-            android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginRight="10dp"
-		    android:textColor="#00b200"
-		    android:textSize="16sp"
-		    android:textStyle="bold" />
-        
-        <ImageView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginRight="2dp"
-	 		android:src="@drawable/arrow_down_small"
-	 		android:contentDescription="@string/desc_vote_down" />
-        
-        <TextView
-            android:id="@+id/vote_down_count"
-            android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:textColor="#cc0000"
-		    android:textSize="16sp"
-		    android:textStyle="bold" />
-        
-    </LinearLayout>
         
     <!--  
     <LinearLayout 

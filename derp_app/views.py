@@ -376,6 +376,17 @@ def emailUser(logBoolNotify):
     smtpserver.close()
 
 '''
+
+@csrf_exempt
+def bugReport(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+    
+    
+    return HttpResponse("Report submitted")
+
 @csrf_exempt
 def uploadError(request):
     f = open("error.html", "w")

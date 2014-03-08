@@ -10,7 +10,6 @@ import java.nio.channels.FileChannel;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
@@ -77,6 +75,7 @@ public class MainActivity extends LeanplumActivity {
 		vReportBug = getLayoutInflater().inflate(R.layout.popwin_report_bug, null);
 		etReportBug = (EditText) vReportBug.findViewById(R.id.report_bug);
 		Button btnSendReport = (Button) vReportBug.findViewById(R.id.btn_send_report);
+		
 		btnSendReport.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -308,6 +307,7 @@ public class MainActivity extends LeanplumActivity {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
+	    	pwReportBug.dismiss();
 	    	etReportBug.setText("");
 	    	Toast.makeText(MainActivity.this, R.string.bug_report_sent, Toast.LENGTH_SHORT).show();
 	        return;

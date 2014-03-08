@@ -27,6 +27,7 @@ public class HttpPostRequest {
 	public static final String UPLOAD_PIC_URL = BASE_URL + "/uploadPic/";
 	public static final String VOTE_URL = BASE_URL + "/vote/";
 	public static final String COMMENT_URL = BASE_URL + "/addComment/";
+	public static final String BUG_REPORT_URL = BASE_URL + "/bugReport/";
 	private static final String ERROR_URL = BASE_URL + "/uploadError/";
 	private static final String ERROR_FILENAME = "error.txt";
 	private static final int HTTP_RESPONSE_SUCCESS = 200;
@@ -112,7 +113,6 @@ public class HttpPostRequest {
 		multipartEntity.addPart("image", new FileBody(file));
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void sendErrorPost() {
 		File errorFile = new File(context.getFilesDir() + File.separator + ERROR_FILENAME);
 		
@@ -123,7 +123,6 @@ public class HttpPostRequest {
 			fw.close();
 		} catch (IOException e) { e.printStackTrace(); }
 		
-		HttpClient errorClient = new DefaultHttpClient();
 		HttpPost errorPost = new HttpPost(ERROR_URL);
 		errorPost.setHeader("enctype", "multipart/form-data");
 
@@ -133,7 +132,7 @@ public class HttpPostRequest {
 		errorPost.setEntity(errorEntity.build());
 		
 		try { 
-			HttpResponse errorResponse = errorClient.execute(errorPost);
+			HttpResponse errorResponse = client.execute(errorPost);
 			
 			int errorResponseCode = errorResponse.getStatusLine().getStatusCode();
 			Log.e("ERROR RESPONSE CODE", Integer.toString(errorResponseCode));
@@ -143,6 +142,8 @@ public class HttpPostRequest {
 		} 
 		catch (ClientProtocolException e) { e.printStackTrace(); } 
 		catch (IOException e) { e.printStackTrace(); }
+		
+		
 	}
 
 }

@@ -100,21 +100,21 @@
 		        android:paddingTop="2dp"
 		        android:paddingBottom="2dp"
 		        android:orientation="horizontal"
-		        android:background="#80808080" >
+		        android:background="#b3808080" >
 	        
 	        	<TextView
 					android:id="@+id/target_name"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:paddingLeft="10dp"
-					android:textSize="18sp"
+					android:textSize="22sp"
 					android:textStyle="bold"
 					android:textColor="#fff" />
 			 
 				<TextView
 				  	android:layout_width="wrap_content"
 				  	android:layout_height="wrap_content"
-				  	android:textSize="18sp"
+				  	android:textSize="22sp"
 				  	android:textStyle="bold"
 				  	android:textColor="#fff"
 				  	android:text="@string/possessive_form" />
@@ -124,7 +124,7 @@
 		            android:layout_width="match_parent"
 		        	android:layout_height="wrap_content"
 		        	android:layout_marginLeft="5dp"
-		        	android:textSize="18sp"
+		        	android:textSize="22sp"
 		        	android:textStyle="bold"
 		        	android:textColor="#fff" />
 	            

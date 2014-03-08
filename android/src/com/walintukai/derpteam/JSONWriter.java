@@ -17,6 +17,7 @@ public class JSONWriter {
 	public static final String FILENAME_ASSIGN_TEAM = "assign_team.json";
 	public static final String FILENAME_PIC_VOTE = "vote.json";
 	public static final String FILENAME_COMMENT = "comment.json";
+	public static final String FILENAME_BUG_REPORT = "bug_report.json";
 	private static final String KEY_FB_USER_ID = "fbUserId";
 	private static final String KEY_FB_USER_NAME = "fbUserName";
 	private static final String KEY_FB_FRIENDS = "fbFriends";
@@ -33,6 +34,7 @@ public class JSONWriter {
 	private static final String KEY_UP_VOTE = "upVote";
 	private static final String KEY_DOWN_VOTE = "downVote";
 	private static final String KEY_COMMENT = "comment";
+	private static final String KEY_BUG_MESSAGE = "bugMessage";
 	
 	private Context context;
 	private FileOutputStream fos;
@@ -198,6 +200,23 @@ public class JSONWriter {
 			fos.close();
 			
 			Log.i("JSON FOR COMMENT CREATED", FILENAME_COMMENT);
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public void createJsonForBugReport(String bugMessage) {
+		try {
+			fos = context.openFileOutput(FILENAME_BUG_REPORT, Context.MODE_PRIVATE);
+			
+			writer = new JsonWriter(new OutputStreamWriter(fos, "UTF-8"));
+			writer.beginObject();
+			writer.name(KEY_FB_USER_ID).value(prefs.getFbUserId());
+			writer.name(KEY_BUG_MESSAGE).value(bugMessage);
+			writer.endObject();
+			writer.close();
+			fos.close();
+			
+			Log.i("JSON FOR BUG REPORT CREATED", FILENAME_BUG_REPORT);
 		} 
 		catch (IOException e) { e.printStackTrace(); }
 	}

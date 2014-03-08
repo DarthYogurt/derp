@@ -10,14 +10,30 @@ import java.nio.channels.FileChannel;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -31,6 +47,9 @@ public class MainActivity extends LeanplumActivity {
 	private Preferences prefs;
 	private String imgFilename;
 	private UiLifecycleHelper uiHelper;
+	private PopupWindow pwReportBug;
+	private View vReportBug;
+	private EditText etReportBug;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -54,6 +73,18 @@ public class MainActivity extends LeanplumActivity {
 		uiHelper.onCreate(savedInstanceState);
 		
 		prefs = new Preferences(this);
+		pwReportBug = new PopupWindow(this);
+		vReportBug = getLayoutInflater().inflate(R.layout.popwin_report_bug, null);
+		etReportBug = (EditText) vReportBug.findViewById(R.id.report_bug);
+		Button btnSendReport = (Button) vReportBug.findViewById(R.id.btn_send_report);
+		btnSendReport.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String report = etReportBug.getText().toString();
+				if (GlobalMethods.isNetworkAvailable(MainActivity.this)) { new SendBugReportTask(report).execute(); }
+				else { Toast.makeText(MainActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show(); }
+			}
+		});
 		
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
@@ -103,6 +134,36 @@ public class MainActivity extends LeanplumActivity {
 				finish();
 				return true;
 			case R.id.action_settings:
+				return true;
+			case R.id.action_report_bug:
+				pwReportBug.setTouchable(true);
+				pwReportBug.setFocusable(true);
+				pwReportBug.setOutsideTouchable(true);
+				pwReportBug.setTouchInterceptor(new OnTouchListener() {
+			        public boolean onTouch(View v, MotionEvent event) {
+			            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+			            	pwReportBug.dismiss();
+			                return true;
+			            }
+			            return false;
+			        }
+			    });
+				pwReportBug.setWidth(550);
+				pwReportBug.setHeight(450);
+				pwReportBug.setContentView(vReportBug);
+				pwReportBug.setBackgroundDrawable(new BitmapDrawable());
+				pwReportBug.setAnimationStyle(R.style.AddCommentAnimation);
+				pwReportBug.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, -140);
+				pwReportBug.setOnDismissListener(new PopupWindow.OnDismissListener() {
+					@Override
+					public void onDismiss() { 
+						getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+					}
+				});
+				
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		        imm.showSoftInput(etReportBug, InputMethodManager.SHOW_IMPLICIT);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -224,6 +285,32 @@ public class MainActivity extends LeanplumActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		uiHelper.onDestroy();
+	}
+	
+	private class SendBugReportTask extends AsyncTask<Void, Void, Void> {
+		private String bugMessage;
+		
+		private SendBugReportTask(String bugMessage) {
+			this.bugMessage = bugMessage;
+		}
+		
+	    protected Void doInBackground(Void... params) {
+	    	JSONWriter writer = new JSONWriter(MainActivity.this);
+			writer.createJsonForBugReport(bugMessage);
+			
+			HttpPostRequest post = new HttpPostRequest(MainActivity.this);
+			post.createPost(HttpPostRequest.BUG_REPORT_URL);
+			post.addJSON(JSONWriter.FILENAME_BUG_REPORT);
+			post.sendPost();
+			
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	Toast.makeText(MainActivity.this, R.string.bug_report_sent, Toast.LENGTH_SHORT).show();
+	        return;
+	    }
 	}
 
 }

@@ -86,12 +86,14 @@
 	$("#button").click(function(){ 
 								
 								
-									var email = $("#inputEmail").val();
-									
-									console.log(email);
-									var a = $.get( "/signup/", function(){}); 
-									console.log(a);
-								
-								});	
+			var email = $("#inputEmail").val();
+			
+			console.log(email);
+			var a = $.get( "/signup/?email="+email, function(data){
+												//console.log(data);
+												}); 
+			console.log(a);
+		
+		});	
 
 </script>

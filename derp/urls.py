@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     
     url(r'^getNotification/', getNotification),
     url(r'^signup/', signup),
-    url(r'^bugreport/', bugReport),
+    url(r'^bugReport/', bugReport),
 
 
     url(r'^uploadError/$', uploadError),

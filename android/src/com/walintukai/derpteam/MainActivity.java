@@ -308,6 +308,7 @@ public class MainActivity extends LeanplumActivity {
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
+	    	etReportBug.setText("");
 	    	Toast.makeText(MainActivity.this, R.string.bug_report_sent, Toast.LENGTH_SHORT).show();
 	        return;
 	    }

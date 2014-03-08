@@ -4,6 +4,7 @@ import json
 import math
 import os
 import random
+import smtplib
 import sys
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -354,8 +355,28 @@ def getNotification(request):
 def signup(request):
     
     if "email" in request.GET:
-        print request.GET['email']
-    return HttpResponse()
+        email = request.GET['email']
+        print email
+
+        to = "raytochina@gmail.com"
+        gmail_user = 'soplogmedusa@gmail.com'
+        gmail_pwd = 'supermanfly821'
+        smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+        smtpserver.ehlo()
+        smtpserver.starttls()
+        smtpserver.ehlo
+        smtpserver.login(gmail_user, gmail_pwd)
+        header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject: Signup for Alpha DerpTeam'  +'\n'
+        header = header.encode("utf-8", 'ignore')
+        msg = header + " Email: " + email
+        msg = msg.encode("utf-8", "ignore")
+        smtpserver.sendmail(gmail_user, to, msg)
+    
+        smtpserver.close()
+    
+        return HttpResponse("email request sent")
+    
+    return HttpResponse("no email selected")
 
 '''
 def emailUser(logBoolNotify):

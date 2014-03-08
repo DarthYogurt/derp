@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_fb_share">Share</string>
     <string name="action_log_out">Log Out</string>
+    <string name="action_report_bug">Report Bug</string>
     <string name="no_internet">No Internet Access</string>
     <string name="logo">Logo</string>
     <string name="no_friends">No Friends</string>
@@ -44,5 +45,8 @@
     <string name="loading">Loading</string>
     <string name="posted_to_wall">Posted to friend\'s wall</string>
     <string name="posted_to_wall_error">Error posting to friend\'s wall</string>
+    <string name="report_bug">Report Bug</string>
+    <string name="report">Report</string>
+    <string name="bug_report_sent">Bug report sent. Thank you for your input!</string>
 
 </resources>

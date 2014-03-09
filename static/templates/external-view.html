@@ -5,18 +5,14 @@
     <script src="{% static "jquery/jquery-2.0.2.min.js" %}"></script>
     
     <style>
-		.container{
+		.container {
 			padding-top: 50px;
 			margin:auto;	
 		}
-		
-		.im-centered{
+
+		.im-centered {
 			margin: auto; 
 			max-width: 600px;
-		}
-
-		#logo {
-			margin: 0 auto;
 		}
 	</style>
     
@@ -24,15 +20,12 @@
 </header>
 <body>
 
-
-
-
 <div class="container">
 	<div class ="im-centered">
         <div class="row">
-	  <div class="col-md-2"></div>
-	  <div class="col-md-8"><img class="img-responsive logo" src="{% static "images/derpteam_logo.png" %}"/></div>
-	  <div class="col-md-2"></div>
+			<div class="col-md-2"></div>
+			<div class="col-md-8"><img class="img-responsive" src="{% static "images/derpteam_logo.png" %}"/></div>
+			<div class="col-md-2"></div>
         </div>
     </div>
 
@@ -51,22 +44,21 @@
 			<div class="col-md-2"></div>
 	  		<div class="col-md-8"><img class="img-responsive img-thumbnail" src="http://{{ imageUrl}}" /></div>
 	  		<div class="col-md-2"></div>
-    		</div>
+    	</div>
 	</div>
  
-    	<div class="im-centered">
+    <div class="im-centered">
 		<div class="row text-center"><h2><small> {{caption}} </small></h2></div>
 	</div>
   	
 </div>
 
 <div class="container">
-	<div class="im-centered"><div class="row">
-
-        <div class="col-sm-6">
-		    <h3>Join The Alpha Release!</h3>
-        </div>
-    </div></div>
+	<div class="im-centered">
+		<div class="row">
+        	<div class="col-sm-6 col-centered"><h3>Join The Alpha Release!</h3></div>
+    	</div>
+	</div>
     <div class="im-centered"><div class="row">
         <form class="form" role="form">
         	<div class="col-sm-4">

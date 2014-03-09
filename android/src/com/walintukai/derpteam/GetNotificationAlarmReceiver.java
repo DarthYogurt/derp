@@ -17,8 +17,6 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
     }
 	
 	private class GetNotificationThread extends Thread {
-		
-		
 		private Context context;
 		
 		private GetNotificationThread(Context context) {
@@ -26,7 +24,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 		}
 		
 		public void run() {
-			Log.v("alarmTesting", "getting notification from server");
+			Log.v("alarmTesting", "GETTING NOTIFICATION FROM SERVER");
 			JSONWriter writer = new JSONWriter(context);
 	    	writer.createJsonForGetNotification();
 	    	

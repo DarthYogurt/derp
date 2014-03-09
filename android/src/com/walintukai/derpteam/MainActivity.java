@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -91,6 +95,20 @@ public class MainActivity extends LeanplumActivity {
 		ft.add(R.id.fragment_container, mainFragment);
 		ft.commit();
 		
+		// Checks to see if alarm manager for notifications is active, if not, start new one
+		Intent alarmIntent = new Intent(this, GetNotificationAlarmReceiver.class);
+		boolean alarmActive = (PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_NO_CREATE) != null);
+		if (alarmActive) { Log.v("ALARM MANAGER", "ACTIVE"); }
+		else { 
+			Log.v("ALARM MANAGER", "STARTING"); 
+			// Periodically checks for notifications
+			AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			Intent intent2 = new Intent(this, GetNotificationAlarmReceiver.class);
+			PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
+			int checkTime = (1000 * 60) * (60 + new Random().nextInt(30));
+			alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.uptimeMillis(), checkTime, pendingIntent);
+		}
+		
 		// If clicked from notification, load your team page
 		Bundle notificationExtra = getIntent().getExtras();
 		if (notificationExtra != null) {
@@ -123,6 +141,7 @@ public class MainActivity extends LeanplumActivity {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

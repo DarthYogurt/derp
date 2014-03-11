@@ -57,9 +57,11 @@ class Vote(models.Model):
     voteUp = models.NullBooleanField(blank=True, null=True)
     
 class Notification(models.Model):
-    targetUser = models.ForeignKey("User", related_name="userNotification")
-    poster = models.ForeignKey("User", related_name="posterNotification")
-    picture = models.ForeignKey("Picture")
+    targetUser = models.ForeignKey("User", related_name="userNotification", blank=True, null=True)
+    poster = models.ForeignKey("User", related_name="posterNotification", blank=True, null=True)
+    picture = models.ForeignKey("Picture", blank=True, null=True)
+    type = models.CharField(max_length=12, blank=True, null=True)
+    text = models.CharField(max_length=150, blank=True, null=True)
     date = models.DateTimeField(blank=True, null=True)
     
 class Signup(models.Model):

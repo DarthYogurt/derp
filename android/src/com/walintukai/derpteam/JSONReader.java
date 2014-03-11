@@ -176,6 +176,29 @@ public class JSONReader {
 		return commentsArray;
 	}
 	
+	public List<Member> getStatsArray(String jsonString) {
+		List<Member> statsArray = new ArrayList<Member>();
+		try {
+            JSONObject jObject = new JSONObject(jsonString);
+            JSONArray jArray = jObject.getJSONArray("postedPics");
+            
+            for (int i = 0; i < jArray.length(); i++) {
+    			String targetFbId = jArray.getJSONObject(i).getString(KEY_TARGET_FB_ID);
+    			String imageUrl = jArray.getJSONObject(i).getString(KEY_IMAGE_URL);
+    	    	String title = jArray.getJSONObject(i).getString(KEY_TITLE);
+    	    	String caption = jArray.getJSONObject(i).getString(KEY_CAPTION);
+    	    	int picId = jArray.getJSONObject(i).getInt(KEY_PIC_ID);
+    	    	int upVote = jArray.getJSONObject(i).getInt(KEY_UP_VOTE);
+    	    	int downVote = jArray.getJSONObject(i).getInt(KEY_DOWN_VOTE);
+    	    	
+    	    	Member member = new Member(targetFbId, imageUrl, title, caption, picId, upVote, downVote);
+    	    	statsArray.add(member);
+            }
+        }
+		catch (Exception e) { e.printStackTrace(); }
+		return statsArray;
+	}
+	
 	public Notification getNotificationObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);

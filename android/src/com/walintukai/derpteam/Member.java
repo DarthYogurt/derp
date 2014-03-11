@@ -73,6 +73,18 @@ public class Member {
 		this.downVote = 0;
 	}
 	
+	// For stats
+	public Member(String targetFbId, String imageUrl, String title, String caption, int picId, 
+				  int upVote, int downVote) {
+		this.targetFbId = targetFbId;
+		this.imageUrl = "http://dev.darthyogurt.com:8001" + imageUrl;
+		this.title = title;
+		this.caption = caption;
+		this.picId = picId;
+		this.upVote = upVote;
+		this.downVote = downVote;
+	}
+	
 	public String getPosterFbId() { return posterFbId; }
 	public String getPosterFbPicUrl() { return posterFbPicUrl; }
 	public String getPosterFirstName() { return posterFirstName; }

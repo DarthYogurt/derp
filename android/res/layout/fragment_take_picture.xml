@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="6dp"
         android:background="#30acff" >
         
         <EditText
@@ -23,7 +23,8 @@
 			android:background="@drawable/edittext_bg"
 			android:hint="@string/enter_title"
 			android:maxLength="16"
-			android:singleLine="true" />
+			android:singleLine="true"
+			android:textSize="16sp" />
         
         <EditText
 			android:id="@+id/enter_caption"
@@ -34,7 +35,8 @@
 			android:background="@drawable/edittext_bg"
 			android:hint="@string/enter_caption"
 			android:maxLength="30"
-			android:singleLine="true" />
+			android:singleLine="true"
+			android:textSize="16sp" />
         
     </LinearLayout>
     
@@ -50,7 +52,7 @@
         android:id="@+id/btn_assign_team"
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="20dp"
+		android:layout_marginTop="16dp"
 		android:layout_gravity="center_horizontal"
 		android:background="@drawable/btn_derp_friend" />
 

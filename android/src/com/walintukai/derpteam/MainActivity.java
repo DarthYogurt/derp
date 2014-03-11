@@ -8,8 +8,12 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Random;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -34,6 +38,7 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -75,6 +80,10 @@ public class MainActivity extends LeanplumActivity {
 		uiHelper.onCreate(savedInstanceState);
 		
 		prefs = new Preferences(this);
+		ImageView btnYourTeam = (ImageView) findViewById(R.id.btn_your_team);
+		ImageView btnTakePicture = (ImageView) findViewById(R.id.btn_take_pic);
+		ImageView btnGallery = (ImageView) findViewById(R.id.btn_gallery);
+		ImageView btnFriendsTeam = (ImageView) findViewById(R.id.btn_friends_team);
 		pwReportBug = new PopupWindow(this);
 		vReportBug = getLayoutInflater().inflate(R.layout.popwin_report_bug, null);
 		etReportBug = (EditText) vReportBug.findViewById(R.id.report_bug);
@@ -94,6 +103,54 @@ public class MainActivity extends LeanplumActivity {
 		MainFragment mainFragment = MainFragment.newInstance();
 		ft.add(R.id.fragment_container, mainFragment);
 		ft.commit();
+		
+		btnYourTeam.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
+		
+		btnTakePicture.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				TakePictureFragment fragment = TakePictureFragment.newInstance("");
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
+		
+		btnGallery.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				GalleryFragment fragment = GalleryFragment.newInstance();
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
+		
+		btnFriendsTeam.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				PickTeamFragment fragment = PickTeamFragment.newInstance();
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
 		
 		// Checks to see if alarm manager for notifications is active, if not, start new one
 		Intent alarmIntent = new Intent(this, GetNotificationAlarmReceiver.class);
@@ -332,5 +389,33 @@ public class MainActivity extends LeanplumActivity {
 	        return;
 	    }
 	}
+	
+//	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
+//		private Fragment fragment;
+//		private final Activity activity;
+//		private final String tag;
+//		private final Class<T> clz;
+//		
+//		public TabListener(Activity activity, String tag, Class<T> clz) {
+//			this.activity = activity;
+//			this.tag = tag;
+//			this.clz = clz;
+//		}
+//
+//		@Override
+//		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+//			
+//		}
+//
+//		@Override
+//		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+//			
+//		}
+//
+//		@Override
+//		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+//			
+//		}
+//	}
 
 }

@@ -399,6 +399,33 @@ def emailUser(logBoolNotify):
 '''
 
 @csrf_exempt
+def getStats(request):
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+     
+    fbId = data.get("fbUserId",1)
+
+#     fbId = 655136010
+    j={}
+    j['postedPics'] =[]
+    pics = Picture.objects.filter(posterId=User.objects.get(fbId=fbId)).order_by("-upVote")[:5]
+    for p in pics:
+        temp = {}
+        temp['targetFbId'] = str(p.targetId.fbId)
+        temp['picId'] = p.id
+        temp['title'] = p.title
+        temp['caption'] = p.caption
+        temp['upVote'] = p.upVote
+        temp['downVote'] = p.downVote
+        temp['popularity'] = p.popularity
+        temp['imageUrl'] = str(p.image)
+        j['postedPics'].append(temp)
+        
+    return HttpResponse(json.dumps(j), content_type="application/json")
+
+@csrf_exempt
 def bugReport(request):
     dataString = request.FILES.get('data', "empty")
     if dataString == "empty":

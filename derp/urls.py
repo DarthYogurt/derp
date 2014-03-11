@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^external/(\d*)/$', externalPicView),
     url(r'^vote/', vote),
     url(r'^getFriends/', getFriends),
+    url(r'^getStats/', getStats),
     
     url(r'^getNotification/', getNotification),
     url(r'^signup/', signup),

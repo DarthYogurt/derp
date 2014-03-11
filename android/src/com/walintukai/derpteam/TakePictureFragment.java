@@ -91,8 +91,8 @@ public class TakePictureFragment extends Fragment {
 					EditText etCaption = (EditText) view.findViewById(R.id.enter_caption);
 					String caption = etCaption.getText().toString();
 					
-					if (title.isEmpty() || caption.isEmpty()) {
-						Toast.makeText(getActivity(), R.string.not_complete, Toast.LENGTH_SHORT).show();
+					if (title.isEmpty()) {
+						Toast.makeText(getActivity(), R.string.title_empty, Toast.LENGTH_SHORT).show();
 					}
 					else {
 						FragmentManager fm = getFragmentManager();

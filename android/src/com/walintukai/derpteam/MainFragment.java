@@ -55,10 +55,6 @@ public class MainFragment extends Fragment {
 		btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		btnNextPic = (ImageView) view.findViewById(R.id.btn_next_pic);
-		Button btnYourTeam = (Button) view.findViewById(R.id.btn_your_team);
-		Button btnTakePicture = (Button) view.findViewById(R.id.btn_take_picture);
-		Button btnGallery = (Button) view.findViewById(R.id.btn_gallery);
-		Button btnFriendsTeam = (Button) view.findViewById(R.id.btn_friends_team);
 		
 		rateMember.setOnClickListener(new OnClickListener() {
 			@Override
@@ -105,54 +101,6 @@ public class MainFragment extends Fragment {
 					new GetRandomMemberTask().execute();
 				}
 				else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
-			}
-		});
-		
-		btnYourTeam.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FragmentManager fm = getFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
-				ft.replace(R.id.fragment_container, fragment);
-				ft.addToBackStack(null);
-				ft.commit();
-			}
-		});
-		
-		btnTakePicture.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FragmentManager fm = getFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				TakePictureFragment fragment = TakePictureFragment.newInstance("");
-				ft.replace(R.id.fragment_container, fragment);
-				ft.addToBackStack(null);
-				ft.commit();
-			}
-		});
-		
-		btnGallery.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FragmentManager fm = getFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				GalleryFragment fragment = GalleryFragment.newInstance();
-				ft.replace(R.id.fragment_container, fragment);
-				ft.addToBackStack(null);
-				ft.commit();
-			}
-		});
-		
-		btnFriendsTeam.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FragmentManager fm = getFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				PickTeamFragment fragment = PickTeamFragment.newInstance();
-				ft.replace(R.id.fragment_container, fragment);
-				ft.addToBackStack(null);
-				ft.commit();
 			}
 		});
 		

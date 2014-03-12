@@ -35,6 +35,13 @@
             android:src="@drawable/btn_take_pic" />
         
         <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_home" />
+        
+        <ImageView
             android:id="@+id/btn_gallery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

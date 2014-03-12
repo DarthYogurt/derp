@@ -82,6 +82,7 @@ public class MainActivity extends LeanplumActivity {
 		prefs = new Preferences(this);
 		ImageView btnYourTeam = (ImageView) findViewById(R.id.btn_your_team);
 		ImageView btnTakePicture = (ImageView) findViewById(R.id.btn_take_pic);
+		ImageView btnHome = (ImageView) findViewById(R.id.btn_home);
 		ImageView btnGallery = (ImageView) findViewById(R.id.btn_gallery);
 		ImageView btnFriendsTeam = (ImageView) findViewById(R.id.btn_friends_team);
 		pwReportBug = new PopupWindow(this);
@@ -122,6 +123,18 @@ public class MainActivity extends LeanplumActivity {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				TakePictureFragment fragment = TakePictureFragment.newInstance("");
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		});
+		
+		btnHome.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				MainFragment fragment = MainFragment.newInstance();
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();

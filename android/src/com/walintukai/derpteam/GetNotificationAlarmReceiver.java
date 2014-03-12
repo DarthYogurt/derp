@@ -24,7 +24,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 		}
 		
 		public void run() {
-			Log.v("alarmTesting", "GETTING NOTIFICATION FROM SERVER");
+			Log.v("NOTIFICATIONS", "CHECKING SERVER");
 			JSONWriter writer = new JSONWriter(context);
 	    	writer.createJsonForGetNotification();
 	    	
@@ -45,14 +45,11 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 	}
 	
 	private void sendNotification(Context context, Notification notification) {
-		String firstName = notification.getPosterFbName().substring(0, notification.getPosterFbName().indexOf(" "));
-		String content = firstName + " has put someone on your team!";
-		
 		NotificationCompat.Builder mBuilder =
         		new NotificationCompat.Builder(context)
 		        .setSmallIcon(R.drawable.notification_logo)
 		        .setContentTitle("DerpTeam")
-		        .setContentText(content)
+		        .setContentText(notification.getText())
 		        .setAutoCancel(true);
         
         Intent resultIntent = new Intent(context, MainActivity.class);

@@ -29,7 +29,9 @@ public class JSONReader {
 	private static final String KEY_TOTAL_PAGES = "totalPages";
 	private static final String KEY_COMMENT = "comment";
 	private static final String KEY_PIC_CAPTION = "picCaption";
-
+	private static final String KEY_TYPE = "type";
+	private static final String KEY_TEXT = "text";
+	
 	private Context context;
 	
 	public JSONReader(Context context) {
@@ -202,15 +204,10 @@ public class JSONReader {
 	public Notification getNotificationObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);
-			
-			String posterFbName = jObject.getString(KEY_POSTER_FB_NAME);
-	    	String targetFbName = jObject.getString(KEY_TARGET_FB_NAME);
-	    	int picId = jObject.getInt(KEY_PIC_ID);
-	    	String picCaption = jObject.getString(KEY_PIC_CAPTION);
-		
-	    	Notification notification = new Notification(posterFbName, targetFbName, picId, picCaption);
+			String text = jObject.getString(KEY_TEXT);
+			Notification notification = new Notification(text);
 	    	return notification;
-		} 
+		}
 		catch (JSONException e) { e.printStackTrace(); }
 		return null;
 	}

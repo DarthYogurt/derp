@@ -343,18 +343,18 @@ def getNotification(request):
     fbId = data.get("fbUserId",1)
     
     j={}
-    try:
-        notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
-        j['targetFbName'] = notification.targetUser.fbName
-        j['posterFbName'] = notification.poster.fbName
-        j['picCaption'] = notification.picture.caption
-        j['picId'] = notification.picture.id
-        j['type'] = notification.type
-        j['text'] = notification.text
-        #j['date'] = notification.date
-        notification.delete()
-    except:
-        return HttpResponse("none")
+#     try:
+    notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
+    j['targetFbName'] = notification.targetUser.fbName
+    j['posterFbName'] = notification.poster.fbName
+    j['picCaption'] = notification.picture.caption
+    j['picId'] = notification.picture.id
+    j['type'] = notification.type
+    j['text'] = notification.text
+    #j['date'] = notification.date
+#     notification.delete()
+#     except:
+#         return HttpResponse("none")
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def signup(request):

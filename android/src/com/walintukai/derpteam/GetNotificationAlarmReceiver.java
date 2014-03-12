@@ -34,7 +34,7 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 	    	String jsonString = post.sendPostReturnJson();
 	    	
 	    	if (jsonString.equalsIgnoreCase("none")) {
-	    		Log.v("NOTIFICATIONS", "NONE");
+	    		Log.i("NOTIFICATIONS", "NONE");
 	    	}
 	    	else {
 	    		JSONReader reader = new JSONReader(context);
@@ -53,7 +53,8 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
 		        .setAutoCancel(true);
         
         Intent resultIntent = new Intent(context, MainActivity.class);
-        resultIntent.putExtra("viewYourTeam", true);
+        if (notification.getType().equalsIgnoreCase("picture")) { resultIntent.putExtra("picture", true); }
+        if (notification.getType().equalsIgnoreCase("reminder")) { resultIntent.putExtra("reminder", true); }
         
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
@@ -62,7 +63,8 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 		
-		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.
+				NOTIFICATION_SERVICE);
 		
 		mNotificationManager.notify(0, mBuilder.build());
 	}

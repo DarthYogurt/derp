@@ -279,6 +279,42 @@ public class LoginActivity extends LeanplumActivity {
 			prefs.setUserId(get.getUserId(fbId));
 		}
 	}
+	
+	private class WaitBeforeTask extends AsyncTask<Void, Void, Void> {
+		private String[] activeFriends;
+		
+	    protected Void doInBackground(Void... params) {
+	    	JSONWriter writer = new JSONWriter(LoginActivity.this);
+	    	writer.createJsonForActiveFriends();
+	    	
+			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
+			post.createPost(HttpPostRequest.ACTIVE_FRIENDS_URL);
+			post.addJSON(JSONWriter.FILENAME_ACTIVE_FRIENDS);
+			String jsonString = post.sendPostReturnJson();
+			
+			JSONReader reader = new JSONReader(LoginActivity.this);
+			activeFriends = reader.getActiveFriendsArray(jsonString);
+			
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	List<Friend> activeFriendsArray = new ArrayList<Friend>();
+	    	
+	    	// Add each matching friend to active friends list
+	    	for (int i = 0; i < activeFriends.length; i++) {
+	    		String activeFriend = activeFriends[i];
+	    		for (Friend friend : fbFriends) {
+	    			if (friend.getFbId().equals(activeFriend)) { activeFriendsArray.add(friend); }
+	    		}
+	    	}
+	    	Collections.sort(activeFriendsArray, new FriendComparator());
+	    	GlobalMethods.writeActiveFriendsArray(LoginActivity.this, activeFriendsArray);
+	    	
+	        return;
+	    }
+	}
 
 	@Override
 	protected void onDestroy() {

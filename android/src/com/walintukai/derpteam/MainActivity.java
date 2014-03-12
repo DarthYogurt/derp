@@ -89,6 +89,12 @@ public class MainActivity extends LeanplumActivity {
 		etReportBug = (EditText) vReportBug.findViewById(R.id.report_bug);
 		Button btnSendReport = (Button) vReportBug.findViewById(R.id.btn_send_report);
 		
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		MainFragment mainFragment = MainFragment.newInstance();
+		ft.add(R.id.fragment_container, mainFragment);
+		ft.commit();
+		
 		btnSendReport.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -97,12 +103,6 @@ public class MainActivity extends LeanplumActivity {
 				else { Toast.makeText(MainActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 			}
 		});
-		
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		MainFragment mainFragment = MainFragment.newInstance();
-		ft.add(R.id.fragment_container, mainFragment);
-		ft.commit();
 		
 		btnYourTeam.setOnClickListener(new OnClickListener() {
 			@Override
@@ -170,11 +170,23 @@ public class MainActivity extends LeanplumActivity {
 		Bundle notificationExtra = getIntent().getExtras();
 		if (notificationExtra != null) {
 			boolean startYourTeamFragment = false;
-			startYourTeamFragment = notificationExtra.getBoolean("viewYourTeam");
+			boolean startTakePictureFragment = false;
+			
+			startYourTeamFragment = notificationExtra.getBoolean("picture");
 			if (startYourTeamFragment) {
 				FragmentManager fm2 = getFragmentManager();
 				FragmentTransaction ft2 = fm2.beginTransaction();
 				ViewTeamFragment fragment = ViewTeamFragment.newInstance(prefs.getFbUserId());
+				ft2.replace(R.id.fragment_container, fragment);
+				ft2.addToBackStack(null);
+				ft2.commit();
+			}
+			
+			startTakePictureFragment = notificationExtra.getBoolean("reminder");
+			if (startTakePictureFragment) {
+				FragmentManager fm2 = getFragmentManager();
+				FragmentTransaction ft2 = fm2.beginTransaction();
+				TakePictureFragment fragment = TakePictureFragment.newInstance("");
 				ft2.replace(R.id.fragment_container, fragment);
 				ft2.addToBackStack(null);
 				ft2.commit();
@@ -389,33 +401,5 @@ public class MainActivity extends LeanplumActivity {
 	        return;
 	    }
 	}
-	
-//	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-//		private Fragment fragment;
-//		private final Activity activity;
-//		private final String tag;
-//		private final Class<T> clz;
-//		
-//		public TabListener(Activity activity, String tag, Class<T> clz) {
-//			this.activity = activity;
-//			this.tag = tag;
-//			this.clz = clz;
-//		}
-//
-//		@Override
-//		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-//			
-//		}
-//
-//		@Override
-//		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-//			
-//		}
-//
-//		@Override
-//		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-//			
-//		}
-//	}
 
 }

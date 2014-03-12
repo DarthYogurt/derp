@@ -339,42 +339,39 @@ def getNotification(request):
     if dataString == "empty":
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
-     
     fbId = data.get("fbUserId",1)
     
 #     fbId=1
     
     j={}
-#     try:
-    notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
-    if notification.targetUser != None:
-        j['targetFbName'] = notification.targetUser.fbName
-    else:
-        j['targetFbName'] = "none"
-    if notification.poster != None:
-        j['posterFbName'] = notification.poster.fbName
-    else:
-        j['posterFbName'] = "none"
-    if notification.picture != None:
-        j['picCaption'] = notification.picture.caption
-        j['picId'] = notification.picture.id
-        j['picTitle'] = notification.picture.title
-    else:
-        j['picCaption'] = "none"
-        j['picId'] = "none"
-        j['picTitle'] = "none"
-    
-    j['type'] = notification.type
-    if notification.text != None:
-        j['text'] = notification.text
-    else:
-        j['text'] = "none"
-    
-#     j['text'] = notification.get("text","")
-    #j['date'] = notification.date
-#     notification.delete()
-#     except:
-#         return HttpResponse("none")
+    try:
+        notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
+        if notification.targetUser != None:
+            j['targetFbName'] = notification.targetUser.fbName
+        else:
+            j['targetFbName'] = "none"
+        if notification.poster != None:
+            j['posterFbName'] = notification.poster.fbName
+        else:
+            j['posterFbName'] = "none"
+        if notification.picture != None:
+            j['picCaption'] = notification.picture.caption
+            j['picId'] = notification.picture.id
+            j['picTitle'] = notification.picture.title
+        else:
+            j['picCaption'] = "none"
+            j['picId'] = "none"
+            j['picTitle'] = "none"
+        
+        j['type'] = notification.type
+        if notification.text != None:
+            j['text'] = notification.text
+        else:
+            j['text'] = "none"
+        
+        notification.delete()
+    except:
+        return HttpResponse("none")
     return HttpResponse(json.dumps(j), content_type="application/json")
 
 def signup(request):

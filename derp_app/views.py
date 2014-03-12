@@ -90,10 +90,13 @@ def uploadPic(request):
     
     #print Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists()
     if not Notification.objects.filter(targetUser=User.objects.get(fbId=data.get("targetFbId", 1))).exists():
+        
         newNotification = Notification(
                                        targetUser = User.objects.get(fbId=data.get("targetFbId", 1)),
                                        poster = User.objects.get(fbId=data.get("fbUserId",1)),
-                                       picture = newPicture
+                                       picture = newPicture,
+                                       type = "picture",
+                                       text = User.objects.get(fbId=data.get("targetFbId", 1)).fbName + " has Derped you, click to see"
                                        )
         newNotification.save()
     

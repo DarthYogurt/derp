@@ -20,13 +20,10 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -56,8 +53,8 @@ public class ViewTeamFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_view_team, container, false);
-		setHasOptionsMenu(true);
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		setHasOptionsMenu(false);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		Bundle args = getArguments();
 		fbId = args.getString(KEY_FB_ID);
@@ -85,17 +82,6 @@ public class ViewTeamFragment extends Fragment {
 		else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			getActivity().getFragmentManager().popBackStack();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	private class ShowStatsTask extends AsyncTask<Void, Void, List<Member>> {
@@ -178,23 +164,22 @@ public class ViewTeamFragment extends Fragment {
 	private void addStatsRow(String imageUrl, String title, int upVote, int downVote) {
 		LinearLayout row = new LinearLayout(getActivity());
 		row.setOrientation(LinearLayout.HORIZONTAL);
-		row.setPadding(0, 0, 0, 10);
 		
 		ImageView ivPicture = new ImageView(getActivity());
 		ivPicture.setImageResource(R.drawable.image_placeholder);
-		ivPicture.setLayoutParams(new LinearLayout.LayoutParams(160, 160));
+		ivPicture.setLayoutParams(new LinearLayout.LayoutParams(130, 130));
 		ivPicture.setPadding(0, 0, 20, 0);
 		UrlImageViewHelper.setUrlDrawable(ivPicture, imageUrl);
 		row.addView(ivPicture);
 		
 		LinearLayout infoContainer = new LinearLayout(getActivity());
 		infoContainer.setOrientation(LinearLayout.VERTICAL);
-		infoContainer.setPadding(0, 24, 0, 0);
+		infoContainer.setPadding(0, 12, 0, 0);
 		
 		TextView tvTitle = new TextView(getActivity());
 		tvTitle.setText(title);
-		tvTitle.setTextSize(18);
-		tvTitle.setPadding(0, 0, 0, 10);
+		tvTitle.setTextSize(16);
+		tvTitle.setPadding(0, 0, 0, 6);
 		infoContainer.addView(tvTitle);
 		
 		LinearLayout voteContainer = new LinearLayout(getActivity());

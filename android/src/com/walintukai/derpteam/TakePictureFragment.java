@@ -56,8 +56,8 @@ public class TakePictureFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_take_picture, container, false);
-		setHasOptionsMenu(true);
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		setHasOptionsMenu(false);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		Bundle args = getArguments();
 		filename = args.getString(KEY_FILENAME);
@@ -112,23 +112,6 @@ public class TakePictureFragment extends Fragment {
 		});
 		
 		return view;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			if (hasPicture) {
-				GoBackDialogFrament dialog = new GoBackDialogFrament();
-				dialog.show(getFragmentManager(), "goBack");
-			}
-			else {
-				getActivity().getFragmentManager().popBackStack();
-			}
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	private void showPicture(File file) {

@@ -37,8 +37,8 @@ public class GalleryFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-		setHasOptionsMenu(true);
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		setHasOptionsMenu(false);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		membersArray = new ArrayList<Member>();
 		
@@ -62,17 +62,6 @@ public class GalleryFragment extends Fragment {
 	    else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
 		
 		return view;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			getActivity().getFragmentManager().popBackStack();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	private class GetMembersTask extends AsyncTask<Void, Void, List<Member>> {

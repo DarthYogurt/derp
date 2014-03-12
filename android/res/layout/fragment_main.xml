@@ -29,24 +29,24 @@
         	android:background="@drawable/transparent_gradient_footer" >
             
             <ImageView
-                android:id="@+id/btn_vote_down"
+                android:id="@+id/btn_vote_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="80dp"
                 android:layout_alignParentLeft="true"
                 android:visibility="gone"
-                android:src="@drawable/arrow_down"
-                android:contentDescription="@string/desc_vote_down" />
+                android:src="@drawable/arrow_up"
+                android:contentDescription="@string/desc_vote_up" />
             
             <ImageView
-                android:id="@+id/btn_vote_up"
+                android:id="@+id/btn_vote_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="80dp"
                 android:layout_alignParentRight="true"
                 android:visibility="gone"
-                android:src="@drawable/arrow_up"
-                android:contentDescription="@string/desc_vote_up" />
+                android:src="@drawable/arrow_down"
+                android:contentDescription="@string/desc_vote_down" />
             
 			<ImageView
                 android:id="@+id/btn_next_pic"

@@ -24,8 +24,8 @@ public class PickTeamFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_pick_team, container, false);
-		setHasOptionsMenu(true);
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		setHasOptionsMenu(false);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
 		List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());
@@ -57,17 +57,6 @@ public class PickTeamFragment extends Fragment {
 		});
 		
 		return view;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			getActivity().getFragmentManager().popBackStack();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 }

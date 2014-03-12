@@ -346,6 +346,8 @@ def getNotification(request):
         j['posterFbName'] = notification.poster.fbName
         j['picCaption'] = notification.picture.caption
         j['picId'] = notification.picture.id
+        j['type'] = notification.type
+        j['text'] = notification.text
         #j['date'] = notification.date
         notification.delete()
     except:

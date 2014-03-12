@@ -204,8 +204,9 @@ public class JSONReader {
 	public Notification getNotificationObject(String jsonString) {
 		try {
 			JSONObject jObject = new JSONObject(jsonString);
+			String type = jObject.getString(KEY_TYPE);
 			String text = jObject.getString(KEY_TEXT);
-			Notification notification = new Notification(text);
+			Notification notification = new Notification(type, text);
 	    	return notification;
 		}
 		catch (JSONException e) { e.printStackTrace(); }

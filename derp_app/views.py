@@ -333,16 +333,16 @@ def getFriends(request):
     
     return HttpResponse(json.dumps(j), content_type="application/json")
 
-#@csrf_exempt
+@csrf_exempt
 def getNotification(request):
-#     dataString = request.FILES.get('data', "empty")
-#     if dataString == "empty":
-#         return HttpResponse("Post Data Empty")
-#     data = json.load(dataString)
-#     
-#     fbId = data.get("fbUserId",1)
+    dataString = request.FILES.get('data', "empty")
+    if dataString == "empty":
+        return HttpResponse("Post Data Empty")
+    data = json.load(dataString)
+     
+    fbId = data.get("fbUserId",1)
     
-    fbId=1
+#     fbId=1
     
     j={}
 #     try:

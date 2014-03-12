@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -21,7 +22,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.Window;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -51,10 +52,12 @@ public class LoginActivity extends LeanplumActivity {
 	protected void onCreate(Bundle savedInstanceState) {
         // We've inserted your API keys here for you
         if (BuildConfig.DEBUG) {
-            Leanplum.setAppIdForDevelopmentMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "FkYfO9Gv6tFY1GkzsEHMNDOPtOnYeSmtpt4zKxBGdFU");
+            Leanplum.setAppIdForDevelopmentMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", 
+            									"FkYfO9Gv6tFY1GkzsEHMNDOPtOnYeSmtpt4zKxBGdFU");
         } 
         else {
-            Leanplum.setAppIdForProductionMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", "kKyZ5kuTs6qLhHU80khwYGjWvN0dXN5xaZIQZHny8io");
+            Leanplum.setAppIdForProductionMode("5QoBzfoODCMG6X3ndukJ47KPGNszkyFvX0cKZiylL3k", 
+            								   "kKyZ5kuTs6qLhHU80khwYGjWvN0dXN5xaZIQZHny8io");
         }
 
         // This will only run once per session, even if the activity is restarted.
@@ -84,13 +87,16 @@ public class LoginActivity extends LeanplumActivity {
 							prefs.setFbName(user.getName());
 							prefs.setFbFirstName(user.getFirstName());
 							new SetIdThread(user.getId()).start();
+							requestFacebookFriends(Session.getActiveSession());
+							new WaitForFbLoadTask().execute();
 						}
 					}
 				}).executeAsync();
 			}
-			
-			requestFacebookFriends(Session.getActiveSession());
-			goToMainActivity();
+			else {
+				requestFacebookFriends(Session.getActiveSession());
+				goToMainActivity();
+			}	
 		}
 	}
 	
@@ -145,12 +151,11 @@ public class LoginActivity extends LeanplumActivity {
 						prefs.setFbName(user.getName());
 						prefs.setFbFirstName(user.getFirstName());
 						new SetIdThread(user.getId()).start();
+						requestFacebookFriends(Session.getActiveSession());
+						new WaitForFbLoadTask().execute();
 					}
 				}
 			}).executeAsync();
-        	
-        	requestFacebookFriends(Session.getActiveSession());
-        	goToMainActivity();
         }
         else if (session.isClosed()) {
         	Log.i("FB LOGOUT", "SUCCESS");
@@ -280,38 +285,30 @@ public class LoginActivity extends LeanplumActivity {
 		}
 	}
 	
-	private class WaitBeforeTask extends AsyncTask<Void, Void, Void> {
-		private String[] activeFriends;
+	private class WaitForFbLoadTask extends AsyncTask<Void, Void, Void> {
+		private ProgressDialog progressDialog;
+		
+		protected void onPreExecute() {
+			progressDialog = new ProgressDialog(LoginActivity.this);
+			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage(getResources().getString(R.string.dialog_loading_fb_info));
+			progressDialog.show();
+			progressDialog.setCanceledOnTouchOutside(false);	
+		}
 		
 	    protected Void doInBackground(Void... params) {
-	    	JSONWriter writer = new JSONWriter(LoginActivity.this);
-	    	writer.createJsonForActiveFriends();
-	    	
-			HttpPostRequest post = new HttpPostRequest(LoginActivity.this);
-			post.createPost(HttpPostRequest.ACTIVE_FRIENDS_URL);
-			post.addJSON(JSONWriter.FILENAME_ACTIVE_FRIENDS);
-			String jsonString = post.sendPostReturnJson();
-			
-			JSONReader reader = new JSONReader(LoginActivity.this);
-			activeFriends = reader.getActiveFriendsArray(jsonString);
-			
+	    	try { Thread.sleep(3500); } 
+	    	catch (InterruptedException e) { e.printStackTrace(); }
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	List<Friend> activeFriendsArray = new ArrayList<Friend>();
-	    	
-	    	// Add each matching friend to active friends list
-	    	for (int i = 0; i < activeFriends.length; i++) {
-	    		String activeFriend = activeFriends[i];
-	    		for (Friend friend : fbFriends) {
-	    			if (friend.getFbId().equals(activeFriend)) { activeFriendsArray.add(friend); }
-	    		}
-	    	}
-	    	Collections.sort(activeFriendsArray, new FriendComparator());
-	    	GlobalMethods.writeActiveFriendsArray(LoginActivity.this, activeFriendsArray);
-	    	
+	    	progressDialog.hide();
+	    	Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+			startActivity(intent);
+			finish();
 	        return;
 	    }
 	}

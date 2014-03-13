@@ -15,7 +15,7 @@
     	android:textColor="#fff"
     	android:text="@string/add_comment" />
     
-    <EditText 
+    <com.walintukai.derpteam.CustomFontEditText
         android:id="@+id/add_comment"
         android:layout_width="match_parent"
     	android:layout_height="0dp"

@@ -454,6 +454,13 @@ def bugReport(request):
         return HttpResponse("Post Data Empty")
     data = json.load(dataString)
     
+    newBugReport = BugReport(
+                             user = User.objects.get(fbId = data.get("posterFbId", 1)),
+                             picture = Picture.objects.get(id = data.get("picId",1)),
+                             bug = str(data.get("comment",""))
+                             )
+    
+    newBugReport.save()
     
     return HttpResponse("Report submitted")
 

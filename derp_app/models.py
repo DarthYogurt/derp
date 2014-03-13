@@ -41,7 +41,14 @@ class Picture(models.Model):
     def __unicode__(self):
         return str(self.id) + " - " + self.targetId.fbName
     
+class BugReport(models.Model):
+    user = models.ForeignKey("User")
+    picture = models.ForeignKey("Picture")
+    bug = models.TextField()
     
+    def __unicode__(self):
+        return str(self.text)
+
 class Comment(models.Model):
     picture = models.ForeignKey("Picture")
     poster = models.ForeignKey("User")

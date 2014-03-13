@@ -10,6 +10,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -306,15 +308,22 @@ public class ViewMemberFragment extends Fragment {
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		row.setPadding(0, 0, 0, 10);
 		
+		Typeface bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Bold.otf");
+		Typeface regular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Regular.otf");
+		
 		TextView tvName = new TextView(getActivity());
 		tvName.setText(firstName.toUpperCase());
-		tvName.setTextAppearance(getActivity(), R.style.comment_name);
+		tvName.setTextSize(14);
+		tvName.setTextColor(Color.parseColor("#30acff"));
 		tvName.setPadding(0, 0, 10, 0);
+		tvName.setTypeface(bold);
 		row.addView(tvName);
 		
 		TextView tvComment = new TextView(getActivity());
+		tvComment.setTextSize(14);
+		tvComment.setTextColor(Color.parseColor("#000000"));
 		tvComment.setText(comment);
-		tvComment.setTextAppearance(getActivity(), R.style.comment);
+		tvComment.setTypeface(regular);
 		row.addView(tvComment);
 		
 		commentContainer.addView(row);

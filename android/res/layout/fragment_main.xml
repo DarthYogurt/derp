@@ -61,7 +61,7 @@
 
     </FrameLayout>
     
-    <TextView
+    <com.walintukai.derpteam.CustomFontBoldTextView
         android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,7 +12,7 @@
 	android:paddingLeft="20dp"
 	android:background="#99000000" >
 	
-    <TextView 
+    <com.walintukai.derpteam.CustomFontBoldTextView
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical"

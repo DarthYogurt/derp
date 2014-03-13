@@ -46,7 +46,7 @@ class BugReport(models.Model):
     bug = models.TextField()
     
     def __unicode__(self):
-        return str(self.text)
+        return str(self.bug)
 
 class Comment(models.Model):
     picture = models.ForeignKey("Picture")

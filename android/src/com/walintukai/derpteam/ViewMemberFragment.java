@@ -308,22 +308,20 @@ public class ViewMemberFragment extends Fragment {
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		row.setPadding(0, 0, 0, 10);
 		
-		Typeface bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Bold.otf");
-		Typeface regular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Regular.otf");
+//		Typeface bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Bold.otf");
+//		Typeface regular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Regular.otf");
 		
 		TextView tvName = new TextView(getActivity());
 		tvName.setText(firstName.toUpperCase());
 		tvName.setTextSize(14);
 		tvName.setTextColor(Color.parseColor("#30acff"));
 		tvName.setPadding(0, 0, 10, 0);
-		tvName.setTypeface(bold);
 		row.addView(tvName);
 		
 		TextView tvComment = new TextView(getActivity());
 		tvComment.setTextSize(14);
 		tvComment.setTextColor(Color.parseColor("#000000"));
 		tvComment.setText(comment);
-		tvComment.setTypeface(regular);
 		row.addView(tvComment);
 		
 		commentContainer.addView(row);

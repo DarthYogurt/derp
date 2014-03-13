@@ -30,7 +30,7 @@
 		    	android:layout_height="wrap_content"
 		    	android:orientation="horizontal" >
 			        
-		        <com.walintukai.derpteam.CustomFontBoldTextView
+		        <TextView
 					android:id="@+id/team_owner_name"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 					android:textStyle="bold"
 					android:textColor="#30acff" />
 				 
-				<com.walintukai.derpteam.CustomFontBoldTextView
+				<TextView
 				  	android:layout_width="wrap_content"
 				  	android:layout_height="wrap_content"
 				  	android:textSize="26sp"
@@ -48,7 +48,7 @@
 			        
 		    </LinearLayout>
 			  	
-		    <com.walintukai.derpteam.CustomFontBoldTextView
+		    <TextView
 			    android:layout_width="wrap_content"
 			  	android:layout_height="wrap_content"
 			  	android:textSize="26sp"
@@ -67,7 +67,7 @@
         android:visibility="gone"
         android:orientation="vertical" >
         
-        <com.walintukai.derpteam.CustomFontBoldTextView
+        <TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="18sp"

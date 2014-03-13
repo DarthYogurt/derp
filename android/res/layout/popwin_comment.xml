@@ -6,7 +6,7 @@
     android:padding="10dp"
     android:background="@drawable/popwin_comment_bg" >
     
-    <com.walintukai.derpteam.CustomFontBoldTextView
+    <TextView
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:layout_marginBottom="6dp"
@@ -15,7 +15,7 @@
     	android:textColor="#fff"
     	android:text="@string/add_comment" />
     
-    <com.walintukai.derpteam.CustomFontEditText
+    <EditText
         android:id="@+id/add_comment"
         android:layout_width="match_parent"
     	android:layout_height="0dp"

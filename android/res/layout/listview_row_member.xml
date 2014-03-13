@@ -21,7 +21,7 @@
 	        android:contentDescription="@string/desc_fb_picture"
 	        android:src="@drawable/fb_pic_placeholder" />
         
-        <com.walintukai.derpteam.CustomFontBoldTextView
+        <TextView
             android:id="@+id/poster_name"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         	android:textSize="18sp"
         	android:textStyle="bold" />
         
-        <com.walintukai.derpteam.CustomFontTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/poster_fb_picture"
@@ -51,7 +51,7 @@
 		 		android:src="@drawable/arrow_up_small"
 		 		android:contentDescription="@string/desc_vote_up" />
 	        
-	        <com.walintukai.derpteam.CustomFontBoldTextView
+	        <TextView
 	            android:id="@+id/vote_up_count"
 	            android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
 		 		android:src="@drawable/arrow_down_small"
 		 		android:contentDescription="@string/desc_vote_down" />
 	        
-	        <com.walintukai.derpteam.CustomFontBoldTextView
+	        <TextView
 	            android:id="@+id/vote_down_count"
 	            android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
 		        android:orientation="horizontal"
 		        android:background="#b3808080" >
 	        
-	        	<com.walintukai.derpteam.CustomFontBoldTextView
+	        	<TextView
 					android:id="@+id/target_name"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
 					android:textStyle="bold"
 					android:textColor="#fff" />
 			 
-				<com.walintukai.derpteam.CustomFontBoldTextView
+				<TextView
 				  	android:layout_width="wrap_content"
 				  	android:layout_height="wrap_content"
 				  	android:textSize="22sp"
@@ -119,7 +119,7 @@
 				  	android:textColor="#fff"
 				  	android:text="@string/possessive_form" />
 	        	
-	            <com.walintukai.derpteam.CustomFontBoldTextView
+	            <TextView
 		            android:id="@+id/title"
 		            android:layout_width="match_parent"
 		        	android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             </LinearLayout>
 	    </FrameLayout>
     
-    <com.walintukai.derpteam.CustomFontBoldTextView
+    <TextView
         android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

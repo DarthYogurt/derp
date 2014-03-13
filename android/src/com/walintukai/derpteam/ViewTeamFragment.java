@@ -21,7 +21,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -165,6 +164,9 @@ public class ViewTeamFragment extends Fragment {
 		LinearLayout row = new LinearLayout(getActivity());
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		
+		Typeface bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Bold.otf");
+		Typeface regular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Regular.otf");
+		
 		ImageView ivPicture = new ImageView(getActivity());
 		ivPicture.setImageResource(R.drawable.image_placeholder);
 		ivPicture.setLayoutParams(new LinearLayout.LayoutParams(130, 130));
@@ -177,6 +179,7 @@ public class ViewTeamFragment extends Fragment {
 		infoContainer.setPadding(0, 12, 0, 0);
 		
 		TextView tvTitle = new TextView(getActivity());
+		tvTitle.setTypeface(regular);
 		tvTitle.setText(title);
 		tvTitle.setTextSize(16);
 		tvTitle.setPadding(0, 0, 0, 6);
@@ -189,9 +192,9 @@ public class ViewTeamFragment extends Fragment {
 		voteContainer.addView(ivUpVote);
 		
 		TextView tvUpVote = new TextView(getActivity());
+		tvUpVote.setTypeface(bold);
 		tvUpVote.setTextColor(Color.parseColor("#00b200"));
 		tvUpVote.setTextSize(16);
-		tvUpVote.setTypeface(null, Typeface.BOLD);
 		tvUpVote.setText(Integer.toString(upVote));
 		tvUpVote.setPadding(0, 0, 14, 0);
 		voteContainer.addView(tvUpVote);
@@ -202,9 +205,9 @@ public class ViewTeamFragment extends Fragment {
 		voteContainer.addView(ivDownVote);
 		
 		TextView tvDownVote = new TextView(getActivity());
+		tvDownVote.setTypeface(bold);
 		tvDownVote.setTextColor(Color.parseColor("#cc0000"));
 		tvDownVote.setTextSize(16);
-		tvDownVote.setTypeface(null, Typeface.BOLD);
 		tvDownVote.setText(Integer.toString(downVote));
 		voteContainer.addView(tvDownVote);
 		

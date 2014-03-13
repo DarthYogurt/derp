@@ -26,7 +26,7 @@
 		        android:contentDescription="@string/desc_fb_picture"
 		        android:src="@drawable/fb_pic_placeholder" />
 	        
-	        <TextView
+	        <com.walintukai.derpteam.CustomFontBoldTextView
 	            android:id="@+id/fb_name"
 	            android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
 	        	android:layout_toRightOf="@id/fb_picture"
 	        	android:textSize="18sp" />
 	        
-	        <TextView
+	        <com.walintukai.derpteam.CustomFontBoldTextView
 	            android:id="@+id/possessive_form"
 	        	android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 	        	android:textSize="18sp"
 	        	android:text="@string/possessive_form" />
 	        
-	        <TextView 
+	        <com.walintukai.derpteam.CustomFontBoldTextView
 	            android:id="@+id/title"
 	            android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
 			</LinearLayout>
 	    </FrameLayout>
 	    
-	    <TextView
+	    <com.walintukai.derpteam.CustomFontBoldTextView
 	        android:id="@+id/caption"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
 			 		android:src="@drawable/arrow_up_small"
 			 		android:contentDescription="@string/desc_vote_up" />
 		        
-		        <TextView
+		        <com.walintukai.derpteam.CustomFontBoldTextView
 		            android:id="@+id/vote_up_count"
 		            android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
 			 		android:src="@drawable/arrow_down_small"
 			 		android:contentDescription="@string/desc_vote_down" />
 		        
-		        <TextView
+		        <com.walintukai.derpteam.CustomFontBoldTextView
 		            android:id="@+id/vote_down_count"
 		            android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"

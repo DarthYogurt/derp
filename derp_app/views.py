@@ -455,12 +455,24 @@ def bugReport(request):
     data = json.load(dataString)
     
     newBugReport = BugReport(
-                             user = User.objects.get(fbId = data.get("posterFbId", 1)),
-                             picture = Picture.objects.get(id = data.get("picId",1)),
-                             bug = str(data.get("comment",""))
+                             user = User.objects.get(fbId = data.get("fbUserId", 1)),
+                             bug = str(data.get("bugMessage",""))
                              )
-    
     newBugReport.save()
+    
+    to = "raytochina@gmail.com"
+    gmail_user = 'soplogmedusa@gmail.com'
+    gmail_pwd = 'supermanfly821'
+    smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+    header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject: BUG'  +'\n'
+    header = header.encode("utf-8", 'ignore')
+    msg = header + data.get("bugMessage","") 
+    msg = msg.encode("utf-8", "ignore")
+    smtpserver.sendmail(gmail_user, to, msg)
     
     return HttpResponse("Report submitted")
 

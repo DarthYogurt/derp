@@ -43,7 +43,6 @@ class Picture(models.Model):
     
 class BugReport(models.Model):
     user = models.ForeignKey("User")
-    picture = models.ForeignKey("Picture")
     bug = models.TextField()
     
     def __unicode__(self):

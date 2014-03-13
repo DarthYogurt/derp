@@ -20,12 +20,12 @@
 		android:layout_height="50dp"
 		android:layout_marginRight="14dp" />
     
-    <TextView 
+    <com.walintukai.derpteam.CustomFontBoldTextView
         android:id="@+id/friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
     
 

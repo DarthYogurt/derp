@@ -211,7 +211,7 @@ public class AssignTeamFragment extends Fragment {
 		Bundle params = new Bundle();
 	    params.putString("name", "DerpTeam for Android");
 	    params.putString("caption", caption);
-	    params.putString("description", prefs.getFbFirstName() + " has put someone on your team!");
+	    params.putString("description", prefs.getFbFirstName() + " has put a new " + title + " on your team!");
 	    params.putString("link", fbPostLinkUrl);
 	    params.putString("picture", fbPostImageUrl);
 	    params.putString("to", targetFbId);

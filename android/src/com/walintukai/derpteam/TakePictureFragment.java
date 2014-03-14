@@ -16,7 +16,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -73,8 +76,8 @@ public class TakePictureFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (!filename.isEmpty()) { oldFilename = filename; }
-				NewOrGalleryDialogFrament dialog = new NewOrGalleryDialogFrament();
-				dialog.show(getFragmentManager(), "newOrGallery");
+				PictureDialog dialog = new PictureDialog();
+				dialog.show(getFragmentManager(), "picture");
 			}
 		});
 		
@@ -84,8 +87,8 @@ public class TakePictureFragment extends Fragment {
 			showPicture(file);
 		}
 		else {
-			NewOrGalleryDialogFrament dialog = new NewOrGalleryDialogFrament();
-			dialog.show(getFragmentManager(), "newOrGallery");
+			PictureDialog dialog = new PictureDialog();
+			dialog.show(getFragmentManager(), "picture");
 		}
 		
 		btnAssignTeam.setOnClickListener(new OnClickListener() {
@@ -225,32 +228,37 @@ public class TakePictureFragment extends Fragment {
 		return intent;
 	}
 	
-	private class NewOrGalleryDialogFrament extends DialogFragment {
+	private class PictureDialog extends DialogFragment {
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage(R.string.dialog_new_or_gallery)
-	        	.setPositiveButton(R.string.dialog_new_picture, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			new NewPictureThread().start();
-	        		}
-	        	})
-	        	.setNegativeButton(R.string.dialog_from_gallery, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-	        			photoPickerIntent.setType("image/*");
-	        			getActivity().startActivityForResult(photoPickerIntent, REQUEST_SELECT_FROM_GALLERY);
-	        		}
-	        	})
-	        	.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			dismiss();
-	        		}
-	        	});
-	        
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+			Dialog dialog = new Dialog(getActivity());
+			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			dialog.setContentView(R.layout.dialog_picture);
+			dialog.getWindow().setLayout(500, 350);
+			
+			ImageView btnSelectGallery = (ImageView) dialog.findViewById(R.id.btn_select_gallery);
+			btnSelectGallery.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        			photoPickerIntent.setType("image/*");
+        			getActivity().startActivityForResult(photoPickerIntent, REQUEST_SELECT_FROM_GALLERY);
+        			dismiss();
+				}
+			});
+			
+			ImageView btnNewPicture = (ImageView) dialog.findViewById(R.id.btn_new_picture);
+			btnNewPicture.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					new NewPictureThread().start();
+					dismiss();
+				}
+			});
+			
+			return dialog;
 		}
 	}
 	

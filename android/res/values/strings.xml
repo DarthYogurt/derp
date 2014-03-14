@@ -29,6 +29,7 @@
     <string name="dialog_send_to_server">Derping your friend. Please wait.</string>
     <string name="dialog_loading_fb_info">Loading Facebook info. Please wait.</string>
     <string name="dialog_new_or_gallery">Select from gallery or take new picture?</string>
+    <string name="dialog_exit">Are you sure you want to exit?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_ok">OK</string>

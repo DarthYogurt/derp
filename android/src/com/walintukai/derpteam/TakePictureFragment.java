@@ -6,29 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -115,7 +109,7 @@ public class TakePictureFragment extends Fragment {
 					}
 				}
 				else {
-					NoPictureDialogFrament dialog = new NoPictureDialogFrament();
+					NoPictureDialog dialog = new NoPictureDialog();
 					dialog.show(getFragmentManager(), "noPicture");
 				}
 			}
@@ -262,44 +256,25 @@ public class TakePictureFragment extends Fragment {
 		}
 	}
 	
-	private class GoBackDialogFrament extends DialogFragment {
+	private class NoPictureDialog extends DialogFragment {
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage(R.string.dialog_go_back)
-	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
-	        			if (!filename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), filename); }
-	        			getActivity().getFragmentManager().popBackStack();
-	        		}
-	        	})
-	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			dismiss();
-	        		}
-	        	});
-	        
-	        // Create the AlertDialog object and return it
-	        return builder.create();
-		}
-	}
-	
-	private class NoPictureDialogFrament extends DialogFragment {
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage(R.string.dialog_no_picture)
-	        	.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			dismiss();
-	        		}
-	        	});
-	        
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+			Dialog dialog = new Dialog(getActivity());
+			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			dialog.setContentView(R.layout.dialog_no_picture);
+			dialog.getWindow().setLayout(500, 350);
+			
+			ImageView btnOk = (ImageView) dialog.findViewById(R.id.btn_ok);
+			btnOk.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+        			dismiss();
+				}
+			});
+			
+			return dialog;
 		}
 	}
 	

@@ -36,8 +36,10 @@ import android.widget.Toast;
 
 public class TakePictureFragment extends Fragment {
 
-	private static final int REQUEST_PICTURE = 100;
-	private static final int REQUEST_CROP = 200;
+	public static final int REQUEST_PICTURE = 100;
+	public static final int REQUEST_CROP_NEW = 200;
+	public static final int REQUEST_CROP_EXISTING = 300;
+	public static final int REQUEST_SELECT_FROM_GALLERY = 400;
 	private static final String KEY_FILENAME = "filename";
 	
 	private ImageView takenPicture;
@@ -71,7 +73,8 @@ public class TakePictureFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (!filename.isEmpty()) { oldFilename = filename; }
-				new NewPictureThread().start();	
+				NewOrGalleryDialogFrament dialog = new NewOrGalleryDialogFrament();
+				dialog.show(getFragmentManager(), "newOrGallery");
 			}
 		});
 		
@@ -80,7 +83,10 @@ public class TakePictureFragment extends Fragment {
 			File file = new File(getActivity().getExternalFilesDir(null), filename);
 			showPicture(file);
 		}
-		else { new NewPictureThread().start(); }
+		else {
+			NewOrGalleryDialogFrament dialog = new NewOrGalleryDialogFrament();
+			dialog.show(getFragmentManager(), "newOrGallery");
+		}
 		
 		btnAssignTeam.setOnClickListener(new OnClickListener() {
 			@Override
@@ -160,28 +166,33 @@ public class TakePictureFragment extends Fragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == REQUEST_PICTURE && resultCode == Activity.RESULT_OK) {
-			hasPicture = true;
-			if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
+		switch(requestCode) {
+		case REQUEST_PICTURE:
+			if (resultCode == Activity.RESULT_OK) {
+				hasPicture = true;
+				if (!oldFilename.isEmpty()) { GlobalMethods.deleteFileFromExternal(getActivity(), oldFilename); }
+				
+				Log.i("PICTURE SAVED", filename);
+				
+				Intent intent = new Intent("com.android.camera.action.CROP");
+			    intent.setDataAndType(Uri.fromFile(file), "image/*");
+			    intent.putExtra("outputX", 400);
+			    intent.putExtra("outputY", 400);
+			    intent.putExtra("aspectX", 1);
+			    intent.putExtra("aspectY", 1);
+			    intent.putExtra("scale", true);
+			    intent.putExtra("noFaceDetection", true);
+			    intent.putExtra("output", Uri.fromFile(file));
+			    startActivityForResult(intent, REQUEST_CROP_NEW);
+			}
+			break;
 			
-			Log.i("PICTURE SAVED", filename);
-			
-			Intent intent = new Intent("com.android.camera.action.CROP");
-		    intent.setDataAndType(Uri.fromFile(file), "image/*");
-		    intent.putExtra("outputX", 400);
-		    intent.putExtra("outputY", 400);
-		    intent.putExtra("aspectX", 1);
-		    intent.putExtra("aspectY", 1);
-		    intent.putExtra("scale", true);
-		    intent.putExtra("noFaceDetection", true);
-		    intent.putExtra("output", Uri.fromFile(file));
-		    startActivityForResult(intent, REQUEST_CROP);
-		}
-		
-		if (requestCode == REQUEST_CROP && resultCode == Activity.RESULT_OK) {
-			showPicture(file);
+		case REQUEST_CROP_NEW:
+			if (resultCode == Activity.RESULT_OK) {
+				showPicture(file);
+			}
+			break;
 		}
 	}
 
@@ -212,6 +223,35 @@ public class TakePictureFragment extends Fragment {
 		intent.putExtra(Intent.EXTRA_STREAM, uri);
 		
 		return intent;
+	}
+	
+	private class NewOrGalleryDialogFrament extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage(R.string.dialog_new_or_gallery)
+	        	.setPositiveButton(R.string.dialog_new_picture, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			new NewPictureThread().start();
+	        		}
+	        	})
+	        	.setNegativeButton(R.string.dialog_from_gallery, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+	        			photoPickerIntent.setType("image/*");
+	        			getActivity().startActivityForResult(photoPickerIntent, REQUEST_SELECT_FROM_GALLERY);
+	        		}
+	        	})
+	        	.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dismiss();
+	        		}
+	        	});
+	        
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+		}
 	}
 	
 	private class GoBackDialogFrament extends DialogFragment {

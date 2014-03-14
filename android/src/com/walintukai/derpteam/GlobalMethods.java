@@ -2,9 +2,12 @@ package com.walintukai.derpteam;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.Set;
 
@@ -152,6 +155,30 @@ public class GlobalMethods {
 		}
 		catch (Exception e) { e.printStackTrace(); }
 		return null;
+	}
+	
+	public static void copyFile(File src, File dst) {
+	    FileChannel inChannel = null;
+		try { inChannel = new FileInputStream(src).getChannel(); } 
+		catch (FileNotFoundException e) { e.printStackTrace(); }
+		
+	    FileChannel outChannel = null;
+		try { outChannel = new FileOutputStream(dst).getChannel(); } 
+		catch (FileNotFoundException e) { e.printStackTrace(); }
+	    
+    	try { inChannel.transferTo(0, inChannel.size(), outChannel); } 
+    	catch (IOException e) { e.printStackTrace(); }
+    	finally {    		
+    		if (inChannel != null) {
+    			try { inChannel.close(); } 
+    			catch (IOException e) { e.printStackTrace(); }
+    		}
+				
+    		if (outChannel != null) {
+	        	try { outChannel.close(); } 
+	        	catch (IOException e) { e.printStackTrace(); }
+	        }	
+	    }
 	}
 	
 }

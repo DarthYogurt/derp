@@ -96,7 +96,7 @@ def uploadPic(request):
                                        poster = User.objects.get(fbId=data.get("fbUserId",1)),
                                        picture = newPicture,
                                        type = "picture",
-                                       text = User.objects.get(fbId=data.get("targetFbId", 1)).fbName + " has Derped you, click to see"
+                                       text = User.objects.get(fbId=data.get("fbUserId", 1)).fbName + " has Derped you, click to see"
                                        )
         newNotification.save()
     

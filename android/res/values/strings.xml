@@ -25,17 +25,10 @@
     <string name="desc_next_picture">Next Picture Button</string>
     <string name="desc_comment_icon">Comments</string>
     <string name="dialog_no_picture">No picture to assign to team. Find something funny and take one!</string>
-    <string name="dialog_go_back">Going back will lose the current picture. Are you sure you want to go back?</string>
     <string name="dialog_send_to_server">Derping your friend. Please wait.</string>
     <string name="dialog_loading_fb_info">Loading Facebook info. Please wait.</string>
     <string name="dialog_new_or_gallery">Select from gallery or take new picture?</string>
     <string name="dialog_exit">Are you sure you want to exit?</string>
-    <string name="dialog_yes">Yes</string>
-    <string name="dialog_no">No</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_new_picture">Take Picture</string>
-    <string name="dialog_from_gallery">From Gallery</string>
     <string name="assign_team">Assign Team</string>
     <string name="view_team">View Team</string>
     <string name="derp_assigned">Derp assigned!</string>

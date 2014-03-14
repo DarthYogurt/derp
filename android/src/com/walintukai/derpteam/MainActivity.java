@@ -232,6 +232,7 @@ public class MainActivity extends LeanplumActivity {
 			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 			dialog.setContentView(R.layout.dialog_exit);
 			dialog.getWindow().setLayout(480, 300);
+			dialog.setCanceledOnTouchOutside(false);
 			
 			ImageView btnYes = (ImageView) dialog.findViewById(R.id.btn_yes);
 			btnYes.setOnClickListener(new OnClickListener() {

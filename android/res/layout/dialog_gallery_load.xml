@@ -10,7 +10,7 @@
 	android:paddingBottom="4dp"
 	android:paddingRight="20dp"
 	android:paddingLeft="20dp"
-	android:background="#99000000" >
+	android:background="@drawable/pw_rounded_blue_bg" >
 	
     <TextView
         android:layout_width="wrap_content"

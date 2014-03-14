@@ -15,6 +15,8 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -89,7 +94,7 @@ public class AssignTeamFragment extends Fragment {
 				targetName = friend.getFbName();
 				targetFbId = friend.getFbId();
 				
-				AssignTeamDialogFrament dialog = new AssignTeamDialogFrament();
+				AssignTeamDialog dialog = new AssignTeamDialog();
 				dialog.show(getActivity().getFragmentManager(), "assignTeam");
 			}
 		});
@@ -114,49 +119,78 @@ public class AssignTeamFragment extends Fragment {
     	getActivity().finish();
 	}
 	
-	private class AssignTeamDialogFrament extends DialogFragment {
+	private class AssignTeamDialog extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage("Assign to " + targetName + "'s Team?")
-	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			if (GlobalMethods.isNetworkAvailable(getActivity())) { new SendImageTask().execute(); }
-	        			else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
-	        		}
-	        	})
-	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			dismiss();
-	        		}
-	        	});
-	        
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+			Dialog dialog = new Dialog(getActivity());
+			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			dialog.setContentView(R.layout.dialog_derp_friend);
+			dialog.getWindow().setLayout(480, 360);
+			dialog.setCanceledOnTouchOutside(false);
+			
+			TextView text = (TextView) dialog.findViewById(R.id.derp_friend);
+			text.setText("Put derp on " + targetName + "'s team?");
+			
+			ImageView btnYes = (ImageView) dialog.findViewById(R.id.btn_yes);
+			btnYes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (GlobalMethods.isNetworkAvailable(getActivity())) { 
+						new SendImageTask().execute(); 
+						dismiss();
+					}
+        			else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
+				}
+			});
+			
+			ImageView btnNo = (ImageView) dialog.findViewById(R.id.btn_no);
+			btnNo.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dismiss();
+				}
+			});
+			
+			return dialog;
 		}
 	}
 	
-	private class PostToWallDialogFrament extends DialogFragment {
+	private class PostToWallDialog extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage("Post to " + targetName + "'s Facebook Wall?")
-	        	.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			postToWallDialog();
-	        		}
-	        	})
-	        	.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-	        		public void onClick(DialogInterface dialog, int id) {
-	        			dismiss();
-	        			goToMainPage();
-	        		}
-	        	});
-	        
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+			Dialog dialog = new Dialog(getActivity());
+			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			dialog.setContentView(R.layout.dialog_post_to_wall);
+			dialog.getWindow().setLayout(480, 360);
+			dialog.setCanceledOnTouchOutside(false);
+			
+			TextView text = (TextView) dialog.findViewById(R.id.post_to_wall);
+			text.setText("Post to " + targetName + "'s Facebook Wall?");
+			
+			ImageView btnYes = (ImageView) dialog.findViewById(R.id.btn_yes);
+			btnYes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (GlobalMethods.isNetworkAvailable(getActivity())) { 
+						postToWallDialog();
+						dismiss();
+					}
+        			else { Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show(); }
+				}
+			});
+			
+			ImageView btnNo = (ImageView) dialog.findViewById(R.id.btn_no);
+			btnNo.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dismiss();
+					goToMainPage();
+				}
+			});
+			
+			return dialog;
 		}
 	}
 	
@@ -200,7 +234,7 @@ public class AssignTeamFragment extends Fragment {
 	    	
 	    	Toast.makeText(getActivity(), R.string.derp_assigned, Toast.LENGTH_SHORT).show();
 	    	
-	    	PostToWallDialogFrament dialog = new PostToWallDialogFrament();
+	    	PostToWallDialog dialog = new PostToWallDialog();
 			dialog.show(getActivity().getFragmentManager(), "postToWall");
 	    	
 	        return;

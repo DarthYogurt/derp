@@ -7,14 +7,14 @@
     android:background="@drawable/pw_rounded_blue_bg" >
     
   	<TextView
+  	    android:id="@+id/derp_friend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:textSize="20sp"
         android:textColor="#fff"
-        android:textStyle="bold"
-        android:text="@string/dialog_new_or_gallery" />
+        android:textStyle="bold" />
     
     <LinearLayout 
 	    android:layout_width="match_parent"
@@ -23,18 +23,18 @@
 	    android:orientation="horizontal" >
 	    
 	    <ImageView
-	        android:id="@+id/btn_select_gallery"
+	        android:id="@+id/btn_yes"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:src="@drawable/btn_select_gallery" />
+	        android:src="@drawable/btn_yes" />
 	    
 	    <ImageView
-	        android:id="@+id/btn_new_picture"
+	        android:id="@+id/btn_no"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:src="@drawable/btn_new_picture" />
+	        android:src="@drawable/btn_no" />
 
 	</LinearLayout>
     

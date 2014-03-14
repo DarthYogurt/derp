@@ -2,8 +2,8 @@
 <manifest 
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.walintukai.derpteam"
-    android:versionCode="13"
-    android:versionName="2.2a" >
+    android:versionCode="14"
+    android:versionName="2.3a" >
     
     <uses-sdk
         android:minSdkVersion="11"

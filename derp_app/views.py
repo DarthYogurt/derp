@@ -265,15 +265,46 @@ def addComment(request):
     
     #for d in data:
     #    print d,data[d]
-
+#     data = {}
+#     
+#     data['picId'] = 11
+#     data['posterFbId'] = 606082631
+#     data['comment'] = "testing comment"
+    
+    
+    pic = Picture.objects.get(id = data.get("picId", 1))
+    poster = User.objects.get(fbId = data.get("posterFbId",1))
+    
     newComment = Comment(
-                     picture = Picture.objects.get(id = data.get("picId", 1)),
-                     poster = User.objects.get(fbId = data.get("posterFbId",1)),
+                     picture = pic,
+                     poster = poster,
                      comment = data.get("comment","").encode("utf-8"),
                      timeModified = datetime.datetime.today()
                      )
     newComment.save()
-
+    
+    alreadyNotified = []
+    
+    notifyPicOwner = Notification(
+                                  targetUser = pic.targetId,
+                                  picture = pic,
+                                  type = "comment",
+                                  text = "Someone has commented on " + pic.title,
+                                  )
+    notifyPicOwner.save()
+    alreadyNotified.append(notifyPicOwner.targetUser.fbId)
+    
+    for i in Comment.objects.filter(picture=Picture.objects.get(id=data.get("picId",1))):
+        if not i.poster.fbId in alreadyNotified:
+            alreadyNotified.append(i.poster.fbId)
+            newNotification = Notification(
+                                           targetUser = User.objects.get(id = i.poster.id),
+                                           picture = pic,
+                                           type = "comment",
+                                           text = "Someone has commented on " + pic.title,
+                                           )
+            newNotification.save()
+            
     return HttpResponse("done")
 
 @csrf_exempt
@@ -342,10 +373,9 @@ def getNotification(request):
     fbId = data.get("fbUserId",1)
     
 #     fbId=1
-    
     j={}
     try:
-        notification = Notification.objects.get(targetUser=User.objects.get(fbId=fbId))
+        notification = Notification.objects.filter(targetUser=User.objects.get(fbId=fbId))[0]
         if notification.targetUser != None:
             j['targetFbName'] = notification.targetUser.fbName
         else:

@@ -70,6 +70,9 @@ class Notification(models.Model):
     text = models.CharField(max_length=150, blank=True, null=True)
     date = models.DateTimeField(blank=True, null=True)
     
+    def __unicode__(self):
+        return str(self.targetUser.id) + "-" + str(self.targetUser.fbName)
+    
 class Signup(models.Model):
     email = models.EmailField()
     date = models.DateTimeField(blank=True, null=True)

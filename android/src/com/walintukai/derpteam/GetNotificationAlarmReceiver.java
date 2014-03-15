@@ -55,6 +55,10 @@ public class GetNotificationAlarmReceiver extends BroadcastReceiver {
         Intent resultIntent = new Intent(context, MainActivity.class);
         if (notification.getType().equalsIgnoreCase("picture")) { resultIntent.putExtra("picture", true); }
         if (notification.getType().equalsIgnoreCase("reminder")) { resultIntent.putExtra("reminder", true); }
+        if (notification.getType().equalsIgnoreCase("comment")) {
+        	resultIntent.putExtra("comment", true);
+        	resultIntent.putExtra("picId", notification.getPicId());
+        }
         
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);

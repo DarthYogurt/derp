@@ -176,6 +176,7 @@ public class MainActivity extends LeanplumActivity {
 		if (notificationExtra != null) {
 			boolean startYourTeamFragment = false;
 			boolean startTakePictureFragment = false;
+			boolean startViewMemberFragment = false;
 			
 			startYourTeamFragment = notificationExtra.getBoolean("picture");
 			if (startYourTeamFragment) {
@@ -192,6 +193,16 @@ public class MainActivity extends LeanplumActivity {
 				FragmentManager fm2 = getFragmentManager();
 				FragmentTransaction ft2 = fm2.beginTransaction();
 				TakePictureFragment fragment = TakePictureFragment.newInstance("");
+				ft2.replace(R.id.fragment_container, fragment);
+				ft2.addToBackStack(null);
+				ft2.commit();
+			}
+			
+			startViewMemberFragment = notificationExtra.getBoolean("comment");
+			if (startViewMemberFragment) {
+				FragmentManager fm2 = getFragmentManager();
+				FragmentTransaction ft2 = fm2.beginTransaction();
+				ViewMemberFragment fragment = ViewMemberFragment.newInstance(notificationExtra.getInt("picId"));
 				ft2.replace(R.id.fragment_container, fragment);
 				ft2.addToBackStack(null);
 				ft2.commit();

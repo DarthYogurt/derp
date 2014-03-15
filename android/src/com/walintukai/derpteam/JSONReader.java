@@ -206,8 +206,14 @@ public class JSONReader {
 			JSONObject jObject = new JSONObject(jsonString);
 			String type = jObject.getString(KEY_TYPE);
 			String text = jObject.getString(KEY_TEXT);
-			Notification notification = new Notification(type, text);
-	    	return notification;
+			
+			if (type.equalsIgnoreCase("comment")) {
+				int picId = jObject.getInt(KEY_PIC_ID);
+				return new Notification(type, text, picId);
+			}
+			else {
+				return new Notification(type, text);
+			}
 		}
 		catch (JSONException e) { e.printStackTrace(); }
 		return null;

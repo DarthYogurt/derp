@@ -295,8 +295,7 @@ def addComment(request):
     alreadyNotified.append(notifyPicOwner.targetUser.fbId)
     
     for i in Comment.objects.filter(picture=Picture.objects.get(id=data.get("picId",1))):
-        if not i.poster.fbId in alreadyNotified: # or poster.id != i.poster.fbId:
-            print i.poster
+        if not i.poster.fbId in alreadyNotified:
             alreadyNotified.append(i.poster.fbId)
             newNotification = Notification(
                                            targetUser = User.objects.get(id = i.poster.id),

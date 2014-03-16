@@ -298,7 +298,7 @@ public class LoginActivity extends LeanplumActivity {
 		}
 		
 	    protected Void doInBackground(Void... params) {
-	    	try { Thread.sleep(3500); } 
+	    	try { Thread.sleep(4000); } 
 	    	catch (InterruptedException e) { e.printStackTrace(); }
 	        return null;
 	    }

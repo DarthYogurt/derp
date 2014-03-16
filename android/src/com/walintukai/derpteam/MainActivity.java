@@ -1,6 +1,12 @@
 package com.walintukai.derpteam;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Random;
 
 import android.app.Activity;
@@ -216,7 +222,14 @@ public class MainActivity extends LeanplumActivity {
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if (type.startsWith("image/")) { 
 				Uri sharedImageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-				copyToInternal(sharedImageUri);
+				copyGalleryImage(sharedImageUri);
+			}
+			if (type.equalsIgnoreCase("text/plain")) {
+				String imgUrl = intent.getStringExtra(Intent.EXTRA_TEXT).toLowerCase();
+				if (imgUrl.contains(".jpg") || imgUrl.contains(".gif") || imgUrl.contains(".png")) {
+					new CopyImageFromUrlTask(imgUrl).execute();
+				}
+				else { Toast.makeText(this, "Invalid image URL", Toast.LENGTH_SHORT).show(); }
 			}
 		}
 	}
@@ -312,7 +325,7 @@ public class MainActivity extends LeanplumActivity {
 	    }
 	}
 	
-	private void copyToInternal(Uri uri) {
+	private void copyGalleryImage(Uri uri) {
 		String realPath = ImageHandler.getRealPathFromUri(this, uri);
 		File galleryFile = new File(realPath);
 		
@@ -322,6 +335,60 @@ public class MainActivity extends LeanplumActivity {
 		Log.i("IMAGE COPIED TO INTERNAL", imgFilename);
 		
 		startCrop(file);
+	}
+	
+	private String copyImageFromUrl(String urlAsString) {
+		String filepath = "";
+		try {
+			URL url = new URL(urlAsString);
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoOutput(true);
+			urlConnection.connect();
+			
+			imgFilename = ImageHandler.getImageFilename(this);
+			File file = new File(getExternalFilesDir(null), imgFilename);
+			if (file.createNewFile()) { file.createNewFile(); }
+			FileOutputStream fos = new FileOutputStream(file);
+			InputStream is = urlConnection.getInputStream();
+			int totalSize = urlConnection.getContentLength();
+			int downloadedSize = 0;
+			byte[] buffer = new byte[1024];
+			int bufferLength = 0;
+			while ((bufferLength = is.read(buffer)) > 0) {
+				fos.write(buffer, 0, bufferLength);
+				downloadedSize += bufferLength;
+			}
+			fos.close();
+			if (downloadedSize == totalSize) { 
+				filepath = file.getPath();
+				Log.v("FILE COPIED FROM URL", filepath);
+			}
+		} 
+		catch (MalformedURLException e) { e.printStackTrace(); }
+		catch (IOException e) { e.printStackTrace(); }
+		return filepath;
+	}
+	
+	private class CopyImageFromUrlTask extends AsyncTask<Void, Void, Void> {
+		String imgUrl;
+		String filepath;
+		
+		private CopyImageFromUrlTask(String imgUrl) {
+			this.imgUrl = imgUrl;
+		}
+		
+	    protected Void doInBackground(Void... params) {
+	    	filepath = copyImageFromUrl(imgUrl);
+	    	
+	        return null;
+	    }
+
+	    protected void onPostExecute(Void result) {
+	    	super.onPostExecute(result);
+	    	startCrop(new File(filepath));
+	        return;
+	    }
 	}
 	
 	private void startCrop(File file) {
@@ -356,7 +423,7 @@ public class MainActivity extends LeanplumActivity {
 		case TakePictureFragment.REQUEST_SELECT_FROM_GALLERY:
 			if (resultCode == Activity.RESULT_OK) {
 				Uri selectedImageUri = data.getData();
-				copyToInternal(selectedImageUri);
+				copyGalleryImage(selectedImageUri);
 			}
 			break;
 		}

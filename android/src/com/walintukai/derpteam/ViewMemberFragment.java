@@ -308,9 +308,6 @@ public class ViewMemberFragment extends Fragment {
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		row.setPadding(0, 0, 0, 10);
 		
-//		Typeface bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Bold.otf");
-//		Typeface regular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SourceSansPro-Regular.otf");
-		
 		TextView tvName = new TextView(getActivity());
 		tvName.setText(firstName.toUpperCase());
 		tvName.setTextSize(14);

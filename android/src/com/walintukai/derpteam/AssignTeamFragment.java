@@ -8,23 +8,23 @@ import com.facebook.Session;
 import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -125,7 +125,7 @@ public class AssignTeamFragment extends Fragment {
 			Dialog dialog = new Dialog(getActivity());
 			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			dialog.setContentView(R.layout.dialog_derp_friend);
+			dialog.setContentView(R.layout.dialog_assign_team);
 			dialog.getWindow().setLayout(480, 360);
 			dialog.setCanceledOnTouchOutside(false);
 			
@@ -200,11 +200,13 @@ public class AssignTeamFragment extends Fragment {
 		
 		protected void onPreExecute() {
 			progressDialog = new ProgressDialog(getActivity());
-			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(getResources().getString(R.string.dialog_send_to_server));
 			progressDialog.show();
-			progressDialog.setCanceledOnTouchOutside(false);	
+			progressDialog.setContentView(R.layout.dialog_send_to_server);
+			progressDialog.setCancelable(false);
+			progressDialog.setCanceledOnTouchOutside(false);
+			WindowManager.LayoutParams lp = progressDialog.getWindow().getAttributes();
+			lp.gravity = Gravity.CENTER;
+			progressDialog.getWindow().setAttributes(lp);
 		}
 		
 	    protected Void doInBackground(Void... params) {

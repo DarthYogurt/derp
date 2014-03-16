@@ -60,6 +60,7 @@ public class GlobalMethods {
 		try {
 			dialog.show();
 			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
 			dialog.setContentView(R.layout.dialog_loading);
 			dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		}
@@ -72,6 +73,7 @@ public class GlobalMethods {
 		try {
 			dialog.show();
 			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
 			dialog.setContentView(R.layout.dialog_gallery_load);
 			WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
 			lp.gravity = Gravity.BOTTOM;

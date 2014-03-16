@@ -229,7 +229,7 @@ public class TakePictureFragment extends Fragment {
 			Dialog dialog = new Dialog(getActivity());
 			dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			dialog.setContentView(R.layout.dialog_picture);
+			dialog.setContentView(R.layout.dialog_new_picture);
 			dialog.getWindow().setLayout(500, 350);
 			
 			ImageView btnSelectGallery = (ImageView) dialog.findViewById(R.id.btn_select_gallery);

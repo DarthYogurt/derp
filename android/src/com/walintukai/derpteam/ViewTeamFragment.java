@@ -17,7 +17,6 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;

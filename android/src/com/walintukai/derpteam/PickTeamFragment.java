@@ -24,8 +24,6 @@ public class PickTeamFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_pick_team, container, false);
-		setHasOptionsMenu(false);
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		List<Friend> fbFriends = GlobalMethods.readFriendsArray(getActivity());
 		List<Friend> activeFriends = GlobalMethods.readActiveFriendsArray(getActivity());

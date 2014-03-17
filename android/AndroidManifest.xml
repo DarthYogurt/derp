@@ -2,8 +2,8 @@
 <manifest 
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.walintukai.derpteam"
-    android:versionCode="16"
-    android:versionName="2.5a" >
+    android:versionCode="17"
+    android:versionName="2.6a" >
     
     <uses-sdk
         android:minSdkVersion="11"

@@ -26,35 +26,86 @@
 		        android:contentDescription="@string/desc_fb_picture"
 		        android:src="@drawable/fb_pic_placeholder" />
 	        
-	        <TextView
-	            android:id="@+id/fb_name"
+	        <LinearLayout
 	            android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
 	        	android:layout_alignParentBottom="true"
 	        	android:layout_toRightOf="@id/fb_picture"
-	        	android:textStyle="bold"
-	        	android:textSize="18sp" />
+	        	android:orientation="vertical" >
+	        	
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	        		android:layout_height="wrap_content"
+	        		android:orientation="horizontal" >
+	        	
+	        		<TextView
+			            android:id="@+id/fb_name"
+			            android:layout_width="wrap_content"
+			        	android:layout_height="wrap_content"
+			        	android:textStyle="bold"
+			        	android:textSize="18sp" />
+			        
+			        <TextView
+			            android:id="@+id/possessive_form"
+			        	android:layout_width="wrap_content"
+			        	android:layout_height="wrap_content"
+			        	android:textSize="18sp"
+			        	android:textStyle="bold"
+			        	android:text="@string/possessive_form" />
+	        	
+	        	</LinearLayout>
+	        	
+	            <TextView
+		            android:id="@+id/title"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+		        	android:textSize="18sp" />
+	            
+	        </LinearLayout>
 	        
-	        <TextView
-	            android:id="@+id/possessive_form"
-	        	android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_alignParentBottom="true"
-	        	android:layout_toRightOf="@id/fb_name"
-	        	android:textSize="18sp"
-	        	android:textStyle="bold"
-	        	android:text="@string/possessive_form" />
-	        
-	        <TextView
-	            android:id="@+id/title"
+	        <LinearLayout
 	            android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
-	        	android:layout_marginLeft="4dp"
 	        	android:layout_alignParentBottom="true"
-	        	android:layout_toRightOf="@id/possessive_form"
-	        	android:textStyle="bold"
-	        	android:textSize="18sp" />
-	        
+	        	android:layout_alignParentRight="true"
+	        	android:orientation="horizontal" >
+	            
+	            <ImageView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_marginRight="2dp"
+			 		android:src="@drawable/arrow_up_small"
+			 		android:contentDescription="@string/desc_vote_up" />
+		        
+		        <TextView
+		            android:id="@+id/vote_up_count"
+		            android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="center_vertical"
+				    android:layout_marginRight="10dp"
+				    android:textColor="#00b200"
+				    android:textSize="16sp"
+				    android:textStyle="bold" />
+		        
+		        <ImageView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_marginRight="2dp"
+			 		android:src="@drawable/arrow_down_small"
+			 		android:contentDescription="@string/desc_vote_down" />
+		        
+		        <TextView
+		            android:id="@+id/vote_down_count"
+		            android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="center_vertical"
+				    android:textColor="#cc0000"
+				    android:textSize="16sp"
+				    android:textStyle="bold" />
+		        
+	        </LinearLayout>
+
 	    </RelativeLayout>
 	    
 	    <FrameLayout
@@ -109,62 +160,29 @@
 	        android:gravity="center"
 	        android:textStyle="bold"
 	        android:textAppearance="@style/caption" />
-	    
-	    <RelativeLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:paddingLeft="10dp"
-	        android:paddingRight="10dp" >
 	        
-	        <LinearLayout
-	            android:layout_width="match_parent"
-	        	android:layout_height="wrap_content"
-	        	android:layout_alignParentLeft="true"
-	        	android:orientation="horizontal" >
-	            
-	            <ImageView
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_marginRight="2dp"
-			 		android:src="@drawable/arrow_up_small"
-			 		android:contentDescription="@string/desc_vote_up" />
-		        
-		        <TextView
-		            android:id="@+id/vote_up_count"
-		            android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_gravity="center_vertical"
-				    android:layout_marginRight="10dp"
-				    android:textColor="#00b200"
-				    android:textSize="16sp"
-				    android:textStyle="bold" />
-		        
-		        <ImageView
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_marginRight="2dp"
-			 		android:src="@drawable/arrow_down_small"
-			 		android:contentDescription="@string/desc_vote_down" />
-		        
-		        <TextView
-		            android:id="@+id/vote_down_count"
-		            android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_gravity="center_vertical"
-				    android:textColor="#cc0000"
-				    android:textSize="16sp"
-				    android:textStyle="bold" />
-		        
-	        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+        	android:paddingRight="10dp"
+        	android:paddingBottom="6dp" >
 	        
-	        <ImageButton
+            <ImageButton
 	            android:id="@+id/btn_add_comment"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:background="@drawable/add_comment" />
+	            android:layout_marginRight="10dp"
+	            android:background="@drawable/btn_add_comment" />
 	        
-	    </RelativeLayout>
+            <ImageButton
+	            android:id="@+id/btn_flag_inappropriate"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/btn_flag_inappropriate" />
+            
+		</LinearLayout>
 	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"

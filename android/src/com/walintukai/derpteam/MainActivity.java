@@ -241,12 +241,6 @@ public class MainActivity extends LeanplumActivity {
 		return true;
 	}
 	
-	@Override
-	public void onBackPressed() {
-	    ExitDialog dialog = new ExitDialog();
-	    dialog.show(getFragmentManager(), "exit");
-	}
-	
 	private class ExitDialog extends DialogFragment {
 		
 		@Override

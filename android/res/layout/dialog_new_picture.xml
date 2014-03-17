@@ -35,6 +35,13 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:src="@drawable/btn_new_picture" />
+	    
+	    <ImageView
+	        android:id="@+id/btn_picture_from_url"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:src="@drawable/btn_picture_from_url" />
 
 	</LinearLayout>
     

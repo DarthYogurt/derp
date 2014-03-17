@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -89,6 +93,38 @@ public class ImageHandler {
 		finally {
 			if (cursor != null) { cursor.close(); }
 		}
+	}
+	
+	public static String copyImageFromUrl(Context context, String urlAsString, String imgFilename) {
+		String filepath = "";
+		try {
+			URL url = new URL(urlAsString);
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoOutput(true);
+			urlConnection.connect();
+			
+			File file = new File(context.getExternalFilesDir(null), imgFilename);
+			if (file.createNewFile()) { file.createNewFile(); }
+			FileOutputStream fos = new FileOutputStream(file);
+			InputStream is = urlConnection.getInputStream();
+			int totalSize = urlConnection.getContentLength();
+			int downloadedSize = 0;
+			byte[] buffer = new byte[1024];
+			int bufferLength = 0;
+			while ((bufferLength = is.read(buffer)) > 0) {
+				fos.write(buffer, 0, bufferLength);
+				downloadedSize += bufferLength;
+			}
+			fos.close();
+			if (downloadedSize == totalSize) { 
+				filepath = file.getPath();
+				Log.v("FILE COPIED FROM URL", filepath);
+			}
+		} 
+		catch (MalformedURLException e) { e.printStackTrace(); }
+		catch (IOException e) { e.printStackTrace(); }
+		return filepath;
 	}
 	
 }

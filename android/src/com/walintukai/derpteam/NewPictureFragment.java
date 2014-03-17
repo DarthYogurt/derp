@@ -31,7 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class TakePictureFragment extends Fragment {
+public class NewPictureFragment extends Fragment {
 
 	public static final int REQUEST_PICTURE = 100;
 	public static final int REQUEST_CROP_NEW = 200;
@@ -45,8 +45,8 @@ public class TakePictureFragment extends Fragment {
 	private File file;
 	private boolean hasPicture;
 	
-	static TakePictureFragment newInstance(String filename) {
-		TakePictureFragment fragment = new TakePictureFragment();
+	static NewPictureFragment newInstance(String filename) {
+		NewPictureFragment fragment = new NewPictureFragment();
 		Bundle args = new Bundle();
 		args.putString(KEY_FILENAME, filename);
 		fragment.setArguments(args);
@@ -99,7 +99,7 @@ public class TakePictureFragment extends Fragment {
 					else {
 						FragmentManager fm = getFragmentManager();
 						FragmentTransaction ft = fm.beginTransaction();
-						ft.hide(TakePictureFragment.this);
+						ft.hide(NewPictureFragment.this);
 						AssignTeamFragment fragment = AssignTeamFragment.newInstance(filename, title, caption);
 						ft.add(R.id.fragment_container, fragment);
 						ft.addToBackStack(null);
@@ -246,6 +246,14 @@ public class TakePictureFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					new NewPictureThread().start();
+					dismiss();
+				}
+			});
+			
+			ImageView btnPictureFromUrl = (ImageView) dialog.findViewById(R.id.btn_picture_from_url);
+			btnPictureFromUrl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
 					dismiss();
 				}
 			});

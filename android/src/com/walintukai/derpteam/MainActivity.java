@@ -120,7 +120,7 @@ public class MainActivity extends LeanplumActivity {
 			public void onClick(View v) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				TakePictureFragment fragment = TakePictureFragment.newInstance("");
+				NewPictureFragment fragment = NewPictureFragment.newInstance("");
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();
@@ -198,7 +198,7 @@ public class MainActivity extends LeanplumActivity {
 			if (startTakePictureFragment) {
 				FragmentManager fm2 = getFragmentManager();
 				FragmentTransaction ft2 = fm2.beginTransaction();
-				TakePictureFragment fragment = TakePictureFragment.newInstance("");
+				NewPictureFragment fragment = NewPictureFragment.newInstance("");
 				ft2.replace(R.id.fragment_container, fragment);
 				ft2.addToBackStack(null);
 				ft2.commit();
@@ -331,39 +331,6 @@ public class MainActivity extends LeanplumActivity {
 		startCrop(file);
 	}
 	
-	private String copyImageFromUrl(String urlAsString) {
-		String filepath = "";
-		try {
-			URL url = new URL(urlAsString);
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.setRequestMethod("GET");
-			urlConnection.setDoOutput(true);
-			urlConnection.connect();
-			
-			imgFilename = ImageHandler.getImageFilename(this);
-			File file = new File(getExternalFilesDir(null), imgFilename);
-			if (file.createNewFile()) { file.createNewFile(); }
-			FileOutputStream fos = new FileOutputStream(file);
-			InputStream is = urlConnection.getInputStream();
-			int totalSize = urlConnection.getContentLength();
-			int downloadedSize = 0;
-			byte[] buffer = new byte[1024];
-			int bufferLength = 0;
-			while ((bufferLength = is.read(buffer)) > 0) {
-				fos.write(buffer, 0, bufferLength);
-				downloadedSize += bufferLength;
-			}
-			fos.close();
-			if (downloadedSize == totalSize) { 
-				filepath = file.getPath();
-				Log.v("FILE COPIED FROM URL", filepath);
-			}
-		} 
-		catch (MalformedURLException e) { e.printStackTrace(); }
-		catch (IOException e) { e.printStackTrace(); }
-		return filepath;
-	}
-	
 	private class CopyImageFromUrlTask extends AsyncTask<Void, Void, Void> {
 		String imgUrl;
 		String filepath;
@@ -373,7 +340,8 @@ public class MainActivity extends LeanplumActivity {
 		}
 		
 	    protected Void doInBackground(Void... params) {
-	    	filepath = copyImageFromUrl(imgUrl);
+	    	imgFilename = ImageHandler.getImageFilename(MainActivity.this);
+	    	filepath = ImageHandler.copyImageFromUrl(MainActivity.this, imgUrl, imgFilename);
 	    	
 	        return null;
 	    }
@@ -395,7 +363,7 @@ public class MainActivity extends LeanplumActivity {
 	    intent.putExtra("scale", true);
 	    intent.putExtra("noFaceDetection", true);
 	    intent.putExtra("output", Uri.fromFile(file));
-	    startActivityForResult(intent, TakePictureFragment.REQUEST_CROP_EXISTING);
+	    startActivityForResult(intent, NewPictureFragment.REQUEST_CROP_EXISTING);
 	}
 	
 	@Override
@@ -403,18 +371,18 @@ public class MainActivity extends LeanplumActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		switch(requestCode) {
-		case TakePictureFragment.REQUEST_CROP_EXISTING:
+		case NewPictureFragment.REQUEST_CROP_EXISTING:
 			if (resultCode == Activity.RESULT_OK) {
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				TakePictureFragment fragment = TakePictureFragment.newInstance(imgFilename);
+				NewPictureFragment fragment = NewPictureFragment.newInstance(imgFilename);
 				ft.replace(R.id.fragment_container, fragment);
 				ft.addToBackStack(null);
 				ft.commit();
 			}
 			break;
 			
-		case TakePictureFragment.REQUEST_SELECT_FROM_GALLERY:
+		case NewPictureFragment.REQUEST_SELECT_FROM_GALLERY:
 			if (resultCode == Activity.RESULT_OK) {
 				Uri selectedImageUri = data.getData();
 				copyGalleryImage(selectedImageUri);

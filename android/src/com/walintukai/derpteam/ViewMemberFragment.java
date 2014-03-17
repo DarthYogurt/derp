@@ -305,14 +305,14 @@ public class ViewMemberFragment extends Fragment {
 		row.setOrientation(LinearLayout.HORIZONTAL);
 		row.setPadding(0, 0, 0, 10);
 		
-		TextView tvName = new TextView(getActivity());
+		CustomFontBoldTextView tvName = new CustomFontBoldTextView(getActivity());
 		tvName.setText(firstName.toUpperCase());
 		tvName.setTextSize(14);
 		tvName.setTextColor(Color.parseColor("#30acff"));
 		tvName.setPadding(0, 0, 10, 0);
 		row.addView(tvName);
 		
-		TextView tvComment = new TextView(getActivity());
+		CustomFontTextView tvComment = new CustomFontTextView(getActivity());
 		tvComment.setTextSize(14);
 		tvComment.setTextColor(Color.parseColor("#000000"));
 		tvComment.setText(comment);

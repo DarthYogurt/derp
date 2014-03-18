@@ -34,7 +34,7 @@ public class ImageHandler {
 		    BitmapFactory.decodeStream(new FileInputStream(file), null, o);
 
 		    // The new size we want to scale to
-		    final int REQUIRED_SIZE = 300;
+		    final int REQUIRED_SIZE = 720;
 
 		    // Find the correct scale value. It should be the power of 2.
 		    int scale = 1;
@@ -63,7 +63,7 @@ public class ImageHandler {
 		    
 	        // Save file
 		    FileOutputStream fos = new FileOutputStream(file);
-		    bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+		    bm.compress(Bitmap.CompressFormat.JPEG, 90, fos);
 		    
 		    try { fos.flush(); fos.close(); } 
 		    catch (IOException e) { e.printStackTrace(); }

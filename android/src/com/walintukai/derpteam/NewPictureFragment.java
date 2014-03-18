@@ -55,7 +55,7 @@ public class NewPictureFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_take_picture, container, false);
+		final View view = inflater.inflate(R.layout.fragment_new_picture, container, false);
 		
 		Bundle args = getArguments();
 		filename = args.getString(KEY_FILENAME);
@@ -170,16 +170,19 @@ public class NewPictureFragment extends Fragment {
 				
 				Log.i("PICTURE SAVED", filename);
 				
-				Intent intent = new Intent("com.android.camera.action.CROP");
-			    intent.setDataAndType(Uri.fromFile(file), "image/*");
-			    intent.putExtra("outputX", 400);
-			    intent.putExtra("outputY", 400);
-			    intent.putExtra("aspectX", 1);
-			    intent.putExtra("aspectY", 1);
-			    intent.putExtra("scale", true);
-			    intent.putExtra("noFaceDetection", true);
-			    intent.putExtra("output", Uri.fromFile(file));
-			    startActivityForResult(intent, REQUEST_CROP_NEW);
+				ImageHandler.compressAndRotateImage(getActivity(), filename);
+				showPicture(file);
+				
+//				Intent intent = new Intent("com.android.camera.action.CROP");
+//			    intent.setDataAndType(Uri.fromFile(file), "image/*");
+//			    intent.putExtra("outputX", 400);
+//			    intent.putExtra("outputY", 400);
+//			    intent.putExtra("aspectX", 1);
+//			    intent.putExtra("aspectY", 1);
+//			    intent.putExtra("scale", true);
+//			    intent.putExtra("noFaceDetection", true);
+//			    intent.putExtra("output", Uri.fromFile(file));
+//			    startActivityForResult(intent, REQUEST_CROP_NEW);
 			}
 			break;
 			

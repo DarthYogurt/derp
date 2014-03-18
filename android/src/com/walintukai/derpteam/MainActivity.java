@@ -328,7 +328,15 @@ public class MainActivity extends LeanplumActivity {
 		GlobalMethods.copyFile(galleryFile, file);
 		Log.i("IMAGE COPIED TO INTERNAL", imgFilename);
 		
-		startCrop(file);
+		ImageHandler.compressAndRotateImage(this, imgFilename);
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		NewPictureFragment fragment = NewPictureFragment.newInstance(imgFilename);
+		ft.replace(R.id.fragment_container, fragment);
+		ft.addToBackStack(null);
+		ft.commit();
+		
+//		startCrop(file);
 	}
 	
 	private class CopyImageFromUrlTask extends AsyncTask<Void, Void, Void> {

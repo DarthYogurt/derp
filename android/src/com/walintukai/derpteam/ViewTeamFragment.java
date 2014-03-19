@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewTeamFragment extends Fragment {
@@ -36,7 +35,7 @@ public class ViewTeamFragment extends Fragment {
 	private String fbId;
 	private ListView listView;
 	private TeamListAdapter adapter;
-	private TextView teamOwnerName;
+	private CustomFontBoldTextView teamOwnerName;
 	private ImageView teamOwnerPicture;
 	private LinearLayout statsContainer;
 	
@@ -58,7 +57,7 @@ public class ViewTeamFragment extends Fragment {
 		prefs = new Preferences(getActivity());
 		
 		View header = inflater.inflate(R.layout.listview_team_header, null);
-		teamOwnerName = (TextView) header.findViewById(R.id.team_owner_name);
+		teamOwnerName = (CustomFontBoldTextView) header.findViewById(R.id.team_owner_name);
 		teamOwnerPicture = (ImageView) header.findViewById(R.id.team_owner_picture);
 		statsContainer = (LinearLayout) header.findViewById(R.id.stats_container);
 		listView = (ListView) view.findViewById(R.id.team_listview);
@@ -172,7 +171,7 @@ public class ViewTeamFragment extends Fragment {
 		infoContainer.setOrientation(LinearLayout.VERTICAL);
 		infoContainer.setPadding(0, 12, 0, 0);
 		
-		TextView tvTitle = new TextView(getActivity());
+		CustomFontTextView tvTitle = new CustomFontTextView(getActivity());
 		tvTitle.setText(title);
 		tvTitle.setTextSize(16);
 		tvTitle.setPadding(0, 0, 0, 6);
@@ -184,7 +183,7 @@ public class ViewTeamFragment extends Fragment {
 		ivUpVote.setPadding(0, 0, 2, 0);
 		voteContainer.addView(ivUpVote);
 		
-		TextView tvUpVote = new TextView(getActivity());
+		CustomFontBoldTextView tvUpVote = new CustomFontBoldTextView(getActivity());
 		tvUpVote.setTextColor(Color.parseColor("#00b200"));
 		tvUpVote.setTextSize(16);
 		tvUpVote.setText(Integer.toString(upVote));
@@ -196,7 +195,7 @@ public class ViewTeamFragment extends Fragment {
 		ivDownVote.setPadding(0, 0, 2, 0);
 		voteContainer.addView(ivDownVote);
 		
-		TextView tvDownVote = new TextView(getActivity());
+		CustomFontBoldTextView tvDownVote = new CustomFontBoldTextView(getActivity());
 		tvDownVote.setTextColor(Color.parseColor("#cc0000"));
 		tvDownVote.setTextSize(16);
 		tvDownVote.setText(Integer.toString(downVote));

@@ -2,14 +2,12 @@ package com.walintukai.derpteam;
 
 import java.util.Set;
 
-import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,20 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainFragment extends Fragment {
 	
 	private Preferences prefs;
 	private ImageView rateMember;
-	private TextView caption;
+	private CustomFontBoldTextView caption;
 	private Member member;
 	private int picId;
 	private ImageView btnVoteDown;
@@ -50,7 +45,7 @@ public class MainFragment extends Fragment {
 		prefs = new Preferences(getActivity());
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
-		caption = (TextView) view.findViewById(R.id.caption);
+		caption = (CustomFontBoldTextView) view.findViewById(R.id.caption);
 		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);

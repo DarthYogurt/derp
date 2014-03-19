@@ -1,12 +1,7 @@
 package com.walintukai.derpteam;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Random;
 
 import android.app.Activity;
@@ -16,6 +11,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,7 +33,6 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -54,7 +49,7 @@ public class MainActivity extends LeanplumActivity {
 	private UiLifecycleHelper uiHelper;
 	private PopupWindow pwReportBug;
 	private View vReportBug;
-	private EditText etReportBug;
+	private CustomFontEditText etReportBug;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -85,7 +80,7 @@ public class MainActivity extends LeanplumActivity {
 		ImageView btnFriendsTeam = (ImageView) findViewById(R.id.btn_friends_team);
 		pwReportBug = new PopupWindow(this);
 		vReportBug = getLayoutInflater().inflate(R.layout.popwin_report_bug, null);
-		etReportBug = (EditText) vReportBug.findViewById(R.id.report_bug);
+		etReportBug = (CustomFontEditText) vReportBug.findViewById(R.id.report_bug);
 		Button btnSendReport = (Button) vReportBug.findViewById(R.id.btn_send_report);
 		
 		FragmentManager fm = getFragmentManager();
@@ -226,10 +221,11 @@ public class MainActivity extends LeanplumActivity {
 			}
 			if (type.equalsIgnoreCase("text/plain")) {
 				String imgUrl = intent.getStringExtra(Intent.EXTRA_TEXT).toLowerCase();
-				if (imgUrl.contains(".jpg") || imgUrl.contains(".gif") || imgUrl.contains(".png")) {
+				if (imgUrl.contains(".jpg") || imgUrl.contains(".jpeg") || imgUrl.contains(".gif") || 
+					imgUrl.contains(".png") || imgUrl.contains(".bmp")) {
 					new CopyImageFromUrlTask(imgUrl).execute();
 				}
-				else { Toast.makeText(this, "Invalid image URL", Toast.LENGTH_SHORT).show(); }
+				else { Toast.makeText(this, R.string.invalid_image_url, Toast.LENGTH_SHORT).show(); }
 			}
 		}
 	}
@@ -340,23 +336,42 @@ public class MainActivity extends LeanplumActivity {
 	}
 	
 	private class CopyImageFromUrlTask extends AsyncTask<Void, Void, Void> {
-		String imgUrl;
-		String filepath;
+		private ProgressDialog loadingDialog;
+		private String imgUrl;
+		private int responseCode;
 		
 		private CopyImageFromUrlTask(String imgUrl) {
 			this.imgUrl = imgUrl;
 		}
 		
+		protected void onPreExecute() {
+			loadingDialog = GlobalMethods.createLoadingDialog(MainActivity.this);
+			loadingDialog.show();
+		}
+		
 	    protected Void doInBackground(Void... params) {
 	    	imgFilename = ImageHandler.getImageFilename(MainActivity.this);
-	    	filepath = ImageHandler.copyImageFromUrl(MainActivity.this, imgUrl, imgFilename);
-	    	
+	    	responseCode = ImageHandler.copyImageFromUrl(MainActivity.this, imgUrl, imgFilename);
 	        return null;
 	    }
 
 	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
-	    	startCrop(new File(filepath));
+	    	if (responseCode == HttpURLConnection.HTTP_OK) {
+	    		ImageHandler.compressAndRotateImage(MainActivity.this, imgFilename);
+		    	FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				NewPictureFragment fragment = NewPictureFragment.newInstance(imgFilename);
+				ft.replace(R.id.fragment_container, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+	    	}
+	    	else {
+	    		Toast.makeText(MainActivity.this, R.string.invalid_image_url, Toast.LENGTH_SHORT).show();
+	    	}
+			loadingDialog.hide();
+			
+//	    	startCrop(new File(filepath));
 	        return;
 	    }
 	}

@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -87,10 +86,10 @@ public class NewPictureFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (hasPicture) {
-					EditText etTitle = (EditText) view.findViewById(R.id.enter_title);
+					CustomFontEditText etTitle = (CustomFontEditText) view.findViewById(R.id.enter_title);
 					String title = etTitle.getText().toString();
 					
-					EditText etCaption = (EditText) view.findViewById(R.id.enter_caption);
+					CustomFontEditText etCaption = (CustomFontEditText) view.findViewById(R.id.enter_caption);
 					String caption = etCaption.getText().toString();
 					
 					if (title.isEmpty()) {

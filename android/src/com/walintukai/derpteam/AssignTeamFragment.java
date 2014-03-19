@@ -29,7 +29,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -127,7 +126,7 @@ public class AssignTeamFragment extends Fragment {
 			dialog.getWindow().setLayout(480, 360);
 			dialog.setCanceledOnTouchOutside(false);
 			
-			TextView text = (TextView) dialog.findViewById(R.id.derp_friend);
+			CustomFontBoldTextView text = (CustomFontBoldTextView) dialog.findViewById(R.id.derp_friend);
 			text.setText("Put derp on " + targetName + "'s team?");
 			
 			ImageView btnYes = (ImageView) dialog.findViewById(R.id.btn_yes);
@@ -164,7 +163,7 @@ public class AssignTeamFragment extends Fragment {
 			dialog.getWindow().setLayout(480, 360);
 			dialog.setCanceledOnTouchOutside(false);
 			
-			TextView text = (TextView) dialog.findViewById(R.id.post_to_wall);
+			CustomFontBoldTextView text = (CustomFontBoldTextView) dialog.findViewById(R.id.post_to_wall);
 			text.setText("Post to " + targetName + "'s Facebook Wall?");
 			
 			ImageView btnYes = (ImageView) dialog.findViewById(R.id.btn_yes);

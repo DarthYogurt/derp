@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class TeamListAdapter extends ArrayAdapter<Member> {
 	
@@ -32,13 +31,13 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 	
 	private static class ViewHolder {
 		private ImageView posterFbPic;
-		private TextView posterName;
-		private TextView targetName;
-		private TextView title;
+		private CustomFontBoldTextView posterName;
+		private CustomFontBoldTextView targetName;
+		private CustomFontBoldTextView title;
 		private ImageView memberPic;
-		private TextView caption;
-		private TextView upVote;
-		private TextView downVote;
+		private CustomFontBoldTextView caption;
+		private CustomFontBoldTextView upVote;
+		private CustomFontBoldTextView downVote;
 		private LinearLayout commentContainer;
 	}
 	
@@ -52,13 +51,13 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 
             holder = new ViewHolder();
             holder.posterFbPic = (ImageView) convertView.findViewById(R.id.poster_fb_picture);
-            holder.posterName = (TextView) convertView.findViewById(R.id.poster_name);
-            holder.targetName = (TextView) convertView.findViewById(R.id.target_name);
-            holder.title = (TextView) convertView.findViewById(R.id.title);
+            holder.posterName = (CustomFontBoldTextView) convertView.findViewById(R.id.poster_name);
+            holder.targetName = (CustomFontBoldTextView) convertView.findViewById(R.id.target_name);
+            holder.title = (CustomFontBoldTextView) convertView.findViewById(R.id.title);
             holder.memberPic = (ImageView) convertView.findViewById(R.id.member);
-            holder.caption = (TextView) convertView.findViewById(R.id.caption);
-            holder.upVote = (TextView) convertView.findViewById(R.id.vote_up_count);
-            holder.downVote = (TextView) convertView.findViewById(R.id.vote_down_count);
+            holder.caption = (CustomFontBoldTextView) convertView.findViewById(R.id.caption);
+            holder.upVote = (CustomFontBoldTextView) convertView.findViewById(R.id.vote_up_count);
+            holder.downVote = (CustomFontBoldTextView) convertView.findViewById(R.id.vote_down_count);
     		holder.commentContainer = (LinearLayout) convertView.findViewById(R.id.comment_container);
             
             convertView.setTag(holder);

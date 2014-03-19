@@ -32,15 +32,14 @@ public class ImageHandler {
 		    BitmapFactory.Options o = new BitmapFactory.Options();
 		    o.inJustDecodeBounds = true;
 		    BitmapFactory.decodeStream(new FileInputStream(file), null, o);
-
+		    
 		    // The new size we want to scale to
 		    final int REQUIRED_SIZE = 720;
 
 		    // Find the correct scale value. It should be the power of 2.
-		    int scale = 1;
-		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) {
-		    	scale*=2;
-		    }
+		    int scale = 4;
+		    while (o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
+//		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
 		        
 		    // Decode with inSampleSize
 		    BitmapFactory.Options o2 = new BitmapFactory.Options();
@@ -61,10 +60,9 @@ public class ImageHandler {
             else if (orientation == 8) { matrix.postRotate(270); }
             bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
 		    
-	        // Save file
+	        // Save and compress file
 		    FileOutputStream fos = new FileOutputStream(file);
 		    bm.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-		    
 		    try { fos.flush(); fos.close(); } 
 		    catch (IOException e) { e.printStackTrace(); }
 		    
@@ -72,6 +70,25 @@ public class ImageHandler {
 		    System.gc();
 		} 
 		catch (FileNotFoundException e) { e.printStackTrace(); }
+	}
+	
+	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+	 
+		if (height > reqHeight || width > reqWidth) {
+			final int heightRatio = Math.round((float) height/ (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;      
+		}       
+		final float totalPixels = width * height;
+		final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+		while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+			inSampleSize++;
+		}
+	 
+	    return inSampleSize;
 	}
 	
 	public static String getImageFilename(Context context) {
@@ -95,36 +112,36 @@ public class ImageHandler {
 		}
 	}
 	
-	public static String copyImageFromUrl(Context context, String urlAsString, String imgFilename) {
-		String filepath = "";
+	public static int copyImageFromUrl(Context context, String urlAsString, String imgFilename) {
+		int responseCode = 0;
 		try {
 			URL url = new URL(urlAsString);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.setDoOutput(true);
 			urlConnection.connect();
+			responseCode = urlConnection.getResponseCode();
 			
-			File file = new File(context.getExternalFilesDir(null), imgFilename);
-			if (file.createNewFile()) { file.createNewFile(); }
-			FileOutputStream fos = new FileOutputStream(file);
-			InputStream is = urlConnection.getInputStream();
-			int totalSize = urlConnection.getContentLength();
-			int downloadedSize = 0;
-			byte[] buffer = new byte[1024];
-			int bufferLength = 0;
-			while ((bufferLength = is.read(buffer)) > 0) {
-				fos.write(buffer, 0, bufferLength);
-				downloadedSize += bufferLength;
-			}
-			fos.close();
-			if (downloadedSize == totalSize) { 
-				filepath = file.getPath();
-				Log.v("FILE COPIED FROM URL", filepath);
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				File file = new File(context.getExternalFilesDir(null), imgFilename);
+				if (file.createNewFile()) { file.createNewFile(); }
+				FileOutputStream fos = new FileOutputStream(file);
+				InputStream is = urlConnection.getInputStream();
+				int totalSize = urlConnection.getContentLength();
+				int downloadedSize = 0;
+				byte[] buffer = new byte[1024];
+				int bufferLength = 0;
+				while ((bufferLength = is.read(buffer)) > 0) {
+					fos.write(buffer, 0, bufferLength);
+					downloadedSize += bufferLength;
+				}
+				fos.close();
+				if (downloadedSize == totalSize) { Log.v("FILE COPIED FROM URL", imgFilename); }
 			}
 		} 
 		catch (MalformedURLException e) { e.printStackTrace(); }
 		catch (IOException e) { e.printStackTrace(); }
-		return filepath;
+		return responseCode;
 	}
 	
 }

@@ -17,7 +17,7 @@
 	        android:padding="6dp"
 	        android:background="#30acff" >
 	        
-	        <EditText
+	        <com.walintukai.derpteam.CustomFontEditText
 				android:id="@+id/enter_title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
 				android:singleLine="true"
 				android:textSize="16sp" />
 	        
-	        <EditText
+	        <com.walintukai.derpteam.CustomFontEditText
 				android:id="@+id/enter_caption"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

@@ -25,12 +25,10 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewMemberFragment extends Fragment {
@@ -41,15 +39,15 @@ public class ViewMemberFragment extends Fragment {
 	private int picId;
 	private Member member;
 	private ImageView ivTargetFbPic;
-	private TextView tvTargetName;
+	private CustomFontBoldTextView tvTargetName;
 	private ImageView ivDerpPicture;
-	private TextView tvTitle;
-	private TextView tvCaption;
-	private TextView tvUpVote;
-	private TextView tvDownVote;
+	private CustomFontBoldTextView tvTitle;
+	private CustomFontBoldTextView tvCaption;
+	private CustomFontBoldTextView tvUpVote;
+	private CustomFontBoldTextView tvDownVote;
 	private LinearLayout voteContainer;
 	private PopupWindow pwAddComment;
-	private EditText etAddComment;
+	private CustomFontEditText etAddComment;
 	private LinearLayout commentContainer;
 	private Set<Integer> votedPicturesSet;
 	
@@ -70,12 +68,12 @@ public class ViewMemberFragment extends Fragment {
 		prefs = new Preferences(getActivity());
 		
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
-		tvTargetName = (TextView) view.findViewById(R.id.fb_name);
+		tvTargetName = (CustomFontBoldTextView) view.findViewById(R.id.fb_name);
 		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
-		tvTitle = (TextView) view.findViewById(R.id.title);
-		tvCaption = (TextView) view.findViewById(R.id.caption);
-		tvUpVote = (TextView) view.findViewById(R.id.vote_up_count);
-		tvDownVote = (TextView) view.findViewById(R.id.vote_down_count);
+		tvTitle = (CustomFontBoldTextView) view.findViewById(R.id.title);
+		tvCaption = (CustomFontBoldTextView) view.findViewById(R.id.caption);
+		tvUpVote = (CustomFontBoldTextView) view.findViewById(R.id.vote_up_count);
+		tvDownVote = (CustomFontBoldTextView) view.findViewById(R.id.vote_down_count);
 		ImageView btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		ImageView btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		voteContainer = (LinearLayout) view.findViewById(R.id.vote_container);
@@ -84,7 +82,7 @@ public class ViewMemberFragment extends Fragment {
 		pwAddComment = new PopupWindow(getActivity());
 		final View vAddComment = inflater.inflate(R.layout.popwin_comment, null, false);
 		ImageButton btnAddComment = (ImageButton) view.findViewById(R.id.btn_add_comment);
-		etAddComment = (EditText) vAddComment.findViewById(R.id.add_comment);
+		etAddComment = (CustomFontEditText) vAddComment.findViewById(R.id.add_comment);
 		Button btnFinishComment = (Button) vAddComment.findViewById(R.id.btn_finish_comment);
 		
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());

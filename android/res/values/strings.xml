@@ -48,5 +48,6 @@
     <string name="report">Report</string>
     <string name="bug_report_sent">Bug report sent. Thank you for your input!</string>
 	<string name="top_five_derps">Top 5 Derps</string>
+	<string name="invalid_image_url">Invalid image url</string>
     
 </resources>

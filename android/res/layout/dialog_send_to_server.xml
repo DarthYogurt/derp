@@ -14,7 +14,7 @@
 		android:layout_height="24dp"
 		android:layout_marginRight="8dp" />
     
-    <TextView
+    <com.walintukai.derpteam.CustomFontBoldTextView
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical"

@@ -7,7 +7,7 @@
     android:padding="10dp"
     android:background="@drawable/pw_rounded_yellow_bg" >
 
-    <TextView
+    <com.walintukai.derpteam.CustomFontBoldTextView
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:gravity="center"
@@ -16,7 +16,7 @@
     	android:textColor="#000"
     	android:text="@string/report_bug" />
     
-    <EditText
+    <com.walintukai.derpteam.CustomFontEditText
         android:id="@+id/report_bug"
         android:layout_width="match_parent"
     	android:layout_height="0dp"

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -28,7 +27,7 @@ public class FriendsListAdapter extends ArrayAdapter<Friend> {
 	
 	private static class ViewHolder {
 		private ImageView picture;
-		private TextView name;
+		private CustomFontBoldTextView name;
 	}
 	
 	@Override
@@ -41,7 +40,7 @@ public class FriendsListAdapter extends ArrayAdapter<Friend> {
 
             holder = new ViewHolder();
             holder.picture = (ImageView) convertView.findViewById(R.id.friend_picture);
-            holder.name = (TextView) convertView.findViewById(R.id.friend_name);
+            holder.name = (CustomFontBoldTextView) convertView.findViewById(R.id.friend_name);
 
             convertView.setTag(holder);
         } 

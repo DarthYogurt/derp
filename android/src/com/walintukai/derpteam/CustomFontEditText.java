@@ -23,10 +23,8 @@ public class CustomFontEditText extends EditText {
 	}
 
 	private void init() {
-		if (!isInEditMode()) {
-			Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/SourceSansPro-Regular.otf");
-			setTypeface(tf);
-		}
+		Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/SourceSansPro-Regular.otf");
+		setTypeface(tf);
 	}
 
  }

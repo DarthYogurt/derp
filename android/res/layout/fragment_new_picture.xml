@@ -44,11 +44,10 @@
 	        
 	    </LinearLayout>
 	    
-	    <ImageView 
+	    <com.walintukai.derpteam.AspectRatioImageView 
 	        android:id="@+id/taken_picture"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:adjustViewBounds="true"
 	        android:src="@drawable/image_placeholder"
 	        android:contentDescription="@string/desc_taken_picture" />
 	    

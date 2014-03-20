@@ -40,7 +40,7 @@ public class ViewMemberFragment extends Fragment {
 	private Member member;
 	private ImageView ivTargetFbPic;
 	private CustomFontBoldTextView tvTargetName;
-	private ImageView ivDerpPicture;
+	private AspectRatioImageView ivDerpPicture;
 	private CustomFontBoldTextView tvTitle;
 	private CustomFontBoldTextView tvCaption;
 	private CustomFontBoldTextView tvUpVote;
@@ -69,7 +69,7 @@ public class ViewMemberFragment extends Fragment {
 		
 		ivTargetFbPic = (ImageView) view.findViewById(R.id.fb_picture);
 		tvTargetName = (CustomFontBoldTextView) view.findViewById(R.id.fb_name);
-		ivDerpPicture = (ImageView) view.findViewById(R.id.derp_picture);
+		ivDerpPicture = (AspectRatioImageView) view.findViewById(R.id.derp_picture);
 		tvTitle = (CustomFontBoldTextView) view.findViewById(R.id.title);
 		tvCaption = (CustomFontBoldTextView) view.findViewById(R.id.caption);
 		tvUpVote = (CustomFontBoldTextView) view.findViewById(R.id.vote_up_count);

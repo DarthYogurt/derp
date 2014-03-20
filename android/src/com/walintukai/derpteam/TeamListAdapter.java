@@ -34,7 +34,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		private CustomFontBoldTextView posterName;
 		private CustomFontBoldTextView targetName;
 		private CustomFontBoldTextView title;
-		private ImageView memberPic;
+		private AspectRatioImageView derpPic;
 		private CustomFontBoldTextView caption;
 		private CustomFontBoldTextView upVote;
 		private CustomFontBoldTextView downVote;
@@ -54,7 +54,7 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
             holder.posterName = (CustomFontBoldTextView) convertView.findViewById(R.id.poster_name);
             holder.targetName = (CustomFontBoldTextView) convertView.findViewById(R.id.target_name);
             holder.title = (CustomFontBoldTextView) convertView.findViewById(R.id.title);
-            holder.memberPic = (ImageView) convertView.findViewById(R.id.member);
+            holder.derpPic = (AspectRatioImageView) convertView.findViewById(R.id.member);
             holder.caption = (CustomFontBoldTextView) convertView.findViewById(R.id.caption);
             holder.upVote = (CustomFontBoldTextView) convertView.findViewById(R.id.vote_up_count);
             holder.downVote = (CustomFontBoldTextView) convertView.findViewById(R.id.vote_down_count);
@@ -71,13 +71,13 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 		holder.posterName.setText(members.get(position).getPosterFirstName());
 		holder.targetName.setText(members.get(position).getTargetFirstName());
         holder.title.setText(members.get(position).getTitle());
-        UrlImageViewHelper.setUrlDrawable(holder.memberPic, members.get(position).getImageUrl(), 
+        UrlImageViewHelper.setUrlDrawable(holder.derpPic, members.get(position).getImageUrl(), 
         								  R.drawable.image_placeholder);
         holder.caption.setText(members.get(position).getCaption());
         holder.upVote.setText(Integer.toString(members.get(position).getUpVote()));
         holder.downVote.setText(Integer.toString(members.get(position).getDownVote()));
         
-        holder.memberPic.setOnClickListener(new OnClickListener() {
+        holder.derpPic.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				FragmentManager fm = ((Activity)context).getFragmentManager();

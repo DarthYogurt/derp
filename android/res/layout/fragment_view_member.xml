@@ -113,11 +113,10 @@
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal" >
 	        
-	        <ImageView 
+	        <com.walintukai.derpteam.AspectRatioImageView
 		        android:id="@+id/derp_picture"
 		        android:layout_width="match_parent"
-		        android:layout_height="360dp"
-		        android:scaleType="fitXY"
+		        android:layout_height="wrap_content"
 		        android:contentDescription="@string/desc_derp_picture"
 		        android:src="@drawable/image_placeholder" />
 	        

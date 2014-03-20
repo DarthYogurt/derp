@@ -34,12 +34,11 @@ public class ImageHandler {
 		    BitmapFactory.decodeStream(new FileInputStream(file), null, o);
 		    
 		    // The new size we want to scale to
-		    final int REQUIRED_SIZE = 720;
+		    final int REQUIRED_SIZE = 600;
 
 		    // Find the correct scale value. It should be the power of 2.
-		    int scale = 4;
-		    while (o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
-//		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
+		    int scale = 1;
+		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
 		        
 		    // Decode with inSampleSize
 		    BitmapFactory.Options o2 = new BitmapFactory.Options();

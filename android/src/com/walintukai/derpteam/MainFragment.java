@@ -11,7 +11,6 @@ import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,7 @@ import android.widget.Toast;
 
 public class MainFragment extends Fragment {
 	
-	private Preferences prefs;
-	private ImageView rateMember;
+	private AspectRatioImageView rateMember;
 	private CustomFontBoldTextView caption;
 	private Member member;
 	private int picId;
@@ -42,11 +40,10 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 		
-		prefs = new Preferences(getActivity());
 		votedPicturesSet = GlobalMethods.readVotedPicturesSet(getActivity());
 		
+		rateMember = (AspectRatioImageView) view.findViewById(R.id.rate_picture);
 		caption = (CustomFontBoldTextView) view.findViewById(R.id.caption);
-		rateMember = (ImageView) view.findViewById(R.id.rate_picture);
 		btnVoteDown = (ImageView) view.findViewById(R.id.btn_vote_down);
 		btnVoteUp = (ImageView) view.findViewById(R.id.btn_vote_up);
 		btnNextPic = (ImageView) view.findViewById(R.id.btn_next_pic);

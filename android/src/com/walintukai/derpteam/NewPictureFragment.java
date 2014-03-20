@@ -38,7 +38,7 @@ public class NewPictureFragment extends Fragment {
 	public static final int REQUEST_SELECT_FROM_GALLERY = 400;
 	private static final String KEY_FILENAME = "filename";
 	
-	private ImageView takenPicture;
+	private AspectRatioImageView takenPicture;
 	private String filename;
 	private String oldFilename;
 	private File file;
@@ -60,7 +60,7 @@ public class NewPictureFragment extends Fragment {
 		filename = args.getString(KEY_FILENAME);
 		oldFilename = "";
 		
-		takenPicture = (ImageView) view.findViewById(R.id.taken_picture);
+		takenPicture = (AspectRatioImageView) view.findViewById(R.id.taken_picture);
 		ImageButton btnAssignTeam = (ImageButton) view.findViewById(R.id.btn_assign_team);
 		
 		takenPicture.setOnClickListener(new OnClickListener() {

@@ -367,7 +367,7 @@ public class MainActivity extends LeanplumActivity {
 				ft.commit();
 	    	}
 	    	else {
-	    		Toast.makeText(MainActivity.this, R.string.invalid_image_url, Toast.LENGTH_SHORT).show();
+	    		Toast.makeText(MainActivity.this, R.string.response_code_error, Toast.LENGTH_SHORT).show();
 	    	}
 			loadingDialog.hide();
 			

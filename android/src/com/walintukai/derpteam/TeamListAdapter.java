@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -103,27 +104,30 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
 			}
         });
         
-//        List<Comment> comments = members.get(position).getComments();
-//        for (int i = 0; i < comments.size(); i++) {
-//        	Comment comment = comments.get(i);
-//        	
-//        	LinearLayout row = new LinearLayout(context);
-//    		row.setOrientation(LinearLayout.HORIZONTAL);
-//    		row.setPadding(0, 0, 0, 10);
-//    		
-//    		TextView tvName = new TextView(context);
-//    		tvName.setText(comment.getPosterFirstName().toUpperCase());
-//    		tvName.setTextAppearance(context, R.style.comment_name);
-//    		tvName.setPadding(0, 0, 10, 0);
-//    		row.addView(tvName);
-//    		
-//    		TextView tvComment = new TextView(context);
-//    		tvComment.setText(comment.getComment());
-//    		tvComment.setTextAppearance(context, R.style.comment);
-//    		row.addView(tvComment);
-//    		
-//    		holder.commentContainer.addView(row);
-//        }
+        List<Comment> comments = members.get(position).getComments();
+    	holder.commentContainer.removeAllViews();
+    	for (int i = 0; i < comments.size(); i++) {
+        	Comment comment = comments.get(i);
+        	
+        	LinearLayout row = new LinearLayout(context);
+    		row.setOrientation(LinearLayout.HORIZONTAL);
+    		row.setPadding(0, 0, 0, 10);
+    		
+    		CustomFontBoldTextView tvName = new CustomFontBoldTextView(context);
+    		tvName.setText(comment.getPosterFirstName().toUpperCase());
+    		tvName.setTextSize(14);
+    		tvName.setTextColor(Color.parseColor("#30acff"));
+    		tvName.setPadding(0, 0, 10, 0);
+    		row.addView(tvName);
+    		
+    		CustomFontTextView tvComment = new CustomFontTextView(context);
+    		tvComment.setText(comment.getComment());
+    		tvComment.setTextSize(14);
+    		tvComment.setTextColor(Color.parseColor("#000000"));
+    		row.addView(tvComment);
+    		
+    		holder.commentContainer.addView(row);
+        }
 
         return convertView;
 	}

@@ -32,13 +32,16 @@ public class ImageHandler {
 		    BitmapFactory.Options o = new BitmapFactory.Options();
 		    o.inJustDecodeBounds = true;
 		    BitmapFactory.decodeStream(new FileInputStream(file), null, o);
+		    int width = o.outWidth;
+		    int height = o.outHeight;
 		    
 		    // The new size we want to scale to
 		    final int REQUIRED_SIZE = 600;
 
 		    // Find the correct scale value. It should be the power of 2.
-		    int scale = 1;
-		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
+//		    int scale = 1;
+//		    while (o.outWidth/scale/2 >= REQUIRED_SIZE && o.outHeight/scale/2 >= REQUIRED_SIZE) { scale*=2; }
+		    int scale = Math.min(width/REQUIRED_SIZE, height/REQUIRED_SIZE);
 		        
 		    // Decode with inSampleSize
 		    BitmapFactory.Options o2 = new BitmapFactory.Options();
@@ -71,25 +74,6 @@ public class ImageHandler {
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 	
-	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-	 
-		if (height > reqHeight || width > reqWidth) {
-			final int heightRatio = Math.round((float) height/ (float) reqHeight);
-			final int widthRatio = Math.round((float) width / (float) reqWidth);
-			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;      
-		}       
-		final float totalPixels = width * height;
-		final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-		while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-			inSampleSize++;
-		}
-	 
-	    return inSampleSize;
-	}
-	
 	public static String getImageFilename(Context context) {
 		Preferences prefs = new Preferences(context);
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
@@ -117,7 +101,6 @@ public class ImageHandler {
 			URL url = new URL(urlAsString);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setRequestMethod("GET");
-			urlConnection.setDoOutput(true);
 			urlConnection.connect();
 			responseCode = urlConnection.getResponseCode();
 			

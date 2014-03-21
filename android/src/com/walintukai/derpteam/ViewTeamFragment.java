@@ -33,6 +33,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -173,19 +174,20 @@ public class ViewTeamFragment extends Fragment {
 		
 		ImageView ivPicture = new ImageView(getActivity());
 		ivPicture.setImageResource(R.drawable.image_placeholder);
-		ivPicture.setLayoutParams(new LinearLayout.LayoutParams(130, 130));
-		ivPicture.setPadding(0, 0, 20, 0);
+		ivPicture.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
+		ivPicture.setScaleType(ScaleType.FIT_XY);
+		ivPicture.setPadding(0, 0, 20, 10);
 		UrlImageViewHelper.setUrlDrawable(ivPicture, imageUrl);
 		row.addView(ivPicture);
 		
 		LinearLayout infoContainer = new LinearLayout(getActivity());
 		infoContainer.setOrientation(LinearLayout.VERTICAL);
-		infoContainer.setPadding(0, 12, 0, 0);
+		infoContainer.setPadding(0, 8, 0, 0);
 		
 		CustomFontTextView tvTitle = new CustomFontTextView(getActivity());
 		tvTitle.setText(title);
 		tvTitle.setTextSize(16);
-		tvTitle.setPadding(0, 0, 0, 6);
+		tvTitle.setPadding(0, 0, 0, 4);
 		infoContainer.addView(tvTitle);
 		
 		LinearLayout voteContainer = new LinearLayout(getActivity());

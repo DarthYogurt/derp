@@ -74,7 +74,12 @@ public class TeamListAdapter extends ArrayAdapter<Member> {
         holder.title.setText(members.get(position).getTitle());
         UrlImageViewHelper.setUrlDrawable(holder.derpPic, members.get(position).getImageUrl(), 
         								  R.drawable.image_placeholder);
-        holder.caption.setText(members.get(position).getCaption());
+        if (!members.get(position).getCaption().isEmpty()) {
+        	holder.caption.setVisibility(View.VISIBLE);
+        	holder.caption.setText(members.get(position).getCaption());
+        }
+        else { holder.caption.setVisibility(View.GONE); }
+        
         holder.upVote.setText(Integer.toString(members.get(position).getUpVote()));
         holder.downVote.setText(Integer.toString(members.get(position).getDownVote()));
         

@@ -216,7 +216,8 @@ public class ViewMemberFragment extends Fragment {
 	    	tvTargetName.setText(member.getTargetFirstName());
 	    	UrlImageViewHelper.setUrlDrawable(ivDerpPicture, member.getImageUrl(), R.drawable.image_placeholder);
 	    	tvTitle.setText(member.getTitle());
-	    	tvCaption.setText(member.getCaption());
+	    	if (!member.getCaption().isEmpty()) { tvCaption.setText(member.getCaption()); }
+	    	else { tvCaption.setVisibility(View.GONE); }
 	    	tvUpVote.setText(Integer.toString(member.getUpVote()));
 	    	tvDownVote.setText(Integer.toString(member.getDownVote()));
 	    	if (!hasAlreadyVoted()) { voteContainer.setVisibility(View.VISIBLE); }

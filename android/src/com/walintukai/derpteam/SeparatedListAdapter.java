@@ -13,11 +13,19 @@ import android.widget.BaseAdapter;
 public class SeparatedListAdapter extends BaseAdapter {  
     
 	public final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();  
-    public final ArrayAdapter<String> headers;  
+    public ArrayAdapter<String> headers;  
     public final static int TYPE_SECTION_HEADER = 0;  
+    public static final int TYPE_PICK_TEAM = 100;
+    public static final int TYPE_LEADERBOARD = 200;
       
-    public SeparatedListAdapter(Context context) {  
-        headers = new ArrayAdapter<String>(context, R.layout.listview_header);  
+    public SeparatedListAdapter(Context context, int headerType) {  
+    	headers = null;
+    	if (headerType == TYPE_PICK_TEAM) {
+    		headers = new ArrayAdapter<String>(context, R.layout.listview_header);
+    	}
+    	else if (headerType == TYPE_LEADERBOARD) {
+    		headers = new ArrayAdapter<String>(context, R.layout.listview_header_leaderboard);
+    	}
     }  
       
     public void addSection(String section, Adapter adapter) {  

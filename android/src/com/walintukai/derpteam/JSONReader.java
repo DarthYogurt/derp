@@ -18,6 +18,11 @@ public class JSONReader {
 	private static final String KEY_TARGET_USER_ID = "targetUserId";
 	private static final String KEY_TARGET_FB_ID = "targetFbId";
 	private static final String KEY_TARGET_FB_NAME = "targetFbName";
+	private static final String KEY_FB_ID = "fbId";
+	private static final String KEY_FB_NAME = "fbName";
+	private static final String KEY_RANDOM_PIC_1 = "randomPic1";
+	private static final String KEY_RANDOM_PIC_2 = "randomPic2";
+	private static final String KEY_RANDOM_PIC_3 = "randomPic3";
 	private static final String KEY_IMAGE_URL = "imageUrl";
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_CAPTION = "caption";
@@ -237,6 +242,29 @@ public class JSONReader {
 		} 
 		catch (JSONException e) { e.printStackTrace(); }
 		return "";
+	}
+	
+	public List<LeaderboardTeam> getTopTeamArray(String jsonString) {
+		List<LeaderboardTeam> topTeamArray = new ArrayList<LeaderboardTeam>();
+		try {
+            JSONObject jObject = new JSONObject(jsonString);
+            JSONArray jArray = jObject.getJSONArray("topTeam");
+            
+            for (int i = 0; i < jArray.length(); i++) {
+    			String fbId = jArray.getJSONObject(i).getString(KEY_FB_ID);
+    			String fbName = jArray.getJSONObject(i).getString(KEY_FB_NAME);
+    			String firstName = fbName.substring(0, fbName.indexOf(" "));
+    	    	int upVote = jArray.getJSONObject(i).getInt(KEY_UP_VOTE);
+    	    	String picUrl1 = jArray.getJSONObject(i).getString(KEY_RANDOM_PIC_1);
+    	    	String picUrl2 = jArray.getJSONObject(i).getString(KEY_RANDOM_PIC_2);
+    	    	String picUrl3 = jArray.getJSONObject(i).getString(KEY_RANDOM_PIC_3);
+    	    	
+    	    	LeaderboardTeam team = new LeaderboardTeam(fbId, firstName, upVote, picUrl1, picUrl2, picUrl3);
+    	    	topTeamArray.add(team);
+            }
+        }
+		catch (Exception e) { e.printStackTrace(); }
+		return topTeamArray;
 	}
 
 }

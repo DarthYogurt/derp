@@ -68,7 +68,7 @@ public class ViewTeamFragment extends Fragment {
 		
 		prefs = new Preferences(getActivity());
 		
-		View header = inflater.inflate(R.layout.listview_team_header, null);
+		View header = inflater.inflate(R.layout.listview_header_your_team, null);
 		teamOwnerName = (CustomFontBoldTextView) header.findViewById(R.id.team_owner_name);
 		teamOwnerPicture = (ImageView) header.findViewById(R.id.team_owner_picture);
 		statsContainer = (LinearLayout) header.findViewById(R.id.stats_container);

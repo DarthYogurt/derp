@@ -18,6 +18,7 @@ public class HttpGetRequest {
 	private static final String GET_PIC_URL = "getPic/";
 	private static final String GET_GALLERY_URL = "gallery/";
 	private static final String GET_TEAM_URL = "getTeamGallery/";
+	private static final String GET_TOP_TEAMS_URL = "topTeam/";
 	
 	public String getString(String url) {
 		HttpClient client = new DefaultHttpClient();
@@ -61,6 +62,13 @@ public class HttpGetRequest {
 		String url = BASE_URL + GET_TEAM_URL + fbId;
 		String jsonString = getString(url);
 		Log.v("TEAM JSON", jsonString);
+		return jsonString;
+	}
+	
+	public String getTopTeamsJsonString() {
+		String url = BASE_URL + GET_TOP_TEAMS_URL;
+		String jsonString = getString(url);
+		Log.v("TOP TEAMS JSON", jsonString);
 		return jsonString;
 	}
 	

@@ -79,7 +79,7 @@ public class AssignTeamFragment extends Fragment {
 		FriendsListAdapter fbFriendsAdapter = new FriendsListAdapter(getActivity(), 
 				R.layout.listview_row_friend, fbFriends);
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity());
+		SeparatedListAdapter adapter = new SeparatedListAdapter(getActivity(), SeparatedListAdapter.TYPE_PICK_TEAM);
 		adapter.addSection("Active Friends", activeFriendsAdapter);
 		adapter.addSection("All Friends", fbFriendsAdapter);
 		listView.setAdapter(adapter);

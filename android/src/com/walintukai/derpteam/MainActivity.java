@@ -272,46 +272,54 @@ public class MainActivity extends LeanplumActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_log_out:
-				Session.getActiveSession().closeAndClearTokenInformation();
-				Intent intent = new Intent(this, LoginActivity.class);
-				startActivity(intent);
-				finish();
-				return true;
-			case R.id.action_settings:
-				return true;
-			case R.id.action_report_bug:
-				pwReportBug.setTouchable(true);
-				pwReportBug.setFocusable(true);
-				pwReportBug.setOutsideTouchable(true);
-				pwReportBug.setTouchInterceptor(new OnTouchListener() {
-			        public boolean onTouch(View v, MotionEvent event) {
-			            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-			            	pwReportBug.dismiss();
-			                return true;
-			            }
-			            return false;
-			        }
-			    });
-				pwReportBug.setWidth(550);
-				pwReportBug.setHeight(450);
-				pwReportBug.setContentView(vReportBug);
-				pwReportBug.setBackgroundDrawable(new BitmapDrawable());
-				pwReportBug.setAnimationStyle(R.style.AddCommentAnimation);
-				pwReportBug.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, -140);
-				pwReportBug.setOnDismissListener(new PopupWindow.OnDismissListener() {
-					@Override
-					public void onDismiss() { 
-						getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-					}
-				});
-				
-				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-		        imm.showSoftInput(etReportBug, InputMethodManager.SHOW_IMPLICIT);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case R.id.action_show_leaderboard:
+			FragmentManager fm = getFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			LeaderboardFragment fragment = LeaderboardFragment.newInstance();
+			ft.replace(R.id.fragment_container, fragment);
+			ft.addToBackStack(null);
+			ft.commit();
+			return true;
+		case R.id.action_log_out:
+			Session.getActiveSession().closeAndClearTokenInformation();
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+			return true;
+		case R.id.action_settings:
+			return true;
+		case R.id.action_report_bug:
+			pwReportBug.setTouchable(true);
+			pwReportBug.setFocusable(true);
+			pwReportBug.setOutsideTouchable(true);
+			pwReportBug.setTouchInterceptor(new OnTouchListener() {
+		        public boolean onTouch(View v, MotionEvent event) {
+		            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+		            	pwReportBug.dismiss();
+		                return true;
+		            }
+		            return false;
+		        }
+		    });
+			pwReportBug.setWidth(550);
+			pwReportBug.setHeight(450);
+			pwReportBug.setContentView(vReportBug);
+			pwReportBug.setBackgroundDrawable(new BitmapDrawable());
+			pwReportBug.setAnimationStyle(R.style.AddCommentAnimation);
+			pwReportBug.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, -140);
+			pwReportBug.setOnDismissListener(new PopupWindow.OnDismissListener() {
+				@Override
+				public void onDismiss() { 
+					getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+				}
+			});
+			
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+	        imm.showSoftInput(etReportBug, InputMethodManager.SHOW_IMPLICIT);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 	    }
 	}
 	

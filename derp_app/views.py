@@ -8,6 +8,7 @@ import smtplib
 import sys
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models.aggregates import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.template.context import Context
@@ -476,6 +477,46 @@ def getStats(request):
         j['postedPics'].append(temp)
         
     return HttpResponse(json.dumps(j), content_type="application/json")
+
+
+def topTeam(request):
+    
+    j={}
+    
+    teamPoints = []
+    topRecruiter = []
+
+    for user in User.objects.filter(activated=True):
+        randomPic = None
+        try:
+            randomPic = Picture.objects.filter(targetId=user).order_by('?')[:2]
+        except:
+            pass
+        
+        if len(randomPic) < 3:
+            randomPic = Picture.objects.order_by('?')[:3]
+            
+        teamPoints.append({'fbId':user.fbId, 
+                           'fbName':user.fbName, 
+                           'upVote': Picture.objects.filter(targetId=user).aggregate(Sum('upVote'))['upVote__sum'],
+                           'randomPic1': str(randomPic[0].image),
+                           'randomPic2': str(randomPic[1].image),
+                           'randomPic3': str(randomPic[2].image)
+                           })
+    
+        topRecruiter.append({'fbId':user.fbId,
+                             'fbName': user.fbName,
+                             'recruitPoints': Picture.objects.filter(posterId=user).aggregate(Sum('upVote'))['upVote__sum']})
+    
+    
+    j['topTeam'] = sorted(teamPoints, key=lambda k:k['upVote'], reverse=True)
+    j['topRecuiter'] = sorted(topRecruiter, key=lambda k:k['recruitPoints'], reverse=True)
+    
+    
+        
+    
+    return HttpResponse(json.dumps(j), content_type="application/json")
+
 
 @csrf_exempt
 def bugReport(request):

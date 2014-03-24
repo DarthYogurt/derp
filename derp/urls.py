@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^signup/', signup),
     url(r'^bugReport/', bugReport),
 
+    url(r'topTeam/', topTeam),
 
     url(r'^uploadError/$', uploadError),
     url(r'^latestError/$', latestError),

@@ -489,13 +489,15 @@ def topTeam(request):
     for user in User.objects.filter(activated=True):
         randomPic = None
         try:
-            randomPic = Picture.objects.filter(targetId=user).order_by('?')[:2]
+            randomPic = Picture.objects.filter(targetId=user)#.order_by('?')[:2]
+            #print "enough"
         except:
             pass
         
         if len(randomPic) < 3:
             randomPic = Picture.objects.order_by('?')[:3]
-            
+        
+        #print user.fbName, randomPic
         teamPoints.append({'fbId':user.fbId, 
                            'fbName':user.fbName, 
                            'upVote': Picture.objects.filter(targetId=user).aggregate(Sum('upVote'))['upVote__sum'],
@@ -510,7 +512,7 @@ def topTeam(request):
     
     
     j['topTeam'] = sorted(teamPoints, key=lambda k:k['upVote'], reverse=True)
-    j['topRecuiter'] = sorted(topRecruiter, key=lambda k:k['recruitPoints'], reverse=True)
+    j['topRecruiter'] = sorted(topRecruiter, key=lambda k:k['recruitPoints'], reverse=True)
     
     
         

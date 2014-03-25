@@ -39,7 +39,7 @@ class Picture(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     
     def __unicode__(self):
-        return str(self.id) + " - " + self.targetId.fbName
+        return str(self.id) + "-" + self.targetId.fbName #str(self.id) + " - " + self.targetId.fbName
     
 class BugReport(models.Model):
     user = models.ForeignKey("User")
